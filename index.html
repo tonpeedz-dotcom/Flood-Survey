@@ -317,25 +317,67 @@ document.getElementById('status').onchange = () => {
     }
 };
 
+// ระบบ Autofill ปรับปรุงใหม่ให้ทำงานสมบูรณ์ขึ้น
 document.getElementById('empName').addEventListener('input', function() {
     const selectedName = this.value.trim();
-    if (!selectedName) return;
+    // ตรวจสอบว่าพิมพ์ชื่อจนครบตรงกับในระบบแล้วค่อยดึงข้อมูลมาแสดง (ป้องกันการดึงข้อมูลผิดพลาดตอนกำลังพิมพ์)
+    if (!ALL_EMPLOYEES.includes(selectedName)) return; 
 
-    const lastRecord = rows.find(r => r.name === selectedName);
+    const currentDate = document.getElementById('selectedDate').value;
+    const allRecordsForUser = rows.filter(r => r.name.trim() === selectedName);
     
-    if (lastRecord) {
-        if (lastRecord.address) document.getElementById('address').value = lastRecord.address;
-        
-        if (lastRecord.transport) {
-            document.getElementById('transport').value = lastRecord.transport;
-            document.getElementById('transport').onchange();
-            if (lastRecord.transport === 'รถบัสรับ-ส่ง' && lastRecord.busLine) {
-                document.getElementById('busLine').value = lastRecord.busLine;
-            }
-        }
+    if (allRecordsForUser.length > 0) {
+        const todayRecord = allRecordsForUser.find(r => r.date === currentDate);
+        const lastRecord = allRecordsForUser[0]; // ข้อมูลที่เคยกรอกล่าสุด
 
-        if (lastRecord.lat && lastRecord.lng) {
-            setPin(lastRecord.lat, lastRecord.lng);
+        if (todayRecord) {
+            // กรณี: มีการกรอกแก้ไขในวันเดียวกัน จะดึงข้อมูลมาทุกช่อง ไม่ปล่อย Blank
+            if (todayRecord.address) document.getElementById('address').value = todayRecord.address;
+            if (todayRecord.homeImpact) document.getElementById('homeImpact').value = todayRecord.homeImpact;
+            if (todayRecord.waterLevel !== undefined) document.getElementById('waterLevel').value = todayRecord.waterLevel;
+            
+            if (todayRecord.status) {
+                document.getElementById('status').value = todayRecord.status;
+                document.getElementById('status').onchange();
+                if (todayRecord.status === 'ไม่สามารถไปทำงานได้' && todayRecord.reason) {
+                    document.getElementById('reason').value = todayRecord.reason;
+                }
+            }
+            
+            if (todayRecord.transport) {
+                document.getElementById('transport').value = todayRecord.transport;
+                document.getElementById('transport').onchange();
+                if (todayRecord.transport === 'รถบัสรับ-ส่ง' && todayRecord.busLine) {
+                    document.getElementById('busLine').value = todayRecord.busLine;
+                }
+            }
+            
+            document.getElementById('note').value = todayRecord.note || '';
+            
+            if (todayRecord.lat && todayRecord.lng) {
+                setPin(todayRecord.lat, todayRecord.lng);
+            }
+        } else {
+            // กรณี: วันใหม่ ดึงมาเฉพาะข้อมูลที่อยู่และการเดินทาง (ไม่ต้องพิมพ์ใหม่)
+            if (lastRecord.address) document.getElementById('address').value = lastRecord.address;
+            
+            if (lastRecord.transport) {
+                document.getElementById('transport').value = lastRecord.transport;
+                document.getElementById('transport').onchange();
+                if (lastRecord.transport === 'รถบัสรับ-ส่ง' && lastRecord.busLine) {
+                    document.getElementById('busLine').value = lastRecord.busLine;
+                }
+            }
+            if (lastRecord.lat && lastRecord.lng) {
+                setPin(lastRecord.lat, lastRecord.lng);
+            }
+            
+            // รีเซ็ตข้อมูลที่เปลี่ยนรายวัน
+            document.getElementById('homeImpact').value = 'น้ำไม่ท่วมบ้าน';
+            document.getElementById('waterLevel').value = 0;
+            document.getElementById('status').value = 'สามารถไปทำงานได้';
+            document.getElementById('status').onchange();
+            document.getElementById('note').value = '';
         }
     }
 });
@@ -366,7 +408,7 @@ function render(){
     });
     
     const can=data.filter(r=>r.status===STATUS.CAN).length;
-    const cannotList = data.filter(r=>r.status===STATUS.CANNOT); // แก้ไขการนับแยกกันให้ชัดเจน
+    const cannotList = data.filter(r=>r.status===STATUS.CANNOT); 
     const cannot=cannotList.length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
     
@@ -419,7 +461,7 @@ function render(){
     document.getElementById('pdfCanSub').textContent = `คิดเป็น ${pct(can, ALL_EMPLOYEES.length)}%`;
     document.getElementById('pdfCannot').textContent = cannot;
     document.getElementById('pdfCannotSub').textContent = `คิดเป็น ${pct(cannot, ALL_EMPLOYEES.length)}%`;
-    document.getElementById('pdfRisk').textContent = risk; // อัปเดตช่องใหม่ใน PDF
+    document.getElementById('pdfRisk').textContent = risk; 
     document.getElementById('pdfRiskSub').textContent = `คิดเป็น ${pct(risk, ALL_EMPLOYEES.length)}%`;
 
     let reasonBus = 0; let reasonHome = 0; let reasonRoute = 0; let reasonOther = 0;
@@ -556,7 +598,6 @@ document.getElementById('transport').onchange=()=>{
     if(busLine.disabled) busLine.value='';
 };
 
-// จัดการเรื่อง Update ทับของเดิม หรือบันทึกใหม่
 document.getElementById('surveyForm').onsubmit=e=>{
     e.preventDefault();
     const isCannot = document.getElementById('status').value === 'ไม่สามารถไปทำงานได้';
