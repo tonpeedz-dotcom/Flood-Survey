@@ -9,21 +9,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-:root{--navy:#0b2a55;--blue:#0f4c81;--cyan:#0e7490;--bg:#f5f7fb;--green:#059669;--red:#e11d48;--amber:#d97706;--border:#dbe3ee}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Thai",sans-serif;background:var(--bg);color:#172033}header{background:linear-gradient(120deg,var(--navy),var(--blue),var(--cyan));color:#fff;padding:24px}.wrap{max-width:1200px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;align-items:center}.head h1{margin:4px 0;font-size:28px}.head p{margin:0;color:#dbeafe}.datebox{background:#ffffff18;border:1px solid #ffffff33;padding:12px;border-radius:14px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}textarea{min-height:70px}.tabs{display:flex;gap:8px;margin:22px 0}.tab{border:0;padding:10px 18px;border-radius:10px;background:#e2e8f0;cursor:pointer}.tab.active{background:var(--navy);color:#fff}.panel{display:none}.panel.active{display:block}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid #e7edf5;border-radius:16px;padding:18px;box-shadow:0 5px 18px #0f172a0a}.metric{cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;border:2px solid transparent}.metric:hover{transform:translateY(-3px);box-shadow:0 8px 25px #0f172a15}.metric.active-filter{border-color:var(--navy);background:#f8fafc}.metric small{color:#64748b}.metric strong{display:block;font-size:32px;margin:6px 0}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.full{grid-column:1/-1}label{display:block;font-weight:600;margin-bottom:6px}.hint{color:#64748b;font-size:12px}.btn{border:0;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:600}.primary{background:var(--navy);color:#fff}.secondary{background:#e0f2fe;color:#075985}.danger{background:#ffe4e6;color:#9f1239}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:12px}.toolbar input{max-width:320px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1050px}th,td{text-align:left;padding:11px;border-bottom:1px solid #e8edf3;vertical-align:top}th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:#d1fae5;color:#065f46}.no{background:#ffe4e6;color:#9f1239}.risk{background:#fef3c7;color:#92400e}.map{height:340px;border-radius:14px;border:1px solid var(--border);overflow:hidden}.mapactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e3a8a;margin-bottom:15px}.success{background:#ecfdf5;color:#065f46}.reportHead{display:none}footer{padding:25px;color:#64748b;text-align:center}@media(max-width:850px){.grid4,.formgrid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}.full{grid-column:auto}}@media print{header,.tabs,#surveyPanel,.toolbar button,.toolbar input,footer{display:none!important}body{background:#fff}.wrap{max-width:none}.card{box-shadow:none;break-inside:avoid}.reportHead{display:block;margin-bottom:15px}.grid4{grid-template-columns:repeat(4,1fr)}#dashboardPanel{display:block!important}.tablewrap{overflow:visible}table{min-width:0;font-size:9px}th,td{padding:5px}.map{height:230px}}
+:root{--navy:#0b2a55;--blue:#0f4c81;--cyan:#0e7490;--bg:#f5f7fb;--green:#059669;--red:#e11d48;--amber:#d97706;--border:#dbe3ee}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Thai",sans-serif;background:var(--bg);color:#172033}header{background:linear-gradient(120deg,var(--navy),var(--blue),var(--cyan));color:#fff;padding:24px}.wrap{max-width:1200px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;align-items:center}.head h1{margin:4px 0;font-size:28px}.head p{margin:0;color:#dbeafe}.datebox{background:#ffffff18;border:1px solid #ffffff33;padding:12px;border-radius:14px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}textarea{min-height:70px}.tabs{display:flex;gap:8px;margin:22px 0}.tab{border:0;padding:10px 18px;border-radius:10px;background:#e2e8f0;cursor:pointer}.tab.active{background:var(--navy);color:#fff}.panel{display:none}.panel.active{display:block}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid #e7edf5;border-radius:16px;padding:18px;box-shadow:0 5px 18px #0f172a0a}.metric{cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;border:2px solid transparent}.metric:hover{transform:translateY(-3px);box-shadow:0 8px 25px #0f172a15}.metric.active-filter{border-color:var(--navy);background:#f8fafc}.metric small{color:#64748b}.metric strong{display:block;font-size:32px;margin:6px 0}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.full{grid-column:1/-1}label{display:block;font-weight:600;margin-bottom:6px}.hint{color:#64748b;font-size:12px}.btn{border:0;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:600}.primary{background:var(--navy);color:#fff}.secondary{background:#e0f2fe;color:#075985}.danger{background:#ffe4e6;color:#9f1239}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:12px}.toolbar input{max-width:320px}.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1050px}
+th,td{text-align:left;padding:11px;border-bottom:1px solid #e8edf3;vertical-align:middle;white-space:nowrap}
+th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:#d1fae5;color:#065f46}.no{background:#ffe4e6;color:#9f1239}.risk{background:#fef3c7;color:#92400e}.map{height:340px;border-radius:14px;border:1px solid var(--border);overflow:hidden}.mapactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e3a8a;margin-bottom:15px}.success{background:#ecfdf5;color:#065f46}.reportHead{display:none}footer{padding:25px;color:#64748b;text-align:center}@media(max-width:850px){.grid4,.formgrid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}.full{grid-column:auto}}@media print{header,.tabs,#surveyPanel,.toolbar button,.toolbar input,footer{display:none!important}body{background:#fff}.wrap{max-width:none}.card{box-shadow:none;break-inside:avoid}.reportHead{display:block;margin-bottom:15px}.grid4{grid-template-columns:repeat(4,1fr)}#dashboardPanel{display:block!important}.tablewrap{overflow:visible}table{min-width:0;font-size:9px}th,td{padding:5px}.map{height:230px}}
 </style>
 </head>
 <body>
-<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน (by_น้อนเนิร์ด)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน (by_น้อนเนิร์ด❤️)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
 <main class="wrap">
 <div class="tabs"><button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button><button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button></div>
 <section id="dashboardPanel" class="panel active"><div class="reportHead"><h2>รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
 
-<!-- เพิ่ม onclick สำหรับการ Filter ตามสถานะ -->
 <div class="grid4">
-    <div class="card metric active-filter" id="cardTotal" onclick="window.setStatusFilter('')"><small>พนักงานที่ Update</small><strong id="mTotal">0</strong><span>คน (คลิกดูทั้งหมด)</span></div>
+    <div class="card metric active-filter" id="cardTotal" onclick="window.setStatusFilter('')"><small>พนักงานที่ Update</small><strong id="mTotal">0/30</strong><span id="pTotal">0% (คลิกดูทั้งหมด)</span></div>
     <div class="card metric" id="cardCan" onclick="window.setStatusFilter('สามารถไปทำงานได้')"><small>สามารถมาทำงานได้</small><strong class="green" id="mCan">0</strong><span id="pCan">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardCannot" onclick="window.setStatusFilter('ไม่สามารถไปทำงานได้')"><small>ไม่สามารถมาทำงานได้</small><strong class="red" id="mCannot">0</strong><span id="pCannot">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardRisk" onclick="window.setStatusFilter('มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)')"><small>มีความเสี่ยง</small><strong class="amber" id="mRisk">0</strong><span id="pRisk">0% (คลิกเพื่อดู)</span></div>
+</div>
+
+<!-- กล่องแสดงรายชื่อคนที่ยังไม่กรอกข้อมูล -->
+<div class="card" style="margin-top:18px; border-left: 4px solid var(--red);">
+    <h3 style="margin:0 0 10px 0; color: var(--red);">พนักงานที่ยังไม่กรอกข้อมูล (<span id="mMissingCount">0</span> คน)</h3>
+    <div id="missingList" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
 </div>
 
 <div class="card" style="margin-top:18px">
@@ -39,36 +47,7 @@
 <label>1. ชื่อ - นามสกุล</label>
 <input id="empName" list="employeeNames" autocomplete="off" required>
 <datalist id="employeeNames">
-<option value="นาย สุนทร ไชยแสน"></option>
-<option value="นาย อดิเรก แซ่ซิ้ม"></option>
-<option value="นาย สิทธินนท์ จิรพัธนนท์"></option>
-<option value="นาย วาที ปล้องทางไชย"></option>
-<option value="นาย สิรวิทย์ สมสา"></option>
-<option value="นาย วสันต์ แจ้งประเสริฐ"></option>
-<option value="นาย พานทอง แสงกล้า"></option>
-<option value="นาย จิรยุท วิศวะชัย"></option>
-<option value="นาย ทองหยด ครุฑตำคำ"></option>
-<option value="นาย ณัฐชนนท์ อุดชาชน"></option>
-<option value="นาย สุรสิทธิ์ แซ่โค้ว"></option>
-<option value="นาย เอกชัย ภูมี"></option>
-<option value="นาย กัมพล นาถ้ำเพชร"></option>
-<option value="นาย วัชรินทร์ โพธิราช"></option>
-<option value="นาย บุญเจิด หลุมทอง"></option>
-<option value="นาย โชคประสิทธิ์ ภักดี"></option>
-<option value="นาย อาวุฒิ บุญพา"></option>
-<option value="นาย สถาพร วงค์ทอง"></option>
-<option value="นาย คมสันต์ ธรรมเสน"></option>
-<option value="นาย สุพัฒน์ อินทร์รักษา"></option>
-<option value="นาย ธีระยุทธ คำบุดดี"></option>
-<option value="นาย ทินกร ทะนามศรี"></option>
-<option value="นาย สนั่น ขยันการ"></option>
-<option value="นาย จีรศักดิ์ แสงโต"></option>
-<option value="นาย วัชรพงษ์ เข็มไธสง"></option>
-<option value="นาย บรรณวิชญ์ ชอบธรรม"></option>
-<option value="นาย จิรวัฒน์ ประภาศิริสุลี"></option>
-<option value="นาย นัฐวุฒิ กลิ่นด้วง"></option>
-<option value="นาง ดวงรัตน์ โพธิสมพร"></option>
-<option value="นาย คณิน นิมมานวัฒนกุล"></option>
+    <!-- รายชื่อ 30 คนจะถูกดึงมาใส่ตรงนี้อัตโนมัติจากโค้ดด้านล่าง -->
 </datalist>
 </div>
 <div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div><div><label>5. สถานะปัจจุบัน</label><select id="status"><option>สามารถไปทำงานได้</option><option>ไม่สามารถไปทำงานได้</option><option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option></select></div><div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div>
@@ -105,8 +84,26 @@ const db = getDatabase(app);
 const dbRef = ref(db, 'dailyReadiness');
 
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
+
+// รายชื่อพนักงานทั้ง 30 คน สำหรับตรวจเช็คว่าใครยังไม่ส่งข้อมูล
+const ALL_EMPLOYEES = [
+    "นาย สุนทร ไชยแสน", "นาย อดิเรก แซ่ซิ้ม", "นาย สิทธินนท์ จิรพัธนนท์",
+    "นาย วาที ปล้องทางไชย", "นาย สิรวิทย์ สมสา", "นาย วสันต์ แจ้งประเสริฐ",
+    "นาย พานทอง แสงกล้า", "นาย จิรยุท วิศวะชัย", "นาย ทองหยด ครุฑตำคำ",
+    "นาย ณัฐชนนท์ อุดชาชน", "นาย สุรสิทธิ์ แซ่โค้ว", "นาย เอกชัย ภูมี",
+    "นาย กัมพล นาถ้ำเพชร", "นาย วัชรินทร์ โพธิราช", "นาย บุญเจิด หลุมทอง",
+    "นาย โชคประสิทธิ์ ภักดี", "นาย อาวุฒิ บุญพา", "นาย สถาพร วงค์ทอง",
+    "นาย คมสันต์ ธรรมเสน", "นาย สุพัฒน์ อินทร์รักษา", "นาย ธีระยุทธ คำบุดดี",
+    "นาย ทินกร ทะนามศรี", "นาย สนั่น ขยันการ", "นาย จีรศักดิ์ แสงโต",
+    "นาย วัชรพงษ์ เข็มไธสง", "นาย บรรณวิชญ์ ชอบธรรม", "นาย จิรวัฒน์ ประภาศิริสุลี",
+    "นาย นัฐวุฒิ กลิ่นด้วง", "นาง ดวงรัตน์ โพธิสมพร", "นาย คณิน นิมมานวัฒนกุล"
+];
+
+// ยัดรายชื่อเข้า Dropdown (Datalist) อัตโนมัติ
+document.getElementById('employeeNames').innerHTML = ALL_EMPLOYEES.map(n => `<option value="${n}"></option>`).join('');
+
 let rows=[];
-let currentStatusFilter=''; // ตัวแปรเก็บสถานะการ Filter
+let currentStatusFilter='';
 let pickerMarker;
 let summaryMarkers=[];
 const today=new Date().toISOString().slice(0,10);
@@ -116,7 +113,6 @@ const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);
 const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);
 [summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
 
-// ดึงข้อมูล Realtime จาก Firebase
 onValue(dbRef, (snapshot) => {
     rows = [];
     snapshot.forEach((child) => {
@@ -138,38 +134,49 @@ function render(){
     const data=daily();
     const q=document.getElementById('search').value.toLowerCase();
     
-    // จัดการ UI ของปุ่ม Filter
     document.getElementById('cardTotal').classList.toggle('active-filter', currentStatusFilter === '');
     document.getElementById('cardCan').classList.toggle('active-filter', currentStatusFilter === STATUS.CAN);
     document.getElementById('cardCannot').classList.toggle('active-filter', currentStatusFilter === STATUS.CANNOT);
     document.getElementById('cardRisk').classList.toggle('active-filter', currentStatusFilter === STATUS.RISK);
 
-    // กรองข้อมูลด้วยช่องค้นหา และ การกด Filter
     const filtered=data.filter(r=>{
         const matchSearch = (r.name+' '+r.address+' '+r.busLine).toLowerCase().includes(q);
         const matchStatus = currentStatusFilter === '' || r.status === currentStatusFilter;
         return matchSearch && matchStatus;
     });
     
-    // อัปเดตตัวเลขรวมทั้งหมด (อิงจาก data ก่อน filter)
+    // คำนวณผู้ที่อัปเดตแล้ว (กรองชื่อซ้ำออก)
+    const submittedNames = [...new Set(data.map(r => r.name.trim()))];
+    const missingNames = ALL_EMPLOYEES.filter(name => !submittedNames.includes(name));
+    
     const can=data.filter(r=>r.status===STATUS.CAN).length;
     const cannot=data.filter(r=>r.status===STATUS.CANNOT).length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
     
-    document.getElementById('mTotal').textContent=data.length;
+    // อัปเดตสถิติ % โดยเทียบจากเป้าหมาย 30 คน
+    document.getElementById('mTotal').textContent = submittedNames.length + '/' + ALL_EMPLOYEES.length;
+    document.getElementById('pTotal').textContent = pct(submittedNames.length, ALL_EMPLOYEES.length) + '% (คลิกดูทั้งหมด)';
+    
     document.getElementById('mCan').textContent=can;
     document.getElementById('mCannot').textContent=cannot;
     document.getElementById('mRisk').textContent=risk;
-    document.getElementById('pCan').textContent=pct(can,data.length)+'% (คลิกเพื่อดู)';
-    document.getElementById('pCannot').textContent=pct(cannot,data.length)+'% (คลิกเพื่อดู)';
-    document.getElementById('pRisk').textContent=pct(risk,data.length)+'% (คลิกเพื่อดู)';
+    document.getElementById('pCan').textContent=pct(can, data.length)+'% (คลิกเพื่อดู)';
+    document.getElementById('pCannot').textContent=pct(cannot, data.length)+'% (คลิกเพื่อดู)';
+    document.getElementById('pRisk').textContent=pct(risk, data.length)+'% (คลิกเพื่อดู)';
+    
+    // อัปเดตรายชื่อคนยังไม่ทำ
+    document.getElementById('mMissingCount').textContent = missingNames.length;
+    if(missingNames.length === 0) {
+        document.getElementById('missingList').innerHTML = '<span class="badge ok" style="font-size:14px; padding:6px 12px;">กรอกข้อมูลครบทุกคนแล้ว 🎉</span>';
+    } else {
+        document.getElementById('missingList').innerHTML = missingNames.map(n => `<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;">${n}</span>`).join('');
+    }
     
     document.getElementById('reportDate').textContent='วันที่ '+document.getElementById('selectedDate').value;
     document.getElementById('rowCount').textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';
     
     document.getElementById('tbody').innerHTML=filtered.map(r=>`<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`).join('');
     
-    // อัปเดตแผนที่ (แสดงเฉพาะคนที่ถูก Filter)
     summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
     summaryMarkers=filtered.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:color(r.status),fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.status)}<br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));
     
@@ -189,7 +196,6 @@ function setPin(a,b){
 
 pickerMap.on('click',e=>setPin(e.latlng.lat,e.latlng.lng));
 
-// ระบบค้นหาตำแหน่ง / ดึงพิกัดจากข้อความ
 document.getElementById('searchMapBtn').onclick = async () => {
     const query = document.getElementById('mapSearchText').value.trim();
     if (!query) return alert('กรุณาระบุชื่อสถานที่ หรือ พิกัด ที่ต้องการค้นหา');
@@ -233,7 +239,6 @@ document.getElementById('transport').onchange=()=>{
     if(busLine.disabled) busLine.value='';
 };
 
-// ส่งข้อมูลขึ้น Firebase
 document.getElementById('surveyForm').onsubmit=e=>{
     e.preventDefault();
     const newData = {
@@ -259,13 +264,9 @@ document.getElementById('surveyForm').onsubmit=e=>{
             pickerMarker=null;
         }
         
-        // Popup Completed
         alert('Completed');
         
-        // ยกเลิก Filter กลับเป็นค่าเริ่มต้น เพื่อให้เห็นข้อมูลที่เพิ่งส่ง
         window.setStatusFilter('');
-        
-        // เด้งกลับหน้า Dashboard โดยอัตโนมัติ
         document.querySelector('.tab[data-panel="dashboardPanel"]').click();
         
     }).catch(err => alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " + err));
@@ -283,7 +284,6 @@ window.exportCSV = function(){
     URL.revokeObjectURL(a.href);
 }
 
-// ฟังก์ชันเซ็ตสถานะสำหรับกรองข้อมูล
 window.setStatusFilter = function(status) {
     currentStatusFilter = status;
     render();
