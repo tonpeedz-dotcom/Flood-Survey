@@ -16,7 +16,7 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 </style>
 </head>
 <body>
-<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน (by_น้อนเนิร์ด❤️)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน(by_น้อนเนิร์ด❤️)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
 <main class="wrap">
 <div class="tabs"><button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button><button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button></div>
 <section id="dashboardPanel" class="panel active"><div class="reportHead"><h2>รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
@@ -28,10 +28,10 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
     <div class="card metric" id="cardRisk" onclick="window.setStatusFilter('มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)')"><small>มีความเสี่ยง</small><strong class="amber" id="mRisk">0</strong><span id="pRisk">0% (คลิกเพื่อดู)</span></div>
 </div>
 
-<!-- กล่องแสดงรายชื่อคนที่ยังไม่กรอกข้อมูล -->
+<!-- กล่องแสดงรายชื่อคนที่ยังไม่กรอกข้อมูล แบ่งตามกลุ่ม -->
 <div class="card" style="margin-top:18px; border-left: 4px solid var(--red);">
-    <h3 style="margin:0 0 10px 0; color: var(--red);">พนักงานที่ยังไม่กรอกข้อมูล (<span id="mMissingCount">0</span> คน)</h3>
-    <div id="missingList" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+    <h3 style="margin:0 0 14px 0; color: var(--red);">พนักงานที่ยังไม่กรอกข้อมูล (<span id="mMissingCount">0</span> คน)</h3>
+    <div id="missingList" style="display:flex; flex-direction:column; gap:12px;"></div>
 </div>
 
 <div class="card" style="margin-top:18px">
@@ -85,19 +85,40 @@ const dbRef = ref(db, 'dailyReadiness');
 
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
 
-// รายชื่อพนักงานทั้ง 30 คน สำหรับตรวจเช็คว่าใครยังไม่ส่งข้อมูล
-const ALL_EMPLOYEES = [
-    "นาย สุนทร ไชยแสน", "นาย อดิเรก แซ่ซิ้ม", "นาย สิทธินนท์ จิรพัธนนท์",
-    "นาย วาที ปล้องทางไชย", "นาย สิรวิทย์ สมสา", "นาย วสันต์ แจ้งประเสริฐ",
-    "นาย พานทอง แสงกล้า", "นาย จิรยุท วิศวะชัย", "นาย ทองหยด ครุฑตำคำ",
-    "นาย ณัฐชนนท์ อุดชาชน", "นาย สุรสิทธิ์ แซ่โค้ว", "นาย เอกชัย ภูมี",
-    "นาย กัมพล นาถ้ำเพชร", "นาย วัชรินทร์ โพธิราช", "นาย บุญเจิด หลุมทอง",
-    "นาย โชคประสิทธิ์ ภักดี", "นาย อาวุฒิ บุญพา", "นาย สถาพร วงค์ทอง",
-    "นาย คมสันต์ ธรรมเสน", "นาย สุพัฒน์ อินทร์รักษา", "นาย ธีระยุทธ คำบุดดี",
-    "นาย ทินกร ทะนามศรี", "นาย สนั่น ขยันการ", "นาย จีรศักดิ์ แสงโต",
-    "นาย วัชรพงษ์ เข็มไธสง", "นาย บรรณวิชญ์ ชอบธรรม", "นาย จิรวัฒน์ ประภาศิริสุลี",
-    "นาย นัฐวุฒิ กลิ่นด้วง", "นาง ดวงรัตน์ โพธิสมพร", "นาย คณิน นิมมานวัฒนกุล"
-];
+// ฐานข้อมูลรายชื่อและกลุ่มพนักงาน
+const EMPLOYEE_GROUPS = {
+    "นาย สุนทร ไชยแสน": "Project",
+    "นาย อดิเรก แซ่ซิ้ม": "Project",
+    "นาย สิทธินนท์ จิรพัธนนท์": "Measurement",
+    "นาย วาที ปล้องทางไชย": "Project",
+    "นาย สิรวิทย์ สมสา": "Project",
+    "นาย วสันต์ แจ้งประเสริฐ": "Audit",
+    "นาย พานทอง แสงกล้า": "Project",
+    "นาย จิรยุท วิศวะชัย": "Engineer",
+    "นาย ทองหยด ครุฑตำคำ": "Audit",
+    "นาย ณัฐชนนท์ อุดชาชน": "Engineer",
+    "นาย สุรสิทธิ์ แซ่โค้ว": "Audit",
+    "นาย เอกชัย ภูมี": "Audit",
+    "นาย กัมพล นาถ้ำเพชร": "Spot Quality",
+    "นาย วัชรินทร์ โพธิราช": "Spot Quality",
+    "นาย บุญเจิด หลุมทอง": "Measurement",
+    "นาย โชคประสิทธิ์ ภักดี": "Measurement",
+    "นาย อาวุฒิ บุญพา": "Audit",
+    "นาย สถาพร วงค์ทอง": "Spot Quality",
+    "นาย คมสันต์ ธรรมเสน": "Spot Quality",
+    "นาย ธีระยุทธ คำบุดดี": "Measurement",
+    "นาย ทินกร ทะนามศรี": "Analyze",
+    "นาย สนั่น ขยันการ": "Analyze",
+    "นาย จีรศักดิ์ แสงโต": "RECEIVING-W",
+    "นาย วัชรพงษ์ เข็มไธสง": "RECEIVING-W",
+    "นาย บรรณวิชญ์ ชอบธรรม": "CMM-W",
+    "นาย จิรวัฒน์ ประภาศิริสุลี": "CMM-W",
+    "นาย นัฐวุฒิ กลิ่นด้วง": "Spot Quality",
+    "นาง ดวงรัตน์ โพธิสมพร": "Management",
+    "นาย คณิน นิมมานวัฒนกุล": "Engineer"
+};
+
+const ALL_EMPLOYEES = Object.keys(EMPLOYEE_GROUPS);
 
 // ยัดรายชื่อเข้า Dropdown (Datalist) อัตโนมัติ
 document.getElementById('employeeNames').innerHTML = ALL_EMPLOYEES.map(n => `<option value="${n}"></option>`).join('');
@@ -149,6 +170,14 @@ function render(){
     const submittedNames = [...new Set(data.map(r => r.name.trim()))];
     const missingNames = ALL_EMPLOYEES.filter(name => !submittedNames.includes(name));
     
+    // จัดกลุ่มผู้ที่ยังไม่ทำตาม Group
+    const missingByGroup = {};
+    missingNames.forEach(n => {
+        const g = EMPLOYEE_GROUPS[n] || 'อื่นๆ';
+        if(!missingByGroup[g]) missingByGroup[g] = [];
+        missingByGroup[g].push(n);
+    });
+    
     const can=data.filter(r=>r.status===STATUS.CAN).length;
     const cannot=data.filter(r=>r.status===STATUS.CANNOT).length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
@@ -164,18 +193,23 @@ function render(){
     document.getElementById('pCannot').textContent=pct(cannot, data.length)+'% (คลิกเพื่อดู)';
     document.getElementById('pRisk').textContent=pct(risk, data.length)+'% (คลิกเพื่อดู)';
     
-    // อัปเดตรายชื่อคนยังไม่ทำ
+    // เรนเดอร์รายชื่อแยกกลุ่ม
     document.getElementById('mMissingCount').textContent = missingNames.length;
     if(missingNames.length === 0) {
         document.getElementById('missingList').innerHTML = '<span class="badge ok" style="font-size:14px; padding:6px 12px;">กรอกข้อมูลครบทุกคนแล้ว 🎉</span>';
     } else {
-        document.getElementById('missingList').innerHTML = missingNames.map(n => `<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;">${n}</span>`).join('');
+        document.getElementById('missingList').innerHTML = Object.entries(missingByGroup).map(([group, names]) => {
+            return `<div>
+                      <small style="color:#64748b; font-weight:700; display:block; margin-bottom:6px; font-size:13px;">${group}</small>
+                      ${names.map(n => `<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; margin:0 4px 4px 0;">${n}</span>`).join('')}
+                    </div>`;
+        }).join('');
     }
     
     document.getElementById('reportDate').textContent='วันที่ '+document.getElementById('selectedDate').value;
     document.getElementById('rowCount').textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';
     
-    document.getElementById('tbody').innerHTML=filtered.map(r=>`<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`).join('');
+    document.getElementById('tbody').innerHTML=filtered.map(r=>`<tr><td><b>${esc(r.name)}</b><br><small style="color:#64748b;">${esc(EMPLOYEE_GROUPS[r.name]||'อื่นๆ')}</small></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`).join('');
     
     summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
     summaryMarkers=filtered.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:color(r.status),fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.status)}<br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));
@@ -274,8 +308,8 @@ document.getElementById('surveyForm').onsubmit=e=>{
 
 window.exportPDF = function(){document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;window.print();}
 window.exportCSV = function(){
-    const h=['วันที่','ชื่อ-นามสกุล','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','Latitude','Longitude','Update'];
-    const csv=[h,...daily().map(r=>[r.date,r.name,r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+    const h=['วันที่','ชื่อ-นามสกุล','กลุ่ม/แผนก','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','Latitude','Longitude','Update'];
+    const csv=[h,...daily().map(r=>[r.date,r.name,EMPLOYEE_GROUPS[r.name]||'อื่นๆ',r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
