@@ -13,6 +13,9 @@
 table{width:100%;border-collapse:collapse;min-width:1050px}
 th,td{text-align:left;padding:11px;border-bottom:1px solid #e8edf3;vertical-align:middle;white-space:nowrap}
 th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:#d1fae5;color:#065f46}.no{background:#ffe4e6;color:#9f1239}.risk{background:#fef3c7;color:#92400e}.map{height:340px;border-radius:14px;border:1px solid var(--border);overflow:hidden}.mapactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e3a8a;margin-bottom:15px}.success{background:#ecfdf5;color:#065f46}.reportHead{display:none}footer{padding:25px;color:#64748b;text-align:center}@media(max-width:850px){.grid4,.formgrid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}.full{grid-column:auto}}@media print{header,.tabs,#surveyPanel,.toolbar button,.toolbar input,footer{display:none!important}body{background:#fff}.wrap{max-width:none}.card{box-shadow:none;break-inside:avoid}.reportHead{display:block;margin-bottom:15px}.grid4{grid-template-columns:repeat(4,1fr)}#dashboardPanel{display:block!important}.tablewrap{overflow:visible}table{min-width:0;font-size:9px}th,td{padding:5px}.map{height:230px}}
+/* Scrollbar Customization สำหรับกล่องรายชื่อพนักงานที่ยังไม่กรอก */
+#missingList::-webkit-scrollbar { height: 6px; }
+#missingList::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -28,10 +31,15 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
     <div class="card metric" id="cardRisk" onclick="window.setStatusFilter('มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)')"><small>มีความเสี่ยง</small><strong class="amber" id="mRisk">0</strong><span id="pRisk">0% (คลิกเพื่อดู)</span></div>
 </div>
 
-<!-- กล่องแสดงรายชื่อคนที่ยังไม่กรอกข้อมูล แบ่งตามกลุ่ม -->
+<!-- กล่องแสดงรายชื่อคนที่ยังไม่กรอกข้อมูล พร้อมระบบ ซ่อน/แสดง และ Layout แนวนอน -->
 <div class="card" style="margin-top:18px; border-left: 4px solid var(--red);">
-    <h3 style="margin:0 0 14px 0; color: var(--red);">พนักงานที่ยังไม่กรอกข้อมูล (<span id="mMissingCount">0</span> คน)</h3>
-    <div id="missingList" style="display:flex; flex-direction:column; gap:12px;"></div>
+    <div style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="window.toggleMissingList()">
+        <h3 style="margin:0; color: var(--red);">พนักงานที่ยังไม่กรอกข้อมูล (<span id="mMissingCount">0</span> คน)</h3>
+        <span id="toggleIcon" style="color:var(--red); font-size:16px; font-weight:bold;">▼</span>
+    </div>
+    <div id="missingListWrap" style="margin-top:14px; display:block; transition: all 0.3s ease;">
+        <div id="missingList" style="display:flex; overflow-x:auto; gap:24px; padding-bottom:12px;"></div>
+    </div>
 </div>
 
 <div class="card" style="margin-top:18px">
@@ -47,7 +55,6 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 <label>1. ชื่อ - นามสกุล</label>
 <input id="empName" list="employeeNames" autocomplete="off" required>
 <datalist id="employeeNames">
-    <!-- รายชื่อ 30 คนจะถูกดึงมาใส่ตรงนี้อัตโนมัติจากโค้ดด้านล่าง -->
 </datalist>
 </div>
 <div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div><div><label>5. สถานะปัจจุบัน</label><select id="status"><option>สามารถไปทำงานได้</option><option>ไม่สามารถไปทำงานได้</option><option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option></select></div><div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div>
@@ -115,7 +122,7 @@ const EMPLOYEE_GROUPS = {
     "นาย จิรวัฒน์ ประภาศิริสุลี": "CMM-W",
     "นาย นัฐวุฒิ กลิ่นด้วง": "Spot Quality",
     "นาง ดวงรัตน์ โพธิสมพร": "Management",
-    "นาย คณิน นิมมานวัฒนกุล": "Engineer"
+    "นาย คณิน นิมมานวัฒนกุล": "Management"
 };
 
 const ALL_EMPLOYEES = Object.keys(EMPLOYEE_GROUPS);
@@ -182,7 +189,7 @@ function render(){
     const cannot=data.filter(r=>r.status===STATUS.CANNOT).length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
     
-    // อัปเดตสถิติ % โดยเทียบจากเป้าหมาย 30 คน
+    // อัปเดตสถิติ %
     document.getElementById('mTotal').textContent = submittedNames.length + '/' + ALL_EMPLOYEES.length;
     document.getElementById('pTotal').textContent = pct(submittedNames.length, ALL_EMPLOYEES.length) + '% (คลิกดูทั้งหมด)';
     
@@ -193,15 +200,15 @@ function render(){
     document.getElementById('pCannot').textContent=pct(cannot, data.length)+'% (คลิกเพื่อดู)';
     document.getElementById('pRisk').textContent=pct(risk, data.length)+'% (คลิกเพื่อดู)';
     
-    // เรนเดอร์รายชื่อแยกกลุ่ม
+    // เรนเดอร์รายชื่อแยกกลุ่มแบบแนวนอน (Horizontal Scroll) และแนวตั้ง (Column) ในแต่ละกลุ่ม
     document.getElementById('mMissingCount').textContent = missingNames.length;
     if(missingNames.length === 0) {
-        document.getElementById('missingList').innerHTML = '<span class="badge ok" style="font-size:14px; padding:6px 12px;">กรอกข้อมูลครบทุกคนแล้ว 🎉</span>';
+        document.getElementById('missingList').innerHTML = '<span class="badge ok" style="font-size:14px; padding:6px 12px; margin-top:8px;">กรอกข้อมูลครบทุกคนแล้ว 🎉</span>';
     } else {
         document.getElementById('missingList').innerHTML = Object.entries(missingByGroup).map(([group, names]) => {
-            return `<div>
-                      <small style="color:#64748b; font-weight:700; display:block; margin-bottom:6px; font-size:13px;">${group}</small>
-                      ${names.map(n => `<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; margin:0 4px 4px 0;">${n}</span>`).join('')}
+            return `<div style="display:flex; flex-direction:column; gap:6px; min-width:150px;">
+                      <small style="color:#64748b; font-weight:700; display:block; margin-bottom:4px; font-size:13px; border-bottom:2px solid #e2e8f0; padding-bottom:4px;">${group}</small>
+                      ${names.map(n => `<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; align-self:flex-start;">${n}</span>`).join('')}
                     </div>`;
         }).join('');
     }
@@ -316,6 +323,19 @@ window.exportCSV = function(){
     a.download='daily_readiness_'+document.getElementById('selectedDate').value+'.csv';
     a.click();
     URL.revokeObjectURL(a.href);
+}
+
+// ฟังก์ชัน Toggle ซ่อน/แสดง รายชื่อคนยังไม่ทำ
+window.toggleMissingList = function() {
+    const wrap = document.getElementById('missingListWrap');
+    const icon = document.getElementById('toggleIcon');
+    if(wrap.style.display === 'none') {
+        wrap.style.display = 'block';
+        icon.textContent = '▼';
+    } else {
+        wrap.style.display = 'none';
+        icon.textContent = '▶';
+    }
 }
 
 window.setStatusFilter = function(status) {
