@@ -30,7 +30,7 @@
 <section id="surveyPanel" class="panel"><div class="card"><h2>แบบสอบถามสถานการณ์รายวัน</h2><div id="msg"></div><form id="surveyForm" class="formgrid">
 <div class="full">
 <label>1. ชื่อ - นามสกุล</label>
-<input id="name" list="employeeNames" autocomplete="off" required>
+<input id="empName" list="employeeNames" autocomplete="off" required>
 <datalist id="employeeNames">
 <option value="นาย สุนทร ไชยแสน"></option>
 <option value="นาย อดิเรก แซ่ซิ้ม"></option>
@@ -61,6 +61,7 @@
 <option value="นาย จิรวัฒน์ ประภาศิริสุลี"></option>
 <option value="นาย นัฐวุฒิ กลิ่นด้วง"></option>
 <option value="นาง ดวงรัตน์ โพธิสมพร"></option>
+<option value="นาย คณิน นิมมานวัฒนกุล"></option>
 </datalist>
 </div>
 <div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div><div><label>5. สถานะปัจจุบัน</label><select id="status"><option>สามารถไปทำงานได้</option><option>ไม่สามารถไปทำงานได้</option><option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option></select></div><div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div><div class="full"><label>7. พิกัดที่พัก</label><div class="notice">กดตำแหน่งบนแผนที่เพื่อปักหมุด หรือกด “ตำแหน่งปัจจุบัน” จากโทรศัพท์ พิกัดจะถูกบันทึกพร้อมข้อมูล</div><div id="pickerMap" class="map"></div><div class="mapactions"><button type="button" class="btn secondary" id="locateBtn">ใช้ตำแหน่งปัจจุบัน</button><button type="button" class="btn secondary" id="googleBtn">เปิดหมุดใน Google Maps</button><input id="lat" type="number" step="any" placeholder="Latitude" required style="max-width:180px"><input id="lng" type="number" step="any" placeholder="Longitude" required style="max-width:180px"></div><p class="hint">การใช้ตำแหน่ง GPS ต้องเปิดสิทธิ์ Location ใน Browser และควรใช้งานผ่าน HTTPS</p></div><div class="full notice">เวลา Update บันทึกอัตโนมัติ ข้อมูลที่อยู่และพิกัดเป็นข้อมูลส่วนบุคคล ควรจำกัดสิทธิ์เฉพาะผู้รับผิดชอบและกำหนดระยะเวลาจัดเก็บ</div><button class="btn primary full" type="submit">ส่งข้อมูลสถานการณ์วันนี้</button></form></div></section>
@@ -68,13 +69,151 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
-let rows=JSON.parse(localStorage.getItem('dailyReadinessRows'))||[];let pickerMarker;let summaryMarkers=[];const today=new Date().toISOString().slice(0,10);selectedDate.value=today==='2026-09-28'?today:'2026-09-28';
-const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);[summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function daily(){return rows.filter(r=>r.date===selectedDate.value)}function pct(n,t){return t?Math.round(n/t*100):0}function color(status){return status===STATUS.CAN?'#059669':status===STATUS.CANNOT?'#e11d48':'#d97706'}function badge(status){return status===STATUS.CAN?'ok':status===STATUS.CANNOT?'no':'risk'}
-function render(){const data=daily(),q=search.value.toLowerCase(),filtered=data.filter(r=>(r.name+' '+r.address+' '+r.busLine).toLowerCase().includes(q));const can=data.filter(r=>r.status===STATUS.CAN).length,cannot=data.filter(r=>r.status===STATUS.CANNOT).length,risk=data.filter(r=>r.status===STATUS.RISK).length;mTotal.textContent=data.length;mCan.textContent=can;mCannot.textContent=cannot;mRisk.textContent=risk;pCan.textContent=pct(can,data.length)+'%';pCannot.textContent=pct(cannot,data.length)+'%';pRisk.textContent=pct(risk,data.length)+'%';reportDate.textContent='วันที่ '+selectedDate.value;rowCount.textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';tbody.innerHTML=filtered.map(r=>`<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td></tr>`).join('');summaryMarkers.forEach(m=>summaryMap.removeLayer(m));summaryMarkers=data.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:color(r.status),fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.status)}<br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));if(summaryMarkers.length){const group=L.featureGroup(summaryMarkers);summaryMap.fitBounds(group.getBounds().pad(.25),{maxZoom:13})}}
-function setPin(a,b){lat.value=(+a).toFixed(6);lng.value=(+b).toFixed(6);if(pickerMarker)pickerMap.removeLayer(pickerMarker);pickerMarker=L.marker([a,b]).addTo(pickerMap);pickerMap.setView([a,b],15)}pickerMap.on('click',e=>setPin(e.latlng.lat,e.latlng.lng));locateBtn.onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPin(p.coords.latitude,p.coords.longitude),e=>alert('ไม่สามารถอ่านตำแหน่งได้: '+e.message),{enableHighAccuracy:true}):alert('Browser ไม่รองรับ Geolocation');googleBtn.onclick=()=>{if(!lat.value||!lng.value)return alert('กรุณาปักหมุดก่อน');window.open(`https://www.google.com/maps?q=${lat.value},${lng.value}`,'_blank')};transport.onchange=()=>{busLine.disabled=transport.value!=='รถบัสรับ-ส่ง';if(busLine.disabled)busLine.value=''};
-surveyForm.onsubmit=e=>{e.preventDefault();rows.unshift({id:Date.now(),date:selectedDate.value,name:name.value.trim(),address:address.value.trim(),homeImpact:homeImpact.value,waterLevel:+waterLevel.value,status:status.value,transport:transport.value,busLine:busLine.value.trim(),lat:+lat.value,lng:+lng.value,updatedAt:new Date().toLocaleString('th-TH',{hour12:false})});localStorage.setItem('dailyReadinessRows',JSON.stringify(rows));surveyForm.reset();transport.onchange();if(pickerMarker){pickerMap.removeLayer(pickerMarker);pickerMarker=null}msg.innerHTML='<div class="notice success">บันทึกข้อมูลเรียบร้อยแล้ว</div>';render();setTimeout(()=>msg.innerHTML='',2500)};
-function exportPDF(){document.title='Daily_Readiness_Report_'+selectedDate.value;window.print()}function exportCSV(){const h=['วันที่','ชื่อ-นามสกุล','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','Latitude','Longitude','Update'];const csv=[h,...daily().map(r=>[r.date,r.name,r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='daily_readiness_'+selectedDate.value+'.csv';a.click();URL.revokeObjectURL(a.href)}
-function clearData(){const pwd=prompt('กรุณากรอกรหัสผ่านเพื่อยืนยันการล้างข้อมูลทั้งหมด:');if(pwd==='1234@abcd'){rows=[];localStorage.removeItem('dailyReadinessRows');render();alert('ล้างข้อมูลเรียบร้อยแล้ว')}else if(pwd!==null){alert('รหัสผ่านไม่ถูกต้อง')}}
-window.exportPDF=exportPDF;window.exportCSV=exportCSV;window.clearData=clearData;selectedDate.onchange=render;search.oninput=render;document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.panel).classList.add('active');setTimeout(()=>{pickerMap.invalidateSize();summaryMap.invalidateSize()},100)});render();setTimeout(()=>{summaryMap.invalidateSize();pickerMap.invalidateSize()},200);
-</script></body></html>
+let rows=JSON.parse(localStorage.getItem('dailyReadinessRows'))||[];
+let pickerMarker;
+let summaryMarkers=[];
+const today=new Date().toISOString().slice(0,10);
+document.getElementById('selectedDate').value=today==='2026-09-28'?today:'2026-09-28';
+
+const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);
+const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);
+[summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function daily(){return rows.filter(r=>r.date===document.getElementById('selectedDate').value)}
+function pct(n,t){return t?Math.round(n/t*100):0}
+function color(status){return status===STATUS.CAN?'#059669':status===STATUS.CANNOT?'#e11d48':'#d97706'}
+function badge(status){return status===STATUS.CAN?'ok':status===STATUS.CANNOT?'no':'risk'}
+
+function render(){
+    const data=daily();
+    const q=document.getElementById('search').value.toLowerCase();
+    const filtered=data.filter(r=>(r.name+' '+r.address+' '+r.busLine).toLowerCase().includes(q));
+    
+    const can=data.filter(r=>r.status===STATUS.CAN).length;
+    const cannot=data.filter(r=>r.status===STATUS.CANNOT).length;
+    const risk=data.filter(r=>r.status===STATUS.RISK).length;
+    
+    document.getElementById('mTotal').textContent=data.length;
+    document.getElementById('mCan').textContent=can;
+    document.getElementById('mCannot').textContent=cannot;
+    document.getElementById('mRisk').textContent=risk;
+    document.getElementById('pCan').textContent=pct(can,data.length)+'%';
+    document.getElementById('pCannot').textContent=pct(cannot,data.length)+'%';
+    document.getElementById('pRisk').textContent=pct(risk,data.length)+'%';
+    document.getElementById('reportDate').textContent='วันที่ '+document.getElementById('selectedDate').value;
+    document.getElementById('rowCount').textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';
+    
+    document.getElementById('tbody').innerHTML=filtered.map(r=>`<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td></tr>`).join('');
+    
+    summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
+    summaryMarkers=data.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:color(r.status),fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.status)}<br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));
+    
+    if(summaryMarkers.length){
+        const group=L.featureGroup(summaryMarkers);
+        summaryMap.fitBounds(group.getBounds().pad(.25),{maxZoom:13});
+    }
+}
+
+function setPin(a,b){
+    document.getElementById('lat').value=(+a).toFixed(6);
+    document.getElementById('lng').value=(+b).toFixed(6);
+    if(pickerMarker)pickerMap.removeLayer(pickerMarker);
+    pickerMarker=L.marker([a,b]).addTo(pickerMap);
+    pickerMap.setView([a,b],15);
+}
+
+pickerMap.on('click',e=>setPin(e.latlng.lat,e.latlng.lng));
+
+document.getElementById('locateBtn').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPin(p.coords.latitude,p.coords.longitude),e=>alert('ไม่สามารถอ่านตำแหน่งได้: '+e.message),{enableHighAccuracy:true}):alert('Browser ไม่รองรับ Geolocation');
+
+document.getElementById('googleBtn').onclick=()=>{
+    const lat = document.getElementById('lat').value;
+    const lng = document.getElementById('lng').value;
+    if(!lat||!lng)return alert('กรุณาปักหมุดก่อน');
+    window.open(`https://www.google.com/maps?q=${lat},${lng}`,'_blank');
+};
+
+document.getElementById('transport').onchange=()=>{
+    const transport = document.getElementById('transport').value;
+    const busLine = document.getElementById('busLine');
+    busLine.disabled = transport !== 'รถบัสรับ-ส่ง';
+    if(busLine.disabled) busLine.value='';
+};
+
+document.getElementById('surveyForm').onsubmit=e=>{
+    e.preventDefault();
+    rows.unshift({
+        id: Date.now(),
+        date: document.getElementById('selectedDate').value,
+        name: document.getElementById('empName').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        homeImpact: document.getElementById('homeImpact').value,
+        waterLevel: +document.getElementById('waterLevel').value,
+        status: document.getElementById('status').value,
+        transport: document.getElementById('transport').value,
+        busLine: document.getElementById('busLine').value.trim(),
+        lat: +document.getElementById('lat').value,
+        lng: +document.getElementById('lng').value,
+        updatedAt: new Date().toLocaleString('th-TH',{hour12:false})
+    });
+    
+    localStorage.setItem('dailyReadinessRows',JSON.stringify(rows));
+    document.getElementById('surveyForm').reset();
+    document.getElementById('transport').onchange();
+    
+    if(pickerMarker){
+        pickerMap.removeLayer(pickerMarker);
+        pickerMarker=null;
+    }
+    
+    const msg = document.getElementById('msg');
+    msg.innerHTML='<div class="notice success">บันทึกข้อมูลเรียบร้อยแล้ว</div>';
+    
+    render();
+    setTimeout(()=>msg.innerHTML='',2500);
+};
+
+function exportPDF(){document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;window.print();}
+function exportCSV(){
+    const h=['วันที่','ชื่อ-นามสกุล','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','Latitude','Longitude','Update'];
+    const csv=[h,...daily().map(r=>[r.date,r.name,r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+    const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='daily_readiness_'+document.getElementById('selectedDate').value+'.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
+function clearData(){
+    const pwd=prompt('กรุณากรอกรหัสผ่านเพื่อยืนยันการล้างข้อมูลทั้งหมด:');
+    if(pwd==='1234@abcd'){
+        rows=[];
+        localStorage.removeItem('dailyReadinessRows');
+        render();
+        alert('ล้างข้อมูลเรียบร้อยแล้ว');
+    }else if(pwd!==null){
+        alert('รหัสผ่านไม่ถูกต้อง');
+    }
+}
+
+window.exportPDF=exportPDF;
+window.exportCSV=exportCSV;
+window.clearData=clearData;
+
+document.getElementById('selectedDate').onchange=render;
+document.getElementById('search').oninput=render;
+
+document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.panel).classList.add('active');
+    setTimeout(()=>{pickerMap.invalidateSize();summaryMap.invalidateSize();},100);
+});
+
+render();
+setTimeout(()=>{summaryMap.invalidateSize();pickerMap.invalidateSize();},200);
+</script>
+</body>
+</html>
