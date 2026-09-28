@@ -55,7 +55,7 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
   <p class="hint">หมุดสีเขียว: มาได้ | สีแดง: มาไม่ได้ | สีส้ม: มีความเสี่ยง</p>
 </div>
 
-<div class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div><button class="btn danger" onclick="window.clearData()">ล้างข้อมูลทั้งหมด</button> <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>พิกัด</th><th>Update</th><th>จัดการ</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<div class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div><button class="btn danger" onclick="window.clearData()">ล้างข้อมูลทั้งหมด</button> <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>หมายเหตุ</th><th>พิกัด</th><th>Update</th><th>จัดการ</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 </section>
 
 <!-- ================= SKILL PANEL ================= -->
@@ -98,7 +98,8 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 </datalist>
 </div>
 <div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div><div><label>5. สถานะปัจจุบัน</label><select id="status"><option>สามารถไปทำงานได้</option><option>ไม่สามารถไปทำงานได้</option><option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option></select></div><div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div>
-<div class="full"><label>7. พิกัดที่พัก</label>
+<div class="full"><label>7. หมายเหตุ/รายละเอียดเพิ่มเติม</label><textarea id="note" placeholder="เช่น ลากิจ, ลาป่วย, รถเสีย, น้ำท่วมสูงมาก เป็นต้น" style="min-height:50px;"></textarea></div>
+<div class="full"><label>8. พิกัดที่พัก</label>
 <div class="notice">
     <strong>ค้นหาพิกัด:</strong> วางชื่อสถานที่ หรือพิกัด Lat,Lng จาก Google Maps ด้านล่างนี้ หรือกด "ใช้ตำแหน่งปัจจุบัน" 
     <div style="display:flex; gap:8px; margin-top:10px;">
@@ -261,15 +262,9 @@ function render(){
     document.getElementById('reportDate').textContent='วันที่ '+document.getElementById('selectedDate').value;
     document.getElementById('rowCount').textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';
     
-    // แสดง Skill ใต้ชื่อในตาราง
+    // ตัดการแสดง Group และ Skill ออกจากใต้ชื่อ
     document.getElementById('tbody').innerHTML=filtered.map(r=>{
-        const empData = EMPLOYEES[r.name.trim()];
-        const groupStr = empData?.group || 'อื่นๆ';
-        const skillBadges = empData?.skills.length > 0 
-            ? `<div style="margin-top:4px;">${empData.skills.map(s => `<span class="badge" style="background:#e2e8f0; color:#475569; font-size:10px; margin-right:4px;">${s}</span>`).join('')}</div>`
-            : '';
-            
-        return `<tr><td><b>${esc(r.name)}</b><br><small style="color:#64748b;">${esc(groupStr)}</small>${skillBadges}</td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`;
+        return `<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td style="white-space:normal; min-width:150px; color:#475569;">${r.note ? esc(r.note) : '-'}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`;
     }).join('');
     
     summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
@@ -402,6 +397,7 @@ document.getElementById('surveyForm').onsubmit=e=>{
         status: document.getElementById('status').value,
         transport: document.getElementById('transport').value,
         busLine: document.getElementById('busLine').value.trim(),
+        note: document.getElementById('note').value.trim(), // เพิ่มหมายเหตุ
         lat: +document.getElementById('lat').value,
         lng: +document.getElementById('lng').value,
         updatedAt: new Date().toLocaleString('th-TH',{hour12:false})
@@ -426,8 +422,8 @@ document.getElementById('surveyForm').onsubmit=e=>{
 
 window.exportPDF = function(){document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;window.print();}
 window.exportCSV = function(){
-    const h=['วันที่','ชื่อ-นามสกุล','กลุ่ม/แผนก','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','Latitude','Longitude','Update'];
-    const csv=[h,...daily().map(r=>[r.date,r.name,EMPLOYEES[r.name.trim()]?.group||'อื่นๆ',r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+    const h=['วันที่','ชื่อ-นามสกุล','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','หมายเหตุ','Latitude','Longitude','Update'];
+    const csv=[h,...daily().map(r=>[r.date,r.name,r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.note||'-',r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
