@@ -17,6 +17,8 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 #missingList::-webkit-scrollbar { height: 6px; }
 #missingList::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
 .skill-card { border-left: 4px solid var(--border); display:flex; flex-direction:column; gap:8px; }
+/* Scroll Smoothly */
+html { scroll-behavior: smooth; }
 </style>
 </head>
 <body>
@@ -55,7 +57,8 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
   <p class="hint">หมุดสีเขียว: มาได้ | สีแดง: มาไม่ได้ | สีส้ม: มีความเสี่ยง</p>
 </div>
 
-<div class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div><button class="btn danger" onclick="window.clearData()">ล้างข้อมูลทั้งหมด</button> <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>หมายเหตุ</th><th>พิกัด</th><th>Update</th><th>จัดการ</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<!-- เพิ่ม ID tableCard เพื่อให้เวลาคลิก Filter แล้วเลื่อนหน้าจอมาตรงนี้ได้ -->
+<div id="tableCard" class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div><button class="btn danger" onclick="window.clearData()">ล้างข้อมูลทั้งหมด</button> <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>หมายเหตุ</th><th>พิกัด</th><th>Update</th><th>จัดการ</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 </section>
 
 <!-- ================= SKILL PANEL ================= -->
@@ -99,7 +102,6 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 </div>
 <div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div>
 
-<!-- ส่วนที่แก้ไข: เพิ่มหัวข้อสาเหตุเมื่อเลือก ไม่สามารถไปทำงานได้ -->
 <div>
     <label>5. สถานะปัจจุบัน</label>
     <select id="status">
@@ -226,7 +228,6 @@ function pct(n,t){return t?Math.round(n/t*100):0}
 function color(status){return status===STATUS.CAN?'#059669':status===STATUS.CANNOT?'#e11d48':'#d97706'}
 function badge(status){return status===STATUS.CAN?'ok':status===STATUS.CANNOT?'no':'risk'}
 
-// Toggle สาเหตุ เมื่อเลือกไม่สามารถมาทำงานได้
 document.getElementById('status').onchange = () => {
     const st = document.getElementById('status').value;
     const rc = document.getElementById('reasonContainer');
@@ -241,7 +242,6 @@ document.getElementById('status').onchange = () => {
     }
 };
 
-// ระบบ Autofill ค้นหาข้อมูลเดิมเมื่อเลือกชื่อ
 document.getElementById('empName').addEventListener('input', function() {
     const selectedName = this.value.trim();
     if (!selectedName) return;
@@ -442,18 +442,22 @@ document.getElementById('transport').onchange=()=>{
     if(busLine.disabled) busLine.value='';
 };
 
+// จัดการเรื่อง Update ทับของเดิม หรือบันทึกใหม่
 document.getElementById('surveyForm').onsubmit=e=>{
     e.preventDefault();
     const isCannot = document.getElementById('status').value === 'ไม่สามารถไปทำงานได้';
     
+    const dateVal = document.getElementById('selectedDate').value;
+    const nameVal = document.getElementById('empName').value.trim();
+
     const newData = {
-        date: document.getElementById('selectedDate').value,
-        name: document.getElementById('empName').value.trim(),
+        date: dateVal,
+        name: nameVal,
         address: document.getElementById('address').value.trim(),
         homeImpact: document.getElementById('homeImpact').value,
         waterLevel: +document.getElementById('waterLevel').value,
         status: document.getElementById('status').value,
-        reason: isCannot ? document.getElementById('reason').value : '', // บันทึกสาเหตุเพิ่มเติม
+        reason: isCannot ? document.getElementById('reason').value : '', 
         transport: document.getElementById('transport').value,
         busLine: document.getElementById('busLine').value.trim(),
         note: document.getElementById('note').value.trim(), 
@@ -462,10 +466,13 @@ document.getElementById('surveyForm').onsubmit=e=>{
         updatedAt: new Date().toLocaleString('th-TH',{hour12:false})
     };
     
-    push(dbRef, newData).then(() => {
+    // ตรวจสอบว่าวันนี้ คนนี้ กรอกแล้วหรือยัง (เช็คจากตัวแปร rows ที่ดึงข้อมูลมาแล้ว)
+    const existingRecord = rows.find(r => r.date === dateVal && r.name.trim() === nameVal);
+
+    const onSuccess = () => {
         document.getElementById('surveyForm').reset();
         document.getElementById('transport').onchange();
-        document.getElementById('status').onchange(); // ซ่อนสาเหตุ
+        document.getElementById('status').onchange();
         document.getElementById('mapSearchText').value='';
         if(pickerMarker){
             pickerMap.removeLayer(pickerMarker);
@@ -476,8 +483,21 @@ document.getElementById('surveyForm').onsubmit=e=>{
         
         window.setStatusFilter('');
         document.querySelector('.tab[data-panel="dashboardPanel"]').click();
-        
-    }).catch(err => alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " + err));
+    };
+
+    if (existingRecord) {
+        // ถามยืนยันการ Update
+        if (confirm(`คุณ ${nameVal} ได้กรอกข้อมูลของวันที่ ${dateVal} ไปแล้ว\nยืนยันการ Update ข้อมูลใหม่ใช่หรือไม่?`)) {
+            set(ref(db, 'dailyReadiness/' + existingRecord.key), newData)
+                .then(onSuccess)
+                .catch(err => alert("เกิดข้อผิดพลาดในการ Update ฐานข้อมูล: " + err));
+        }
+    } else {
+        // เพิ่มข้อมูลใหม่ปกติ
+        push(dbRef, newData)
+            .then(onSuccess)
+            .catch(err => alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " + err));
+    }
 };
 
 window.exportPDF = function(){document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;window.print();}
@@ -508,9 +528,11 @@ window.toggleMissingList = function() {
     }
 }
 
+// ฟังก์ชันกรองข้อมูล พร้อมเลื่อนจอลงไปที่ตารางทันที
 window.setStatusFilter = function(status) {
     currentStatusFilter = status;
     render();
+    document.getElementById('tableCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 window.clearData = function(){
