@@ -1,683 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรแกรมจำลองผ่อนบ้าน + ระบบ Refinance / Retention & Fees</title>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <style>
-        body {
-            font-family: 'Sarabun', sans-serif;
-            background: #f0f4f8;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 30px;
-            max-width: 1050px;
-            width: 100%;
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            font-size: 0.95rem;
-        }
-        .section-title {
-            font-size: 1.1rem;
-            color: #2980b9;
-            margin: 15px 0 10px 0;
-            border-left: 4px solid #2980b9;
-            padding-left: 8px;
-            font-weight: bold;
-            grid-column: 1 / -1;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-            background: #fdfefe;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #34495e;
-            font-size: 0.9rem;
-        }
-        input, select {
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-family: 'Sarabun', sans-serif;
-            transition: border 0.2s;
-            background-color: white;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
-        }
-        .button-group {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0 30px;
-            flex-wrap: wrap;
-        }
-        button {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        button:hover {
-            background: #2980b9;
-        }
-        button.reset {
-            background: #95a5a6;
-        }
-        button.reset:hover {
-            background: #7f8c8d;
-        }
-        button.export-btn {
-            background: #16a085;
-            margin-top: 15px;
-        }
-        button.export-btn:hover {
-            background: #138d75;
-        }
-        .table-wrapper {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 900px;
-        }
-        th {
-            background: #2c3e50;
-            color: white;
-            padding: 12px 8px;
-            font-weight: 500;
-            font-size: 0.85rem;
-            white-space: nowrap;
-        }
-        td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #ecf0f1;
-            text-align: right;
-            font-size: 0.85rem;
-        }
-        td:first-child, th:first-child {
-            text-align: center;
-        }
-        td.remark-col {
-            text-align: left;
-            font-weight: 500;
-            color: #d35400;
-            font-size: 0.8rem;
-        }
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-        .summary {
-            background: #ecf0f1;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 25px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            font-size: 0.95rem;
-        }
-        .summary-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .summary-label {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 4px;
-        }
-        .summary-value {
-            color: #16a085;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        .summary-percent {
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-top: 2px;
-        }
-        .percent-good { color: #27ae60; }
-        .percent-moderate { color: #e67e22; }
-        .percent-high { color: #c0392b; }
-        .warning {
-            color: #e67e22;
-            font-size: 0.9rem;
-            margin-top: 15px;
-            text-align: center;
-            font-weight: 600;
-        }
-        .report-header {
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            border-radius: 12px 12px 0 0;
-            text-align: center;
-        }
-        .report-header h2 {
-            margin: 0 0 15px;
-            font-size: 1.5rem;
-        }
-        .params-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            font-size: 0.85rem;
-        }
-        .param-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 130px;
-            background: rgba(255,255,255,0.1);
-            padding: 8px 12px;
-            border-radius: 6px;
-        }
-        .param-label {
-            font-weight: 500;
-            opacity: 0.85;
-            font-size: 0.75rem;
-        }
-        .param-value {
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin-top: 4px;
-        }
-        #reportArea {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            overflow: hidden;
-            margin-top: 30px;
-        }
-        .report-content {
-            padding: 20px;
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .params-grid {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ระบบสำรวจความพร้อมมาทำงานรายวัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+:root{--navy:#0b2a55;--blue:#0f4c81;--cyan:#0e7490;--bg:#f5f7fb;--green:#059669;--red:#e11d48;--amber:#d97706;--border:#dbe3ee}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Thai",sans-serif;background:var(--bg);color:#172033}header{background:linear-gradient(120deg,var(--navy),var(--blue),var(--cyan));color:#fff;padding:24px}.wrap{max-width:1200px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;align-items:center}.head h1{margin:4px 0;font-size:28px}.head p{margin:0;color:#dbeafe}.datebox{background:#ffffff18;border:1px solid #ffffff33;padding:12px;border-radius:14px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}textarea{min-height:70px}.tabs{display:flex;gap:8px;margin:22px 0}.tab{border:0;padding:10px 18px;border-radius:10px;background:#e2e8f0;cursor:pointer}.tab.active{background:var(--navy);color:#fff}.panel{display:none}.panel.active{display:block}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid #e7edf5;border-radius:16px;padding:18px;box-shadow:0 5px 18px #0f172a0a}.metric small{color:#64748b}.metric strong{display:block;font-size:32px;margin:6px 0}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.full{grid-column:1/-1}label{display:block;font-weight:600;margin-bottom:6px}.hint{color:#64748b;font-size:12px}.btn{border:0;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:600}.primary{background:var(--navy);color:#fff}.secondary{background:#e0f2fe;color:#075985}.danger{background:#ffe4e6;color:#9f1239}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:12px}.toolbar input{max-width:320px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1050px}th,td{text-align:left;padding:11px;border-bottom:1px solid #e8edf3;vertical-align:top}th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:#d1fae5;color:#065f46}.no{background:#ffe4e6;color:#9f1239}.risk{background:#fef3c7;color:#92400e}.zonebars{display:flex;align-items:flex-end;gap:18px;min-height:190px;padding-top:20px}.barwrap{text-align:center;flex:1}.bar{background:linear-gradient(#0891b2,#155e75);border-radius:9px 9px 0 0;min-height:3px}.barwrap b{display:block;margin-top:7px}.map{height:340px;border-radius:14px;border:1px solid var(--border);overflow:hidden}.mapactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e3a8a;margin-bottom:15px}.success{background:#ecfdf5;color:#065f46}.reportHead{display:none}footer{padding:25px;color:#64748b;text-align:center}@media(max-width:850px){.grid4,.two,.formgrid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}.full{grid-column:auto}}@media print{header,.tabs,#surveyPanel,.toolbar button,.toolbar input,footer{display:none!important}body{background:#fff}.wrap{max-width:none}.card{box-shadow:none;break-inside:avoid}.reportHead{display:block;margin-bottom:15px}.grid4{grid-template-columns:repeat(4,1fr)}#dashboardPanel{display:block!important}.tablewrap{overflow:visible}table{min-width:0;font-size:9px}th,td{padding:5px}.map{height:230px}}
+</style>
 </head>
 <body>
-<div class="container">
-    <h1>🏡 น้อนต้น จำลองผ่อนบ้าน + ระบบลดดอกเบี้ย & ค่าธรรมเนียมแฝง</h1>
-    <p class="subtitle">คำนวณตารางดอกเบี้ยลดต้นลดดอก พร้อมคิดรวมต้นทุนค่า Refinance / Retention และเบี้ยประกันภัยแบบละเอียด</p>
+<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+<main class="wrap">
+<div class="tabs"><button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button><button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button></div>
+<section id="dashboardPanel" class="panel active"><div class="reportHead"><h2>รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
+<div class="grid4"><div class="card metric"><small>พนักงานที่ Update</small><strong id="mTotal">0</strong><span>คน</span></div><div class="card metric"><small>สามารถมาทำงานได้</small><strong class="green" id="mCan">0</strong><span id="pCan">0%</span></div><div class="card metric"><small>ไม่สามารถมาทำงานได้</small><strong class="red" id="mCannot">0</strong><span id="pCannot">0%</span></div><div class="card metric"><small>มีความเสี่ยง</small><strong class="amber" id="mRisk">0</strong><span id="pRisk">0%</span></div></div>
+<div class="two"><div class="card"><h3>ผู้ที่มาไม่ได้หรือมีความเสี่ยง แยกตาม Zone</h3><div id="zoneBars" class="zonebars"></div></div><div class="card"><h3>แผนที่พิกัดที่พักของพนักงาน</h3><div id="summaryMap" class="map"></div><p class="hint">หมุดสีเขียว: มาได้ | สีแดง: มาไม่ได้ | สีส้ม: มีความเสี่ยง</p></div></div>
+<div class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ Zone หรือสายรถบัส"><div><button class="btn secondary" onclick="exportCSV()">Export CSV</button> <button class="btn primary" onclick="exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่ / Zone</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>พิกัด</th><th>Update</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+</section>
+<section id="surveyPanel" class="panel"><div class="card"><h2>แบบสอบถามสถานการณ์รายวัน</h2><div id="msg"></div><form id="surveyForm" class="formgrid">
 
-    <div class="form-grid">
-        <div class="section-title">ข้อมูลเงินกู้และแผนดอกเบี้ย</div>
-        <div class="input-group">
-            <label>💰 วงเงินกู้หลัก (บาท)</label>
-            <input type="number" id="loanAmount" value="8000000" step="1000" min="0">
-        </div>
-        <div class="input-group">
-            <label>📈 ดอกเบี้ยช่วงโปรโมชั่น ปี 1-3 (%)</label>
-            <input type="number" id="annualRate" value="2.5" step="0.01" min="0">
-        </div>
-        <div class="input-group">
-            <label>🛠️ เลือกกลยุทธ์การปรับลดดอกเบี้ย</label>
-            <select id="strategy" onchange="toggleStrategyLabel()">
-                <option value="refinance">ทำ Refinance (ย้ายธนาคารใหม่ทุก 3 ปี)</option>
-                <option value="retention">ทำ Retention (ขอลดดอกเบี้ยแบงก์เดิมทุก 3 ปี)</option>
-                <option value="floating">ปล่อยดอกเบี้ยลอยตัว (ไม่ปรับลดใดๆ)</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label id="futureRateLabel">📊 ดอกเบี้ยเฉลี่ยหลังรีฯ ทุก 3 ปี (%)</label>
-            <input type="number" id="futureRate" value="2.8" step="0.01" min="0">
-        </div>
-        <div class="input-group">
-            <label>💵 ค่างวดผ่อนประจำเดือน (บาท)</label>
-            <input type="number" id="monthlyPayment" value="30000" step="100" min="0">
-        </div>
-        <div class="input-group">
-            <label>🎁 เงินกู้โปะพิเศษเพิ่มรายปี (บาท)</label>
-            <input type="number" id="annualExtra" value="100000" step="1000" min="0">
-        </div>
-
-        <div class="section-title">การตั้งค่าค่าธรรมเนียมและประกันภัย (โดยประมาณ)</div>
-        <div class="input-group">
-            <label>🏢 อัตราค่าจดจำนองที่ดิน (เฉพาะ Refinance)</label>
-            <select id="mortgageFeeRate">
-                <option value="0.01">1.0% ของยอดหนี้คงเหลือ (เกณฑ์ปกติ)</option>
-                <option value="0.0001">0.01% (มาตรการรัฐ/โปรโมชั่น)</option>
-                <option value="0">ฟรีค่าจดจำนอง (ธนาคารออกให้)</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label>📝 ค่าธรรมเนียม Retention ของแบงก์เดิม</label>
-            <select id="retentionFeeRate">
-                <option value="0">ฟรีค่าธรรมเนียม (ส่วนใหญ่ขอยกเว้นได้)</option>
-                <option value="0.005">0.5% ของยอดหนี้คงเหลือ</option>
-                <option value="0.01">1.0% ของยอดหนี้คงเหลือ</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label>🛡️ ทำประกันชีวิตคุ้มครองสินเชื่อ (MRTA)</label>
-            <select id="mrtaOption">
-                <option value="yes_first">ทำครั้งแรกตอนกู้ (คุ้มครองยาว/เวนคืนย้ายสิทธิ์)</option>
-                <option value="yes_every">ทำใหม่ทุกครั้งที่ Refinance (ล้านละ ~35,000 บาท)</option>
-                <option value="no">ไม่ทำประกัน MRTA เลย</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label>🔥 ประกันอัคคีภัย (บังคับกฎหมาย ทุก 3 ปี)</label>
-            <input type="number" id="fireInsuranceRate" value="1000" placeholder="ล้านละ 1,000 บาท">
-        </div>
-    </div>
-
-    <div class="button-group">
-        <button onclick="calculate()">📊 คำนวณตารางผ่อนชำระ</button>
-        <button class="reset" onclick="resetForm()">🔄 ล้างข้อมูล</button>
-    </div>
-
-    <div id="warningMessage" class="warning"></div>
-
-    <div id="reportArea" style="display: none;">
-        <div class="report-header">
-            <h2>📋 รายงานจำลองการผ่อนบ้านรวมต้นทุนแฝง</h2>
-            <div class="params-grid">
-                <div class="param-item">
-                    <span class="param-label">วงเงินกู้หลัก</span>
-                    <span class="param-value" id="reportLoan">-</span>
-                </div>
-                <div class="param-item">
-                    <span class="param-label">ดอกเบี้ยปี 1-3</span>
-                    <span class="param-value" id="reportRate">-</span>
-                </div>
-                <div class="param-item">
-                    <span class="param-label">กลยุทธ์จัดการดอกเบี้ย</span>
-                    <span class="param-value" id="reportStrategy">-</span>
-                </div>
-                <div class="param-item">
-                    <span class="param-label">ดอกเบี้ยปี 4+</span>
-                    <span class="param-value" id="reportFutureRate">-</span>
-                </div>
-                <div class="param-item">
-                    <span class="param-label">ผ่อนปกติ/เดือน</span>
-                    <span class="param-value" id="reportMonthly">-</span>
-                </div>
-                <div class="param-item">
-                    <span class="param-label">เงินโปะเสริม/ปี</span>
-                    <span class="param-value" id="reportExtra">-</span>
-                </div>
-            </div>
-        </div>
-        <div class="report-content">
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 50px;">ปีที่</th>
-                            <th style="width: 75px;">ดอกเบี้ย</th>
-                            <th>เงินต้นที่จ่ายปีนี้</th>
-                            <th>ดอกเบี้ยที่จ่ายปีนี้</th>
-                            <th>ค่าธรรมเนียม+ประกันปีนี้</th>
-                            <th>ยอดคงเหลือสิ้นปี</th>
-                            <th>ดอกเบี้ยสะสม</th>
-                            <th style="width: 250px;">หมายเหตุ (Remark)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
-            </div>
-            <div class="summary" id="summaryBox">
-                <div class="summary-item">
-                    <span class="summary-label">⏱️ ใช้เวลาผ่อนทั้งหมด</span>
-                    <span class="summary-value" id="totalYears">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">💸 ดอกเบี้ยรวมจ่าย</span>
-                    <span class="summary-value" id="totalInterest">-</span>
-                    <span class="summary-percent" id="interestPercent"></span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">🏷️ ค่าธรรมเนียม+ประกันรวม</span>
-                    <span class="summary-value" id="totalFees" style="color: #e67e22;">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">📦 ยอดจ่ายรวมสุทธิ (ต้น+ดอก+ฟี)</span>
-                    <span class="summary-value" id="totalPaid" style="color: #2c3e50;">-</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 25px;">
-        <button id="exportBtn" class="export-btn" onclick="exportToJPG()" style="display: none;">
-            📸 ส่งออกรายงานเป็นไฟล์รูปภาพ (JPG)
-        </button>
-    </div>
+<!-- แก้ไขส่วนนี้เป็น Datalist เพื่อดึงชื่อพนักงาน -->
+<div class="full">
+<label>1. ชื่อ - นามสกุล</label>
+<input id="name" list="employeeNames" autocomplete="off" required>
+<datalist id="employeeNames">
+<option value="นาย สุนทร ไชยแสน"></option>
+<option value="นาย อดิเรก แซ่ซิ้ม"></option>
+<option value="นาย สิทธินนท์ จิรพัธนนท์"></option>
+<option value="นาย วาที ปล้องทางไชย"></option>
+<option value="นาย สิรวิทย์ สมสา"></option>
+<option value="นาย วสันต์ แจ้งประเสริฐ"></option>
+<option value="นาย พานทอง แสงกล้า"></option>
+<option value="นาย จิรยุท วิศวะชัย"></option>
+<option value="นาย ทองหยด ครุฑตำคำ"></option>
+<option value="นาย ณัฐชนนท์ อุดชาชน"></option>
+<option value="นาย สุรสิทธิ์ แซ่โค้ว"></option>
+<option value="นาย เอกชัย ภูมี"></option>
+<option value="นาย กัมพล นาถ้ำเพชร"></option>
+<option value="นาย วัชรินทร์ โพธิราช"></option>
+<option value="นาย บุญเจิด หลุมทอง"></option>
+<option value="นาย โชคประสิทธิ์ ภักดี"></option>
+<option value="นาย อาวุฒิ บุญพา"></option>
+<option value="นาย สถาพร วงค์ทอง"></option>
+<option value="นาย คมสันต์ ธรรมเสน"></option>
+<option value="นาย สุพัฒน์ อินทร์รักษา"></option>
+<option value="นาย ธีระยุทธ คำบุดดี"></option>
+<option value="นาย ทินกร ทะนามศรี"></option>
+<option value="นาย สนั่น ขยันการ"></option>
+<option value="นาย จีรศักดิ์ แสงโต"></option>
+<option value="นาย วัชรพงษ์ เข็มไธสง"></option>
+<option value="นาย บรรณวิชญ์ ชอบธรรม"></option>
+<option value="นาย จิรวัฒน์ ประภาศิริสุลี"></option>
+<option value="นาย นัฐวุฒิ กลิ่นด้วง"></option>
+<option value="นาง ดวงรัตน์ โพธิสมพร"></option>
+</datalist>
 </div>
 
+<div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>Zone พื้นที่</label><select id="zone"><option>Zone A</option><option>Zone B</option><option>Zone C</option><option>Zone D</option><option>อื่น ๆ</option></select></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div><div><label>5. สถานะปัจจุบัน</label><select id="status"><option>สามารถไปทำงานได้</option><option>ไม่สามารถไปทำงานได้</option><option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option></select></div><div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div><div class="full"><label>7. พิกัดที่พัก</label><div class="notice">กดตำแหน่งบนแผนที่เพื่อปักหมุด หรือกด “ตำแหน่งปัจจุบัน” จากโทรศัพท์ พิกัดจะถูกบันทึกพร้อมข้อมูล</div><div id="pickerMap" class="map"></div><div class="mapactions"><button type="button" class="btn secondary" id="locateBtn">ใช้ตำแหน่งปัจจุบัน</button><button type="button" class="btn secondary" id="googleBtn">เปิดหมุดใน Google Maps</button><input id="lat" type="number" step="any" placeholder="Latitude" required style="max-width:180px"><input id="lng" type="number" step="any" placeholder="Longitude" required style="max-width:180px"></div><p class="hint">การใช้ตำแหน่ง GPS ต้องเปิดสิทธิ์ Location ใน Browser และควรใช้งานผ่าน HTTPS</p></div><div class="full notice">เวลา Update บันทึกอัตโนมัติ ข้อมูลที่อยู่และพิกัดเป็นข้อมูลส่วนบุคคล ควรจำกัดสิทธิ์เฉพาะผู้รับผิดชอบและกำหนดระยะเวลาจัดเก็บ</div><button class="btn primary full" type="submit">ส่งข้อมูลสถานการณ์วันนี้</button></form></div></section>
+</main><footer>ข้อมูลตัวอย่างเก็บใน Browser เครื่องนี้ด้วย localStorage สำหรับต้นแบบ</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    function formatNumber(num) {
-        return num.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function toggleStrategyLabel() {
-        const strategy = document.getElementById('strategy').value;
-        const label = document.getElementById('futureRateLabel');
-        const futureRateInput = document.getElementById('futureRate');
-        
-        if (strategy === 'refinance') {
-            label.textContent = '📊 ดอกเบี้ยเฉลี่ยหลังรีฯ ทุก 3 ปี (%)';
-            futureRateInput.value = '2.8';
-        } else if (strategy === 'retention') {
-            label.textContent = '📊 ดอกเบี้ยหลังขอ Retention ทุก 3 ปี (%)';
-            futureRateInput.value = '3.2';
-        } else {
-            label.textContent = '📈 ดอกเบี้ยลอยตัวหลังปีที่ 3 (%)';
-            futureRateInput.value = '5.5';
-        }
-    }
-
-    function calculate() {
-        const loanAmount = parseFloat(document.getElementById('loanAmount').value);
-        const annualRate = parseFloat(document.getElementById('annualRate').value);
-        const strategy = document.getElementById('strategy').value;
-        const futureRate = parseFloat(document.getElementById('futureRate').value);
-        const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
-        const annualExtra = parseFloat(document.getElementById('annualExtra').value) || 0;
-
-        // ดึงค่าใช้จ่ายแฝง
-        const mortgageFeeRate = parseFloat(document.getElementById('mortgageFeeRate').value);
-        const retentionFeeRate = parseFloat(document.getElementById('retentionFeeRate').value);
-        const mrtaOption = document.getElementById('mrtaOption').value;
-        const fireInsuranceRate = parseFloat(document.getElementById('fireInsuranceRate').value) || 0;
-
-        document.getElementById('warningMessage').innerHTML = '';
-
-        if (isNaN(loanAmount) || loanAmount <= 0 || isNaN(annualRate) || annualRate < 0 || isNaN(futureRate) || futureRate < 0 || isNaN(monthlyPayment) || monthlyPayment <= 0) {
-            document.getElementById('warningMessage').innerHTML = '⚠️ กรุณากรอกข้อมูลทางการเงินให้ถูกต้อง';
-            hideReport();
-            return;
-        }
-
-        // อัปเดตข้อมูลหัวรายงาน
-        document.getElementById('reportLoan').textContent = formatNumber(loanAmount) + ' บาท';
-        document.getElementById('reportRate').textContent = annualRate.toFixed(2) + '%';
-        
-        let strategyText = 'ปล่อยลอยตัว';
-        if (strategy === 'refinance') strategyText = 'Refinance ย้ายแบงก์';
-        if (strategy === 'retention') strategyText = 'Retention แบงก์เดิม';
-        document.getElementById('reportStrategy').textContent = strategyText;
-        
-        document.getElementById('reportFutureRate').textContent = futureRate.toFixed(2) + '%';
-        document.getElementById('reportMonthly').textContent = formatNumber(monthlyPayment) + ' บาท';
-        document.getElementById('reportExtra').textContent = formatNumber(annualExtra) + ' บาท';
-
-        let balance = loanAmount;
-        let year = 0;
-        let totalInterestPaid = 0;
-        let totalFeesAccumulated = 0;
-        const rows = [];
-
-        // ลูปรายปี
-        while (balance > 0 && year < 100) {
-            year++;
-            
-            let currentAnnualRate = (year <= 3) ? annualRate : futureRate;
-            let monthlyRate = currentAnnualRate / 100 / 12;
-
-            // ตรวจสอบดอกเบี้ยท่วมค่างวด
-            if (year === 1 || year === 4) {
-                const currentMonthInterest = balance * monthlyRate;
-                if (monthlyPayment <= currentMonthInterest && annualExtra === 0) {
-                    document.getElementById('warningMessage').innerHTML = `⚠️ คำเตือน: ตั้งแต่ปีที่ ${year} ค่างวดปกติไม่พอดอกเบี้ย ยอดหนี้จะไม่ลดลงถ้าไม่มีการโปะเพิ่ม!`;
-                }
-            }
-
-            let principalPaidThisYear = 0;
-            let interestPaidThisYear = 0;
-            let feesThisYear = 0;
-            let remarks = [];
-
-            // คิดประกันภัยเบื้องต้นตอนปีแรก (ถ้าเลือกเปิด MRTA แบบทำครั้งแรก)
-            if (year === 1) {
-                let fireFee = (balance / 1000000) * fireInsuranceRate * 3; // จ่ายประกันอัคคีภัยควบ 3 ปี
-                feesThisYear += fireFee;
-                remarks.push(`🔥 เบี้ยอัคคีภัย (3ปีแรก): ${formatNumber(fireFee)} บ.`);
-
-                if (mrtaOption === 'yes_first') {
-                    let mrtaFee = (balance / 1000000) * 40000; // สมมติค่าเฉลี่ย MRTA ล้านละ 40,000 บ.
-                    feesThisYear += mrtaFee;
-                    remarks.push(`🛡️ ประกัน MRTA แรกเข้า: ${formatNumber(mrtaFee)} บ.`);
-                }
-            }
-
-            // คำนวณตัดจ่าย 12 เดือนภายในปีนี้
-            for (let month = 1; month <= 12; month++) {
-                if (balance <= 0) break;
-
-                const interest = balance * monthlyRate;
-                let principal = monthlyPayment - interest;
-
-                if (principal <= 0) {
-                    principal = 0;
-                    interestPaidThisYear += monthlyPayment;
-                    totalInterestPaid += monthlyPayment;
-                    continue;
-                }
-
-                principal = Math.min(principal, balance);
-                balance -= principal;
-                principalPaidThisYear += principal;
-                interestPaidThisYear += interest;
-                totalInterestPaid += interest;
-            }
-
-            // เงินโปะพิเศษสิ้นปี
-            if (annualExtra > 0 && balance > 0) {
-                const extra = Math.min(annualExtra, balance);
-                balance -= extra;
-                principalPaidThisYear += extra;
-            }
-
-            // สิ้นปีรอบทุกๆ 3 ปี: คำนวณค่าธรรมเนียมการต่อรองหรือย้ายค่าย (คิดตอนจบปี 3, 6, 9, 12... หากหนี้ยังไม่หมด)
-            if (year % 3 === 0 && balance > 0 && strategy !== 'floating') {
-                // 1. ประกันอัคคีภัยภาคบังคับต้องต่ออายุทุก 3 ปี
-                let fireFee = (balance / 1000000) * fireInsuranceRate * 3;
-                feesThisYear += fireFee;
-                remarks.push(`🔥 ต่อประกันอัคคีภัย (3ปีถัดไป): ${formatNumber(fireFee)} บ.`);
-
-                // 2. ค่าธรรมเนียมเปลี่ยนสัญญาธุรกรรม
-                if (strategy === 'refinance') {
-                    let mortgageFee = balance * mortgageFeeRate;
-                    let appraiseFee = 3000; // ค่าประเมินราคาบ้านเหมาจ่ายเฉลี่ย
-                    let dutyStamp = balance * 0.0005; // อากรแสตมป์ 0.05%
-                    let totalRefinanceFees = mortgageFee + appraiseFee + dutyStamp;
-                    
-                    feesThisYear += totalRefinanceFees;
-                    remarks.push(`🔄 Refinance (จดจำนอง+ประเมิน+อากร): ${formatNumber(totalRefinanceFees)} บ.`);
-
-                    if (mrtaOption === 'yes_every') {
-                        let mrtaFee = (balance / 1000000) * 35000; // ทำประกันใหม่เฉพาะยอดคงเหลือ
-                        feesThisYear += mrtaFee;
-                        remarks.push(`🛡️ ทำ MRTA เล่มใหม่: ${formatNumber(mrtaFee)} บ.`);
-                    }
-                } else if (strategy === 'retention') {
-                    let retentionFee = balance * retentionFeeRate;
-                    if (retentionFee > 0) {
-                        feesThisYear += retentionFee;
-                        remarks.push(`📝 ค่าธรรมเนียม Retention แบงก์เดิม: ${formatNumber(retentionFee)} บ.`);
-                    } else {
-                        remarks.push(`✅ ทำ Retention ฟรีค่าธรรมเนียมสัญญาลดดอกเบี้ย`);
-                    }
-                }
-            }
-
-            totalFeesAccumulated += feesThisYear;
-
-            rows.push({
-                year,
-                rate: currentAnnualRate,
-                principal: principalPaidThisYear,
-                interest: interestPaidThisYear,
-                fees: feesThisYear,
-                balance,
-                cumulativeInterest: totalInterestPaid,
-                remarkText: remarks.join('<br>') || '-'
-            });
-        }
-
-        // เรนเดอร์ตารางข้อมูล
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = '';
-        rows.forEach(row => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${row.year}</td>
-                <td style="color: ${row.year <= 3 ? '#16a085' : (strategy !== 'floating' ? '#2980b9' : '#c0392b')}; font-weight: bold;">${row.rate.toFixed(2)}%</td>
-                <td>${formatNumber(row.principal)}</td>
-                <td>${formatNumber(row.interest)}</td>
-                <td style="color: ${row.fees > 0 ? '#e67e22' : '#7f8c8d'};">${formatNumber(row.fees)}</td>
-                <td style="font-weight: bold;">${formatNumber(row.balance)}</td>
-                <td>${formatNumber(row.cumulativeInterest)}</td>
-                <td class="remark-col">${row.remarkText}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        document.getElementById('reportArea').style.display = 'block';
-
-        // คำนวณสรุปผลด้านล่าง
-        const totalPaidNet = loanAmount + totalInterestPaid + totalFeesAccumulated;
-        document.getElementById('totalYears').textContent = `${year} ปี`;
-        document.getElementById('totalInterest').textContent = `${formatNumber(totalInterestPaid)} บาท`;
-        document.getElementById('totalFees').textContent = `${formatNumber(totalFeesAccumulated)} บาท`;
-        document.getElementById('totalPaid').textContent = `${formatNumber(totalPaidNet)} บาท`;
-
-        // เปอร์เซ็นต์เมื่อเทียบหนี้หลัก
-        const interestPercent = (totalInterestPaid / loanAmount) * 100;
-        const percentEl = document.getElementById('interestPercent');
-        percentEl.textContent = `(${interestPercent.toFixed(2)}% ของเงินต้น)`;
-        
-        if (interestPercent < 30) {
-            percentEl.className = 'summary-percent percent-good';
-        } else if (interestPercent < 60) {
-            percentEl.className = 'summary-percent percent-moderate';
-        } else {
-            percentEl.className = 'summary-percent percent-high';
-        }
-
-        document.getElementById('exportBtn').style.display = 'inline-block';
-    }
-
-    function hideReport() {
-        document.getElementById('reportArea').style.display = 'none';
-        document.getElementById('exportBtn').style.display = 'none';
-    }
-
-    function resetForm() {
-        document.getElementById('loanAmount').value = '8000000';
-        document.getElementById('annualRate').value = '2.5';
-        document.getElementById('strategy').value = 'refinance';
-        document.getElementById('futureRate').value = '2.8';
-        document.getElementById('futureRateLabel').textContent = '📊 ดอกเบี้ยเฉลี่ยหลังรีฯ ทุก 3 ปี (%)';
-        document.getElementById('monthlyPayment').value = '41000';
-        document.getElementById('annualExtra').value = '400000';
-        document.getElementById('mortgageFeeRate').value = '0.01';
-        document.getElementById('retentionFeeRate').value = '0';
-        document.getElementById('mrtaOption').value = 'yes_first';
-        document.getElementById('fireInsuranceRate').value = '1000';
-        document.getElementById('warningMessage').innerHTML = '';
-        hideReport();
-        calculate();
-    }
-
-    async function exportToJPG() {
-        const reportDiv = document.getElementById('reportArea');
-        if (!reportDiv || reportDiv.style.display === 'none') {
-            alert('ยังไม่มีรายงานให้ส่งออก กรุณากด "คำนวณ" ก่อน');
-            return;
-        }
-
-        try {
-            const exportBtn = document.getElementById('exportBtn');
-            exportBtn.style.display = 'none';
-
-            const canvas = await html2canvas(reportDiv, {
-                scale: 2,
-                backgroundColor: '#ffffff',
-                logging: false
-            });
-
-            exportBtn.style.display = 'inline-block';
-
-            canvas.toBlob(function(blob) {
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'mortgage-comprehensive-report.jpg';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                alert('ดาวน์โหลดรายงานเรียบร้อยแล้ว!');
-            }, 'image/jpeg', 0.95);
-
-        } catch (error) {
-            console.error('Export failed:', error);
-            alert('เกิดข้อผิดพลาดในการส่งออกภาพ');
-            document.getElementById('exportBtn').style.display = 'inline-block';
-        }
-    }
-
-    window.onload = function() {
-        calculate();
-    };
-</script>
-</body>
-</html>
+const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
+const seed=[{id:1,date:'2026-09-28',name:'สมชาย ใจดี',address:'หมู่บ้านชญาดา ซอยวัดปลัดเปลียง',zone:'Zone A',homeImpact:'น้ำท่วมบ้าน (เล็กน้อย)',waterLevel:25,status:STATUS.CAN,transport:'รถส่วนตัว',busLine:'',lat:13.60,lng:100.56,updatedAt:'28/09/2026 07:12'},{id:2,date:'2026-09-28',name:'วิภา แสงทอง',address:'บางบ่อ สมุทรปราการ',zone:'Zone B',homeImpact:'น้ำท่วมบ้าน (หนัก)',waterLevel:65,status:STATUS.CANNOT,transport:'รถบัสรับ-ส่ง',busLine:'สาย B2',lat:13.57,lng:100.83,updatedAt:'28/09/2026 07:18'},{id:3,date:'2026-09-28',name:'กิตติศักดิ์ พรชัย',address:'บางพลี สมุทรปราการ',zone:'Zone B',homeImpact:'น้ำไม่ท่วมบ้าน',waterLevel:40,status:STATUS.RISK,transport:'รถส่วนตัว',busLine:'',lat:13.61,lng:100.72,updatedAt:'28/09/2026 07:31'}];
+let rows=JSON.parse(localStorage.getItem('dailyReadinessRows')||'null')||seed;let pickerMarker;let summaryMarkers=[];const today=new Date().toISOString().slice(0,10);selectedDate.value=today==='2026-09-28'?today:'2026-09-28';
+const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);[summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function daily(){return rows.filter(r=>r.date===selectedDate.value)}function pct(n,t){return t?Math.round(n/t*100):0}function color(status){return status===STATUS.CAN?'#059669':status===STATUS.CANNOT?'#e11d48':'#d97706'}function badge(status){return status===STATUS.CAN?'ok':status===STATUS.CANNOT?'no':'risk'}
+function render(){const data=daily(),q=search.value.toLowerCase(),filtered=data.filter(r=>(r.name+' '+r.address+' '+r.zone+' '+r.busLine).toLowerCase().includes(q));const can=data.filter(r=>r.status===STATUS.CAN).length,cannot=data.filter(r=>r.status===STATUS.CANNOT).length,risk=data.filter(r=>r.status===STATUS.RISK).length;mTotal.textContent=data.length;mCan.textContent=can;mCannot.textContent=cannot;mRisk.textContent=risk;pCan.textContent=pct(can,data.length)+'%';pCannot.textContent=pct(cannot,data.length)+'%';pRisk.textContent=pct(risk,data.length)+'%';reportDate.textContent='วันที่ '+selectedDate.value;rowCount.textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';tbody.innerHTML=filtered.map(r=>`<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}<br><span class="badge">${esc(r.zone)}</span></td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td></tr>`).join('');const zones={};data.filter(r=>r.status!==STATUS.CAN).forEach(r=>zones[r.zone]=(zones[r.zone]||0)+1);const max=Math.max(1,...Object.values(zones));zoneBars.innerHTML=Object.entries(zones).length?Object.entries(zones).map(([z,n])=>`<div class="barwrap"><div class="bar" style="height:${Math.max(8,n/max*145)}px"></div><b>${esc(z)}</b><small>${n} คน</small></div>`).join(''):'<p class="hint">ไม่มีพนักงานที่มาไม่ได้หรือมีความเสี่ยง</p>';summaryMarkers.forEach(m=>summaryMap.removeLayer(m));summaryMarkers=data.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:color(r.status),fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.zone)}<br>${esc(r.status)}<br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));if(summaryMarkers.length){const group=L.featureGroup(summaryMarkers);summaryMap.fitBounds(group.getBounds().pad(.25),{maxZoom:13})}}
+function setPin(a,b){lat.value=(+a).toFixed(6);lng.value=(+b).toFixed(6);if(pickerMarker)pickerMap.removeLayer(pickerMarker);pickerMarker=L.marker([a,b]).addTo(pickerMap);pickerMap.setView([a,b],15)}pickerMap.on('click',e=>setPin(e.latlng.lat,e.latlng.lng));locateBtn.onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPin(p.coords.latitude,p.coords.longitude),e=>alert('ไม่สามารถอ่านตำแหน่งได้: '+e.message),{enableHighAccuracy:true}):alert('Browser ไม่รองรับ Geolocation');googleBtn.onclick=()=>{if(!lat.value||!lng.value)return alert('กรุณาปักหมุดก่อน');window.open(`https://www.google.com/maps?q=${lat.value},${lng.value}`,'_blank')};transport.onchange=()=>{busLine.disabled=transport.value!=='รถบัสรับ-ส่ง';if(busLine.disabled)busLine.value=''};
+surveyForm.onsubmit=e=>{e.preventDefault();rows.unshift({id:Date.now(),date:selectedDate.value,name:name.value.trim(),address:address.value.trim(),zone:zone.value,homeImpact:homeImpact.value,waterLevel:+waterLevel.value,status:status.value,transport:transport.value,busLine:busLine.value.trim(),lat:+lat.value,lng:+lng.value,updatedAt:new Date().toLocaleString('th-TH',{hour12:false})});localStorage.setItem('dailyReadinessRows',JSON.stringify(rows));surveyForm.reset();transport.onchange();if(pickerMarker){pickerMap.removeLayer(pickerMarker);pickerMarker=null}msg.innerHTML='<div class="notice success">บันทึกข้อมูลเรียบร้อยแล้ว</div>';render();setTimeout(()=>msg.innerHTML='',2500)};
+function exportPDF(){document.title='Daily_Readiness_Report_'+selectedDate.value;window.print()}function exportCSV(){const h=['วันที่','ชื่อ-นามสกุล','ที่อยู่','Zone','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','Latitude','Longitude','Update'];const csv=[h,...daily().map(r=>[r.date,r.name,r.address,r.zone,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='daily_readiness_'+selectedDate.value+'.csv';a.click();URL.revokeObjectURL(a.href)}
+window.exportPDF=exportPDF;window.exportCSV=exportCSV;selectedDate.onchange=render;search.oninput=render;document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.panel).classList.add('active');setTimeout(()=>{pickerMap.invalidateSize();summaryMap.invalidateSize()},100)});render();setTimeout(()=>{summaryMap.invalidateSize();pickerMap.invalidateSize()},200);
+</script></body></html>
