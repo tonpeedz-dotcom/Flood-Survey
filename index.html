@@ -20,7 +20,7 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 </style>
 </head>
 <body>
-<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน (by_น้อนเนิร์ด❤️)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน Quality Team (by_น้อนเนิร์ด❤️)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
 <main class="wrap">
 <div class="tabs">
     <button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button>
@@ -97,7 +97,28 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 <datalist id="employeeNames">
 </datalist>
 </div>
-<div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div><div><label>5. สถานะปัจจุบัน</label><select id="status"><option>สามารถไปทำงานได้</option><option>ไม่สามารถไปทำงานได้</option><option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option></select></div><div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div>
+<div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div>
+
+<!-- ส่วนที่แก้ไข: เพิ่มหัวข้อสาเหตุเมื่อเลือก ไม่สามารถไปทำงานได้ -->
+<div>
+    <label>5. สถานะปัจจุบัน</label>
+    <select id="status">
+        <option>สามารถไปทำงานได้</option>
+        <option>ไม่สามารถไปทำงานได้</option>
+        <option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option>
+    </select>
+</div>
+<div id="reasonContainer" style="display:none;">
+    <label style="color:var(--red);">สาเหตุ (ระบุเพิ่มเติม)</label>
+    <select id="reason">
+        <option value="">-- กรุณาเลือกสาเหตุ --</option>
+        <option>บ้านพัก/สถานที่พัก "ถูกน้ำท่วม"</option>
+        <option>เส้นทางมาทำงาน "ไม่สามารถเดินทางได้"</option>
+        <option>รถบัสบริษัทไม่สามารถเข้ามารับได้</option>
+    </select>
+</div>
+
+<div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div>
 <div class="full"><label>7. หมายเหตุ/รายละเอียดเพิ่มเติม</label><textarea id="note" placeholder="เช่น ลากิจ, ลาป่วย, รถเสีย, น้ำท่วมสูงมาก เป็นต้น" style="min-height:50px;"></textarea></div>
 <div class="full"><label>8. พิกัดที่พัก</label>
 <div class="notice">
@@ -133,7 +154,6 @@ const dbRef = ref(db, 'dailyReadiness');
 
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
 
-// ฐานข้อมูลรายชื่อ 36 ท่าน กลุ่มพนักงาน และ Skill
 const EMPLOYEES = {
     "นาย สุนทร ไชยแสน": { group: "Project", skills: ["Chisel", "Inspect"] },
     "นาย อดิเรก แซ่ซิ้ม": { group: "Project", skills: ["Chisel"] },
@@ -175,7 +195,6 @@ const EMPLOYEES = {
 
 const ALL_EMPLOYEES = Object.keys(EMPLOYEES);
 
-// ยัดรายชื่อเข้า Dropdown (Datalist) อัตโนมัติ
 document.getElementById('employeeNames').innerHTML = ALL_EMPLOYEES.map(n => `<option value="${n}"></option>`).join('');
 
 let rows=[];
@@ -198,7 +217,7 @@ onValue(dbRef, (snapshot) => {
     });
     rows.reverse(); 
     render();
-    renderSkills(); // โหลดหน้า Skill ทันทีที่ข้อมูลมา
+    renderSkills(); 
 });
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -206,6 +225,45 @@ function daily(){return rows.filter(r=>r.date===document.getElementById('selecte
 function pct(n,t){return t?Math.round(n/t*100):0}
 function color(status){return status===STATUS.CAN?'#059669':status===STATUS.CANNOT?'#e11d48':'#d97706'}
 function badge(status){return status===STATUS.CAN?'ok':status===STATUS.CANNOT?'no':'risk'}
+
+// Toggle สาเหตุ เมื่อเลือกไม่สามารถมาทำงานได้
+document.getElementById('status').onchange = () => {
+    const st = document.getElementById('status').value;
+    const rc = document.getElementById('reasonContainer');
+    const rs = document.getElementById('reason');
+    if(st === 'ไม่สามารถไปทำงานได้') {
+        rc.style.display = 'block';
+        rs.required = true;
+    } else {
+        rc.style.display = 'none';
+        rs.required = false;
+        rs.value = '';
+    }
+};
+
+// ระบบ Autofill ค้นหาข้อมูลเดิมเมื่อเลือกชื่อ
+document.getElementById('empName').addEventListener('input', function() {
+    const selectedName = this.value.trim();
+    if (!selectedName) return;
+
+    const lastRecord = rows.find(r => r.name === selectedName);
+    
+    if (lastRecord) {
+        if (lastRecord.address) document.getElementById('address').value = lastRecord.address;
+        
+        if (lastRecord.transport) {
+            document.getElementById('transport').value = lastRecord.transport;
+            document.getElementById('transport').onchange();
+            if (lastRecord.transport === 'รถบัสรับ-ส่ง' && lastRecord.busLine) {
+                document.getElementById('busLine').value = lastRecord.busLine;
+            }
+        }
+
+        if (lastRecord.lat && lastRecord.lng) {
+            setPin(lastRecord.lat, lastRecord.lng);
+        }
+    }
+});
 
 function render(){
     const data=daily();
@@ -236,7 +294,6 @@ function render(){
     const cannot=data.filter(r=>r.status===STATUS.CANNOT).length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
     
-    // อัปเดตสถิติ % (36 คน)
     document.getElementById('mTotal').textContent = submittedNames.length + '/' + ALL_EMPLOYEES.length;
     document.getElementById('pTotal').textContent = pct(submittedNames.length, ALL_EMPLOYEES.length) + '% (คลิกดูทั้งหมด)';
     
@@ -262,9 +319,13 @@ function render(){
     document.getElementById('reportDate').textContent='วันที่ '+document.getElementById('selectedDate').value;
     document.getElementById('rowCount').textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';
     
-    // ตัดการแสดง Group และ Skill ออกจากใต้ชื่อ
     document.getElementById('tbody').innerHTML=filtered.map(r=>{
-        return `<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td style="white-space:normal; min-width:150px; color:#475569;">${r.note ? esc(r.note) : '-'}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`;
+        let statusDisplay = `<span class="badge ${badge(r.status)}">${esc(r.status)}</span>`;
+        if (r.status === 'ไม่สามารถไปทำงานได้' && r.reason) {
+            statusDisplay += `<br><small style="color:var(--red); display:block; margin-top:4px;">สาเหตุ: ${esc(r.reason)}</small>`;
+        }
+        
+        return `<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td>${statusDisplay}</td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td style="white-space:normal; min-width:150px; color:#475569;">${r.note ? esc(r.note) : '-'}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`;
     }).join('');
     
     summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
@@ -276,7 +337,6 @@ function render(){
     }
 }
 
-// ระบบค้นหาและจัดเรียงผู้มี Skill
 window.renderSkills = function() {
     const data = daily();
     const reqSkill = document.getElementById('skillFilter').value;
@@ -288,19 +348,15 @@ window.renderSkills = function() {
     ALL_EMPLOYEES.forEach(name => {
         const empData = EMPLOYEES[name];
         
-        // 1. เช็คว่ามี Skill ที่เลือกไหม
         if (reqSkill && !empData.skills.includes(reqSkill)) return;
         
-        // 2. ดึงสถานะปัจจุบันของวันนี้
         const record = data.find(r => r.name.trim() === name);
         const currentStatus = record ? record.status : 'ยังไม่ระบุข้อมูล (Not Updated)';
         
-        // 3. กรองตาม Status ถ้ามีการเลือก
         if (reqStatus && currentStatus !== reqStatus) return;
 
         matchCount++;
         
-        // กำหนดสีและป้ายแสดงผล
         let statusBadge = 'gray';
         let borderColor = 'var(--border)';
         if(currentStatus === STATUS.CAN) { statusBadge = 'ok'; borderColor = 'var(--green)'; }
@@ -388,6 +444,8 @@ document.getElementById('transport').onchange=()=>{
 
 document.getElementById('surveyForm').onsubmit=e=>{
     e.preventDefault();
+    const isCannot = document.getElementById('status').value === 'ไม่สามารถไปทำงานได้';
+    
     const newData = {
         date: document.getElementById('selectedDate').value,
         name: document.getElementById('empName').value.trim(),
@@ -395,9 +453,10 @@ document.getElementById('surveyForm').onsubmit=e=>{
         homeImpact: document.getElementById('homeImpact').value,
         waterLevel: +document.getElementById('waterLevel').value,
         status: document.getElementById('status').value,
+        reason: isCannot ? document.getElementById('reason').value : '', // บันทึกสาเหตุเพิ่มเติม
         transport: document.getElementById('transport').value,
         busLine: document.getElementById('busLine').value.trim(),
-        note: document.getElementById('note').value.trim(), // เพิ่มหมายเหตุ
+        note: document.getElementById('note').value.trim(), 
         lat: +document.getElementById('lat').value,
         lng: +document.getElementById('lng').value,
         updatedAt: new Date().toLocaleString('th-TH',{hour12:false})
@@ -406,6 +465,7 @@ document.getElementById('surveyForm').onsubmit=e=>{
     push(dbRef, newData).then(() => {
         document.getElementById('surveyForm').reset();
         document.getElementById('transport').onchange();
+        document.getElementById('status').onchange(); // ซ่อนสาเหตุ
         document.getElementById('mapSearchText').value='';
         if(pickerMarker){
             pickerMap.removeLayer(pickerMarker);
@@ -423,7 +483,11 @@ document.getElementById('surveyForm').onsubmit=e=>{
 window.exportPDF = function(){document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;window.print();}
 window.exportCSV = function(){
     const h=['วันที่','ชื่อ-นามสกุล','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','หมายเหตุ','Latitude','Longitude','Update'];
-    const csv=[h,...daily().map(r=>[r.date,r.name,r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.note||'-',r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+    const csv=[h,...daily().map(r=>{
+        const statusWithReason = r.status + (r.reason ? ` (${r.reason})` : '');
+        return [r.date,r.name,r.address,r.homeImpact,r.waterLevel,statusWithReason,r.transport,r.busLine,r.note||'-',r.lat,r.lng,r.updatedAt];
+    })].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+    
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
@@ -432,7 +496,6 @@ window.exportCSV = function(){
     URL.revokeObjectURL(a.href);
 }
 
-// ฟังก์ชัน Toggle ซ่อน/แสดง รายชื่อคนยังไม่ทำ
 window.toggleMissingList = function() {
     const wrap = document.getElementById('missingListWrap');
     const icon = document.getElementById('toggleIcon');
@@ -483,6 +546,8 @@ document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
 });
 
 setTimeout(()=>{summaryMap.invalidateSize();pickerMap.invalidateSize();},200);
+// Trigger เริ่มต้น
+document.getElementById('status').onchange();
 </script>
 </body>
 </html>
