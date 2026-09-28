@@ -70,14 +70,14 @@ html { scroll-behavior: smooth; }
             <span id="pdfCanSub">คิดเป็น 0%</span>
         </div>
         <div class="pdf-box pdf-box-red">
-            <small>ไม่สามารถมาทำงานได้ / มีความเสี่ยง</small>
+            <small>ไม่สามารถมาทำงานได้</small>
             <strong id="pdfCannot" class="red">0</strong>
             <span id="pdfCannotSub">คิดเป็น 0%</span>
         </div>
         <div class="pdf-box">
-            <small>ยังไม่กรอกข้อมูล</small>
-            <strong id="pdfMissing">0</strong>
-            <span id="pdfMissingSub">ต้องติดตามเร่งด่วน</span>
+            <small>มีความเสี่ยง</small>
+            <strong id="pdfRisk" style="color:var(--amber);">0</strong>
+            <span id="pdfRiskSub">ต้องติดตามเร่งด่วน</span>
         </div>
     </div>
 
@@ -261,13 +261,13 @@ const EMPLOYEES = {
     "นาย นัฐวุฒิ กลิ่นด้วง": { group: "Spot Quality", skills: [] },
     "นาง ดวงรัตน์ โพธิสมพร": { group: "Management", skills: [] },
     "นาย คณิน นิมมานวัฒนกุล": { group: "Engineer", skills: [] },
-    "นาย นันทพัทธ์ สุขล้าน": { group: "Receiving", skills: ["Chisel"] },
+    "นาย นันทพัทธ์ สุขล้วน": { group: "Receiving", skills: ["Chisel"] },
     "นาย อรรถพล พอกแก้ว": { group: "Analyse", skills: ["Chisel"] },
     "นาย ธนธรณ์ วัฒนชัยภักดี": { group: "Analyse", skills: [] },
     "นาย วีรพงษ์ สุขชิต": { group: "CMM", skills: [] },
     "นาย วิทยา กันดี": { group: "Receiving", skills: ["Chisel"] },
     "นาย พีรพงษ์ เดชทิศ": { group: "CMM", skills: [] },
-    "นาย วัชรินทร์ ติธรรม": { group: "Receiving", skills: ["Chisel"] }
+    "นาย วัชรินทร์ ดีธรรม": { group: "Receiving", skills: ["Chisel"] }
 };
 
 const ALL_EMPLOYEES = Object.keys(EMPLOYEES);
@@ -366,7 +366,7 @@ function render(){
     });
     
     const can=data.filter(r=>r.status===STATUS.CAN).length;
-    const cannotList = data.filter(r=>r.status===STATUS.CANNOT || r.status===STATUS.RISK);
+    const cannotList = data.filter(r=>r.status===STATUS.CANNOT); // แก้ไขการนับแยกกันให้ชัดเจน
     const cannot=cannotList.length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
     
@@ -419,7 +419,8 @@ function render(){
     document.getElementById('pdfCanSub').textContent = `คิดเป็น ${pct(can, ALL_EMPLOYEES.length)}%`;
     document.getElementById('pdfCannot').textContent = cannot;
     document.getElementById('pdfCannotSub').textContent = `คิดเป็น ${pct(cannot, ALL_EMPLOYEES.length)}%`;
-    document.getElementById('pdfMissing').textContent = missingNames.length;
+    document.getElementById('pdfRisk').textContent = risk; // อัปเดตช่องใหม่ใน PDF
+    document.getElementById('pdfRiskSub').textContent = `คิดเป็น ${pct(risk, ALL_EMPLOYEES.length)}%`;
 
     let reasonBus = 0; let reasonHome = 0; let reasonRoute = 0; let reasonOther = 0;
     cannotList.forEach(r => {
@@ -555,6 +556,7 @@ document.getElementById('transport').onchange=()=>{
     if(busLine.disabled) busLine.value='';
 };
 
+// จัดการเรื่อง Update ทับของเดิม หรือบันทึกใหม่
 document.getElementById('surveyForm').onsubmit=e=>{
     e.preventDefault();
     const isCannot = document.getElementById('status').value === 'ไม่สามารถไปทำงานได้';
