@@ -261,7 +261,7 @@ const EMPLOYEES = {
     "นาย นัฐวุฒิ กลิ่นด้วง": { group: "Spot Quality", skills: [] },
     "นาง ดวงรัตน์ โพธิสมพร": { group: "Management", skills: [] },
     "นาย คณิน นิมมานวัฒนกุล": { group: "Engineer", skills: [] },
-    "นาย นันทพัทธ์ สุขล้าน": { group: "Receiving", skills: ["Chisel"] },
+    "นาย นันทพัทธ์ สุขล้วน": { group: "Receiving", skills: ["Chisel"] },
     "นาย อรรถพล พอกแก้ว": { group: "Analyse", skills: ["Chisel"] },
     "นาย ธนธรณ์ วัฒนชัยภักดี": { group: "Analyse", skills: [] },
     "นาย วีรพงษ์ สุขชิต": { group: "CMM", skills: [] },
@@ -598,12 +598,20 @@ document.getElementById('transport').onchange=()=>{
     if(busLine.disabled) busLine.value='';
 };
 
+// จัดการเรื่อง Update ทับของเดิม หรือบันทึกใหม่ พร้อมป้องกันการกรอกชื่อผิด
 document.getElementById('surveyForm').onsubmit=e=>{
     e.preventDefault();
-    const isCannot = document.getElementById('status').value === 'ไม่สามารถไปทำงานได้';
-    
-    const dateVal = document.getElementById('selectedDate').value;
     const nameVal = document.getElementById('empName').value.trim();
+
+    // ระบบ Validation เช็คชื่อที่กรอกให้ตรงกับในฐานข้อมูล
+    if (!ALL_EMPLOYEES.includes(nameVal)) {
+        alert("❌ ไม่อนุญาตให้บันทึกข้อมูล!\nกรุณาเลือก หรือ พิมพ์ ชื่อ-นามสกุล ให้ตรงกับรายชื่อที่มีอยู่ในระบบ 36 ท่านเท่านั้นครับ");
+        document.getElementById('empName').focus();
+        return;
+    }
+
+    const isCannot = document.getElementById('status').value === 'ไม่สามารถไปทำงานได้';
+    const dateVal = document.getElementById('selectedDate').value;
 
     const newData = {
         date: dateVal,
