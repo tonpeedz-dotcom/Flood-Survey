@@ -9,29 +9,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-:root{--navy:#0b2a55;--blue:#0f4c81;--cyan:#0e7490;--bg:#f5f7fb;--green:#059669;--red:#e11d48;--amber:#d97706;--border:#dbe3ee}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Thai",sans-serif;background:var(--bg);color:#172033}header{background:linear-gradient(120deg,var(--navy),var(--blue),var(--cyan));color:#fff;padding:24px}.wrap{max-width:1200px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;align-items:center}.head h1{margin:4px 0;font-size:28px}.head p{margin:0;color:#dbeafe}.datebox{background:#ffffff18;border:1px solid #ffffff33;padding:12px;border-radius:14px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}textarea{min-height:70px}.tabs{display:flex;gap:8px;margin:22px 0}.tab{border:0;padding:10px 18px;border-radius:10px;background:#e2e8f0;cursor:pointer}.tab.active{background:var(--navy);color:#fff}.panel{display:none}.panel.active{display:block}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid #e7edf5;border-radius:16px;padding:18px;box-shadow:0 5px 18px #0f172a0a}.metric{cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;border:2px solid transparent}.metric:hover{transform:translateY(-3px);box-shadow:0 8px 25px #0f172a15}.metric.active-filter{border-color:var(--navy);background:#f8fafc}.metric small{color:#64748b}.metric strong{display:block;font-size:32px;margin:6px 0}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.full{grid-column:1/-1}label{display:block;font-weight:600;margin-bottom:6px}.hint{color:#64748b;font-size:12px}.btn{border:0;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:600}.primary{background:var(--navy);color:#fff}.secondary{background:#e0f2fe;color:#075985}.danger{background:#ffe4e6;color:#9f1239}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:12px}.toolbar input{max-width:320px}.tablewrap{overflow:auto}
+:root{--navy:#0b2a55;--blue:#0f4c81;--cyan:#0e7490;--bg:#f5f7fb;--green:#059669;--red:#e11d48;--amber:#d97706;--border:#dbe3ee}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Thai",sans-serif;background:var(--bg);color:#172033}header{background:linear-gradient(120deg,var(--navy),var(--blue),var(--cyan));color:#fff;padding:24px}.wrap{max-width:1200px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;align-items:center}.head h1{margin:4px 0;font-size:28px}.head p{margin:0;color:#dbeafe}.datebox{background:#ffffff18;border:1px solid #ffffff33;padding:12px;border-radius:14px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}textarea{min-height:70px}.tabs{display:flex;gap:8px;margin:22px 0;flex-wrap:wrap;align-items:center}.tab{border:0;padding:10px 18px;border-radius:10px;background:#e2e8f0;cursor:pointer}.tab.active{background:var(--navy);color:#fff}.panel{display:none}.panel.active{display:block}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid #e7edf5;border-radius:16px;padding:18px;box-shadow:0 5px 18px #0f172a0a}.metric{cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;border:2px solid transparent}.metric:hover{transform:translateY(-3px);box-shadow:0 8px 25px #0f172a15}.metric.active-filter{border-color:var(--navy);background:#f8fafc}.metric small{color:#64748b}.metric strong{display:block;font-size:32px;margin:6px 0}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.full{grid-column:1/-1}label{display:block;font-weight:600;margin-bottom:6px}.hint{color:#64748b;font-size:12px}.btn{border:0;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:600}.primary{background:var(--navy);color:#fff}.secondary{background:#e0f2fe;color:#075985}.danger{background:#ffe4e6;color:#9f1239}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:12px}.toolbar input{max-width:320px}.tablewrap{overflow:auto}
 table{width:100%;border-collapse:collapse;min-width:1050px}
 th,td{text-align:left;padding:11px;border-bottom:1px solid #e8edf3;vertical-align:middle;white-space:nowrap}
-th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:#d1fae5;color:#065f46}.no{background:#ffe4e6;color:#9f1239}.risk{background:#fef3c7;color:#92400e}.map{height:340px;border-radius:14px;border:1px solid var(--border);overflow:hidden}.mapactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e3a8a;margin-bottom:15px}.success{background:#ecfdf5;color:#065f46}.reportHead{display:none}footer{padding:25px;color:#64748b;text-align:center}@media(max-width:850px){.grid4,.formgrid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}.full{grid-column:auto}}@media print{header,.tabs,#surveyPanel,.toolbar button,.toolbar input,footer{display:none!important}body{background:#fff}.wrap{max-width:none}.card{box-shadow:none;break-inside:avoid}.reportHead{display:block;margin-bottom:15px}.grid4{grid-template-columns:repeat(4,1fr)}#dashboardPanel{display:block!important}.tablewrap{overflow:visible}table{min-width:0;font-size:9px}th,td{padding:5px}.map{height:230px}}
+th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:#d1fae5;color:#065f46}.no{background:#ffe4e6;color:#9f1239}.risk{background:#fef3c7;color:#92400e}.gray{background:#e2e8f0;color:#475569}.map{height:340px;border-radius:14px;border:1px solid var(--border);overflow:hidden}.mapactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e3a8a;margin-bottom:15px}.success{background:#ecfdf5;color:#065f46}.reportHead{display:none}footer{padding:25px;color:#64748b;text-align:center}@media(max-width:850px){.grid4,.formgrid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}.full{grid-column:auto}}@media print{header,.tabs,#surveyPanel,.toolbar button,.toolbar input,footer{display:none!important}body{background:#fff}.wrap{max-width:none}.card{box-shadow:none;break-inside:avoid}.reportHead{display:block;margin-bottom:15px}.grid4{grid-template-columns:repeat(4,1fr)}#dashboardPanel{display:block!important}.tablewrap{overflow:visible}table{min-width:0;font-size:9px}th,td{padding:5px}.map{height:230px}}
 /* Scrollbar Customization สำหรับกล่องรายชื่อพนักงานที่ยังไม่กรอก */
 #missingList::-webkit-scrollbar { height: 6px; }
 #missingList::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+.skill-card { border-left: 4px solid var(--border); display:flex; flex-direction:column; gap:8px; }
 </style>
 </head>
 <body>
-<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน(by_น้อนเนิร์ด❤️)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน (by_น้อนเนิร์ด❤️)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
 <main class="wrap">
-<div class="tabs"><button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button><button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button></div>
+<div class="tabs">
+    <button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button>
+    <button class="tab" data-panel="skillPanel">จัดกำลังพล (Skills)</button>
+    <button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button>
+    <a href="https://www.thaiwater.net/floodplain" target="_blank" class="btn primary" style="margin-left:auto; text-decoration:none; background-color:var(--cyan); display:flex; align-items:center; gap:6px; font-size:14px;">🌊 ตรวจสอบสถานการณ์น้ำ</a>
+</div>
+
+<!-- ================= DASHBOARD PANEL ================= -->
 <section id="dashboardPanel" class="panel active"><div class="reportHead"><h2>รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
 
 <div class="grid4">
-    <div class="card metric active-filter" id="cardTotal" onclick="window.setStatusFilter('')"><small>พนักงานที่ Update</small><strong id="mTotal">0/30</strong><span id="pTotal">0% (คลิกดูทั้งหมด)</span></div>
+    <div class="card metric active-filter" id="cardTotal" onclick="window.setStatusFilter('')"><small>พนักงานที่ Update</small><strong id="mTotal">0/36</strong><span id="pTotal">0% (คลิกดูทั้งหมด)</span></div>
     <div class="card metric" id="cardCan" onclick="window.setStatusFilter('สามารถไปทำงานได้')"><small>สามารถมาทำงานได้</small><strong class="green" id="mCan">0</strong><span id="pCan">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardCannot" onclick="window.setStatusFilter('ไม่สามารถไปทำงานได้')"><small>ไม่สามารถมาทำงานได้</small><strong class="red" id="mCannot">0</strong><span id="pCannot">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardRisk" onclick="window.setStatusFilter('มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)')"><small>มีความเสี่ยง</small><strong class="amber" id="mRisk">0</strong><span id="pRisk">0% (คลิกเพื่อดู)</span></div>
 </div>
 
-<!-- กล่องแสดงรายชื่อคนที่ยังไม่กรอกข้อมูล พร้อมระบบ ซ่อน/แสดง และ Layout แนวนอน -->
 <div class="card" style="margin-top:18px; border-left: 4px solid var(--red);">
     <div style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="window.toggleMissingList()">
         <h3 style="margin:0; color: var(--red);">พนักงานที่ยังไม่กรอกข้อมูล (<span id="mMissingCount">0</span> คน)</h3>
@@ -50,6 +57,39 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 
 <div class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div><button class="btn danger" onclick="window.clearData()">ล้างข้อมูลทั้งหมด</button> <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>พิกัด</th><th>Update</th><th>จัดการ</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 </section>
+
+<!-- ================= SKILL PANEL ================= -->
+<section id="skillPanel" class="panel">
+    <div class="card">
+        <h2>ระบบจัดกำลังพล (Skill Matrix)</h2>
+        <p class="hint" style="margin-top:-10px; margin-bottom:20px;">ค้นหาพนักงานที่มีทักษะตรงตามที่ต้องการ และตรวจสอบความพร้อมในการมาทำงานวันนี้</p>
+        
+        <div class="formgrid" style="margin-bottom:20px;">
+            <div>
+                <label>เลือกทักษะที่ต้องการหา (Skill)</label>
+                <select id="skillFilter" onchange="window.renderSkills()">
+                    <option value="">-- แสดงทุกทักษะ --</option>
+                    <option value="Spot">Spot</option>
+                    <option value="Chisel">Chisel</option>
+                    <option value="Inspect">Inspect</option>
+                </select>
+            </div>
+            <div>
+                <label>กรองสถานะวันนี้</label>
+                <select id="skillStatusFilter" onchange="window.renderSkills()">
+                    <option value="">-- แสดงทุกคน --</option>
+                    <option value="สามารถไปทำงานได้">เฉพาะคนที่ "สามารถมาทำงานได้"</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="skillResults" class="grid4">
+            <!-- ข้อมูลพนักงานตาม Skill จะโชว์ที่นี่ -->
+        </div>
+    </div>
+</section>
+
+<!-- ================= SURVEY PANEL ================= -->
 <section id="surveyPanel" class="panel"><div class="card"><h2>แบบสอบถามสถานการณ์รายวัน</h2><div id="msg"></div><form id="surveyForm" class="formgrid">
 <div class="full">
 <label>1. ชื่อ - นามสกุล</label>
@@ -92,40 +132,47 @@ const dbRef = ref(db, 'dailyReadiness');
 
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
 
-// ฐานข้อมูลรายชื่อและกลุ่มพนักงาน
-const EMPLOYEE_GROUPS = {
-    "นาย สุนทร ไชยแสน": "Project",
-    "นาย อดิเรก แซ่ซิ้ม": "Project",
-    "นาย สิทธินนท์ จิรพัธนนท์": "Measurement",
-    "นาย วาที ปล้องทางไชย": "Project",
-    "นาย สิรวิทย์ สมสา": "Project",
-    "นาย วสันต์ แจ้งประเสริฐ": "Audit",
-    "นาย พานทอง แสงกล้า": "Project",
-    "นาย จิรยุท วิศวะชัย": "Engineer",
-    "นาย ทองหยด ครุฑตำคำ": "Audit",
-    "นาย ณัฐชนนท์ อุดชาชน": "Engineer",
-    "นาย สุรสิทธิ์ แซ่โค้ว": "Audit",
-    "นาย เอกชัย ภูมี": "Audit",
-    "นาย กัมพล นาถ้ำเพชร": "Spot Quality",
-    "นาย วัชรินทร์ โพธิราช": "Spot Quality",
-    "นาย บุญเจิด หลุมทอง": "Measurement",
-    "นาย โชคประสิทธิ์ ภักดี": "Measurement",
-    "นาย อาวุฒิ บุญพา": "Audit",
-    "นาย สถาพร วงค์ทอง": "Spot Quality",
-    "นาย คมสันต์ ธรรมเสน": "Spot Quality",
-    "นาย ธีระยุทธ คำบุดดี": "Measurement",
-    "นาย ทินกร ทะนามศรี": "Analyze",
-    "นาย สนั่น ขยันการ": "Analyze",
-    "นาย จีรศักดิ์ แสงโต": "RECEIVING-W",
-    "นาย วัชรพงษ์ เข็มไธสง": "RECEIVING-W",
-    "นาย บรรณวิชญ์ ชอบธรรม": "CMM-W",
-    "นาย จิรวัฒน์ ประภาศิริสุลี": "CMM-W",
-    "นาย นัฐวุฒิ กลิ่นด้วง": "Spot Quality",
-    "นาง ดวงรัตน์ โพธิสมพร": "Management",
-    "นาย คณิน นิมมานวัฒนกุล": "Engineer"
+// ฐานข้อมูลรายชื่อ 36 ท่าน กลุ่มพนักงาน และ Skill
+const EMPLOYEES = {
+    "นาย สุนทร ไชยแสน": { group: "Project", skills: ["Chisel", "Inspect"] },
+    "นาย อดิเรก แซ่ซิ้ม": { group: "Project", skills: ["Chisel"] },
+    "นาย สิทธินนท์ จิรพัธนนท์": { group: "Project", skills: [] },
+    "นาย วาที ปล้องทางไชย": { group: "Project", skills: [] },
+    "นาย สิรวิทย์ สมสา": { group: "Project", skills: ["Chisel", "Inspect"] },
+    "นาย วสันต์ แจ้งประเสริฐ": { group: "Audit", skills: ["Chisel"] },
+    "นาย พานทอง แสงกล้า": { group: "Project", skills: ["Chisel", "Inspect"] },
+    "นาย จิรยุท วิศวะชัย": { group: "Engineer", skills: ["Chisel"] },
+    "นาย ทองหยด ครุฑตำคำ": { group: "Audit", skills: ["Spot"] },
+    "นาย ณัฐชนนท์ อุดชาชน": { group: "Engineer", skills: [] },
+    "นาย สุรสิทธิ์ แซ่โค้ว": { group: "Audit", skills: ["Chisel"] },
+    "นาย เอกชัย ภูมี": { group: "Audit", skills: ["Chisel"] },
+    "นาย กัมพล นาถ้ำเพชร": { group: "Spot Quality", skills: ["Chisel"] },
+    "นาย วัชรินทร์ โพธิราช": { group: "Spot Quality", skills: ["Spot"] },
+    "นาย บุญเจิด หลุมทอง": { group: "Measurement", skills: ["Chisel"] },
+    "นาย โชคประสิทธิ์ ภักดี": { group: "Measurement", skills: ["Chisel"] },
+    "นาย อาวุฒิ บุญพา": { group: "Audit", skills: ["Spot"] },
+    "นาย สถาพร วงค์ทอง": { group: "Spot Quality", skills: ["Chisel"] },
+    "นาย คมสันต์ ธรรมเสน": { group: "Spot Quality", skills: ["Chisel"] },
+    "นาย ธีระยุทธ คำบุดดี": { group: "Measurement", skills: ["Chisel"] },
+    "นาย ทินกร ทะนามศรี": { group: "Analyse", skills: ["Chisel"] },
+    "นาย สนั่น ขยันการ": { group: "Analyse", skills: ["Chisel"] },
+    "นาย จีรศักดิ์ แสงโต": { group: "Receiving", skills: ["Chisel"] },
+    "นาย วัชรพงษ์ เข็มไธสง": { group: "Receiving", skills: ["Chisel"] },
+    "นาย บรรณวิชญ์ ชอบธรรม": { group: "CMM", skills: [] },
+    "นาย จิรวัฒน์ ประภาศิริสุลี": { group: "CMM", skills: [] },
+    "นาย นัฐวุฒิ กลิ่นด้วง": { group: "Spot Quality", skills: [] },
+    "นาง ดวงรัตน์ โพธิสมพร": { group: "Management", skills: [] },
+    "นาย คณิน นิมมานวัฒนกุล": { group: "Engineer", skills: [] },
+    "นาย นันทพัทธ์ สุขล้วน": { group: "Receiving", skills: ["Chisel"] },
+    "นาย อรรถพล พอกแก้ว": { group: "Analyse", skills: ["Chisel"] },
+    "นาย ธนธรณ์ วัฒนชัยภักดี": { group: "Analyse", skills: [] },
+    "นาย วีรพงษ์ สุขชิต": { group: "CMM", skills: [] },
+    "นาย วิทยา กันดี": { group: "Receiving", skills: ["Chisel"] },
+    "นาย พีรพงษ์ เดชทิศ": { group: "CMM", skills: [] },
+    "นาย วัชรินทร์ ดีธรรม": { group: "Receiving", skills: ["Chisel"] }
 };
 
-const ALL_EMPLOYEES = Object.keys(EMPLOYEE_GROUPS);
+const ALL_EMPLOYEES = Object.keys(EMPLOYEES);
 
 // ยัดรายชื่อเข้า Dropdown (Datalist) อัตโนมัติ
 document.getElementById('employeeNames').innerHTML = ALL_EMPLOYEES.map(n => `<option value="${n}"></option>`).join('');
@@ -150,6 +197,7 @@ onValue(dbRef, (snapshot) => {
     });
     rows.reverse(); 
     render();
+    renderSkills(); // โหลดหน้า Skill ทันทีที่ข้อมูลมา
 });
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -173,14 +221,12 @@ function render(){
         return matchSearch && matchStatus;
     });
     
-    // คำนวณผู้ที่อัปเดตแล้ว (กรองชื่อซ้ำออก)
     const submittedNames = [...new Set(data.map(r => r.name.trim()))];
     const missingNames = ALL_EMPLOYEES.filter(name => !submittedNames.includes(name));
     
-    // จัดกลุ่มผู้ที่ยังไม่ทำตาม Group
     const missingByGroup = {};
     missingNames.forEach(n => {
-        const g = EMPLOYEE_GROUPS[n] || 'อื่นๆ';
+        const g = EMPLOYEES[n]?.group || 'อื่นๆ';
         if(!missingByGroup[g]) missingByGroup[g] = [];
         missingByGroup[g].push(n);
     });
@@ -189,7 +235,7 @@ function render(){
     const cannot=data.filter(r=>r.status===STATUS.CANNOT).length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
     
-    // อัปเดตสถิติ %
+    // อัปเดตสถิติ % (36 คน)
     document.getElementById('mTotal').textContent = submittedNames.length + '/' + ALL_EMPLOYEES.length;
     document.getElementById('pTotal').textContent = pct(submittedNames.length, ALL_EMPLOYEES.length) + '% (คลิกดูทั้งหมด)';
     
@@ -200,7 +246,6 @@ function render(){
     document.getElementById('pCannot').textContent=pct(cannot, data.length)+'% (คลิกเพื่อดู)';
     document.getElementById('pRisk').textContent=pct(risk, data.length)+'% (คลิกเพื่อดู)';
     
-    // เรนเดอร์รายชื่อแยกกลุ่มแบบแนวนอน (Horizontal Scroll) และแนวตั้ง (Column) ในแต่ละกลุ่ม
     document.getElementById('mMissingCount').textContent = missingNames.length;
     if(missingNames.length === 0) {
         document.getElementById('missingList').innerHTML = '<span class="badge ok" style="font-size:14px; padding:6px 12px; margin-top:8px;">กรอกข้อมูลครบทุกคนแล้ว 🎉</span>';
@@ -216,7 +261,16 @@ function render(){
     document.getElementById('reportDate').textContent='วันที่ '+document.getElementById('selectedDate').value;
     document.getElementById('rowCount').textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';
     
-    document.getElementById('tbody').innerHTML=filtered.map(r=>`<tr><td><b>${esc(r.name)}</b><br><small style="color:#64748b;">${esc(EMPLOYEE_GROUPS[r.name]||'อื่นๆ')}</small></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`).join('');
+    // แสดง Skill ใต้ชื่อในตาราง
+    document.getElementById('tbody').innerHTML=filtered.map(r=>{
+        const empData = EMPLOYEES[r.name.trim()];
+        const groupStr = empData?.group || 'อื่นๆ';
+        const skillBadges = empData?.skills.length > 0 
+            ? `<div style="margin-top:4px;">${empData.skills.map(s => `<span class="badge" style="background:#e2e8f0; color:#475569; font-size:10px; margin-right:4px;">${s}</span>`).join('')}</div>`
+            : '';
+            
+        return `<tr><td><b>${esc(r.name)}</b><br><small style="color:#64748b;">${esc(groupStr)}</small>${skillBadges}</td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td><span class="badge ${badge(r.status)}">${esc(r.status)}</span></td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`;
+    }).join('');
     
     summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
     summaryMarkers=filtered.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:color(r.status),fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.status)}<br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));
@@ -226,6 +280,63 @@ function render(){
         summaryMap.fitBounds(group.getBounds().pad(.25),{maxZoom:13});
     }
 }
+
+// ระบบค้นหาและจัดเรียงผู้มี Skill
+window.renderSkills = function() {
+    const data = daily();
+    const reqSkill = document.getElementById('skillFilter').value;
+    const reqStatus = document.getElementById('skillStatusFilter').value;
+    
+    let resultHTML = '';
+    let matchCount = 0;
+
+    ALL_EMPLOYEES.forEach(name => {
+        const empData = EMPLOYEES[name];
+        
+        // 1. เช็คว่ามี Skill ที่เลือกไหม
+        if (reqSkill && !empData.skills.includes(reqSkill)) return;
+        
+        // 2. ดึงสถานะปัจจุบันของวันนี้
+        const record = data.find(r => r.name.trim() === name);
+        const currentStatus = record ? record.status : 'ยังไม่ระบุข้อมูล (Not Updated)';
+        
+        // 3. กรองตาม Status ถ้ามีการเลือก
+        if (reqStatus && currentStatus !== reqStatus) return;
+
+        matchCount++;
+        
+        // กำหนดสีและป้ายแสดงผล
+        let statusBadge = 'gray';
+        let borderColor = 'var(--border)';
+        if(currentStatus === STATUS.CAN) { statusBadge = 'ok'; borderColor = 'var(--green)'; }
+        else if(currentStatus === STATUS.CANNOT) { statusBadge = 'no'; borderColor = 'var(--red)'; }
+        else if(currentStatus === STATUS.RISK) { statusBadge = 'risk'; borderColor = 'var(--amber)'; }
+
+        const skillTags = empData.skills.length > 0 
+            ? empData.skills.map(s => `<span class="badge" style="background:#0f4c81; color:#fff;">${s}</span>`).join(' ') 
+            : `<small style="color:#94a3b8;">ไม่มีทักษะพิเศษระบุ</small>`;
+
+        resultHTML += `
+            <div class="card skill-card" style="border-left-color: ${borderColor};">
+                <div style="display:flex; justify-content:space-between;">
+                    <strong style="font-size:15px;">${esc(name)}</strong>
+                    <small style="color:#64748b;">${esc(empData.group)}</small>
+                </div>
+                <div>${skillTags}</div>
+                <div style="margin-top:4px;">
+                    <span class="badge ${statusBadge}">${esc(currentStatus)}</span>
+                </div>
+            </div>
+        `;
+    });
+
+    if(matchCount === 0) {
+        resultHTML = `<div class="full hint" style="text-align:center; padding:20px;">ไม่พบพนักงานที่มีคุณสมบัติตรงตามที่ค้นหา</div>`;
+    }
+
+    document.getElementById('skillResults').innerHTML = resultHTML;
+}
+
 
 function setPin(a,b){
     document.getElementById('lat').value=(+a).toFixed(6);
@@ -316,7 +427,7 @@ document.getElementById('surveyForm').onsubmit=e=>{
 window.exportPDF = function(){document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;window.print();}
 window.exportCSV = function(){
     const h=['วันที่','ชื่อ-นามสกุล','กลุ่ม/แผนก','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','Latitude','Longitude','Update'];
-    const csv=[h,...daily().map(r=>[r.date,r.name,EMPLOYEE_GROUPS[r.name]||'อื่นๆ',r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+    const csv=[h,...daily().map(r=>[r.date,r.name,EMPLOYEES[r.name.trim()]?.group||'อื่นๆ',r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
@@ -365,7 +476,7 @@ window.deleteRow = function(key){
     }
 }
 
-document.getElementById('selectedDate').onchange=render;
+document.getElementById('selectedDate').onchange=() => { render(); renderSkills(); };
 document.getElementById('search').oninput=render;
 
 document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
