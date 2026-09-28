@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ระบบสำรวจความพร้อมมาทำงานรายวัน by น้อนเนิร์ด</title>
+<title>ระบบสำรวจความพร้อมมาทำงานรายวัน</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-<header><div class="wrap head"><div><small>DAILY WORK SURVEY</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน by น้อนเนิร์ด</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>ระบบสำรวจความพร้อมมาทำงานรายวัน(by_น้อนเนิร์ด)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
 <main class="wrap">
 <div class="tabs"><button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button><button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button></div>
 <section id="dashboardPanel" class="panel active"><div class="reportHead"><h2>รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
@@ -25,7 +25,7 @@
   <p class="hint">หมุดสีเขียว: มาได้ | สีแดง: มาไม่ได้ | สีส้ม: มีความเสี่ยง</p>
 </div>
 
-<div class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div><button class="btn danger" onclick="clearData()">ล้างข้อมูล</button> <button class="btn secondary" onclick="exportCSV()">Export CSV</button> <button class="btn primary" onclick="exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>พิกัด</th><th>Update</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<div class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div><button class="btn danger" onclick="window.clearData()">ล้างข้อมูล</button> <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>พิกัด</th><th>Update</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 </section>
 <section id="surveyPanel" class="panel"><div class="card"><h2>แบบสอบถามสถานการณ์รายวัน</h2><div id="msg"></div><form id="surveyForm" class="formgrid">
 <div class="full">
@@ -61,23 +61,52 @@
 <option value="นาย จิรวัฒน์ ประภาศิริสุลี"></option>
 <option value="นาย นัฐวุฒิ กลิ่นด้วง"></option>
 <option value="นาง ดวงรัตน์ โพธิสมพร"></option>
-<option value="นาย คณิน นิมมานวัฒนกุล"></option>
 </datalist>
 </div>
 <div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div><div><label>5. สถานะปัจจุบัน</label><select id="status"><option>สามารถไปทำงานได้</option><option>ไม่สามารถไปทำงานได้</option><option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option></select></div><div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div><div class="full"><label>7. พิกัดที่พัก</label><div class="notice">กดตำแหน่งบนแผนที่เพื่อปักหมุด หรือกด “ตำแหน่งปัจจุบัน” จากโทรศัพท์ พิกัดจะถูกบันทึกพร้อมข้อมูล</div><div id="pickerMap" class="map"></div><div class="mapactions"><button type="button" class="btn secondary" id="locateBtn">ใช้ตำแหน่งปัจจุบัน</button><button type="button" class="btn secondary" id="googleBtn">เปิดหมุดใน Google Maps</button><input id="lat" type="number" step="any" placeholder="Latitude" required style="max-width:180px"><input id="lng" type="number" step="any" placeholder="Longitude" required style="max-width:180px"></div><p class="hint">การใช้ตำแหน่ง GPS ต้องเปิดสิทธิ์ Location ใน Browser และควรใช้งานผ่าน HTTPS</p></div><div class="full notice">เวลา Update บันทึกอัตโนมัติ ข้อมูลที่อยู่และพิกัดเป็นข้อมูลส่วนบุคคล ควรจำกัดสิทธิ์เฉพาะผู้รับผิดชอบและกำหนดระยะเวลาจัดเก็บ</div><button class="btn primary full" type="submit">ส่งข้อมูลสถานการณ์วันนี้</button></form></div></section>
-</main><footer>ข้อมูลถูกจัดเก็บแบบ Local สำหรับใช้งานเฉพาะหน้าเบราว์เซอร์นี้</footer>
+</main><footer>เชื่อมต่อฐานข้อมูลแบบ Realtime ระบบบันทึกอัตโนมัติ</footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
+
+<!-- โค้ดเชื่อมต่อฐานข้อมูล Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDy8TZAeEZBoNv8IsT0hrCDZuyoPxcaVEE",
+  authDomain: "kanin-flood.firebaseapp.com",
+  databaseURL: "https://kanin-flood-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "kanin-flood",
+  storageBucket: "kanin-flood.firebasestorage.app",
+  messagingSenderId: "973994907913",
+  appId: "1:973994907913:web:a3c8fe93d624ec3db51bd8",
+  measurementId: "G-TJ6RCWHDV5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const dbRef = ref(db, 'dailyReadiness');
+
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
-let rows=JSON.parse(localStorage.getItem('dailyReadinessRows'))||[];
+let rows=[];
 let pickerMarker;
 let summaryMarkers=[];
 const today=new Date().toISOString().slice(0,10);
-document.getElementById('selectedDate').value=today==='2026-09-28'?today:'2026-09-28';
+document.getElementById('selectedDate').value=today;
 
 const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);
 const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);
 [summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
+
+// ดึงข้อมูล Realtime จาก Firebase
+onValue(dbRef, (snapshot) => {
+    rows = [];
+    snapshot.forEach((child) => {
+        rows.push(child.val());
+    });
+    rows.reverse(); // เอาล่าสุดขึ้นก่อน
+    render();
+});
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function daily(){return rows.filter(r=>r.date===document.getElementById('selectedDate').value)}
@@ -141,10 +170,10 @@ document.getElementById('transport').onchange=()=>{
     if(busLine.disabled) busLine.value='';
 };
 
+// ส่งข้อมูลขึ้น Firebase
 document.getElementById('surveyForm').onsubmit=e=>{
     e.preventDefault();
-    rows.unshift({
-        id: Date.now(),
+    const newData = {
         date: document.getElementById('selectedDate').value,
         name: document.getElementById('empName').value.trim(),
         address: document.getElementById('address').value.trim(),
@@ -156,26 +185,23 @@ document.getElementById('surveyForm').onsubmit=e=>{
         lat: +document.getElementById('lat').value,
         lng: +document.getElementById('lng').value,
         updatedAt: new Date().toLocaleString('th-TH',{hour12:false})
-    });
+    };
     
-    localStorage.setItem('dailyReadinessRows',JSON.stringify(rows));
-    document.getElementById('surveyForm').reset();
-    document.getElementById('transport').onchange();
-    
-    if(pickerMarker){
-        pickerMap.removeLayer(pickerMarker);
-        pickerMarker=null;
-    }
-    
-    const msg = document.getElementById('msg');
-    msg.innerHTML='<div class="notice success">บันทึกข้อมูลเรียบร้อยแล้ว</div>';
-    
-    render();
-    setTimeout(()=>msg.innerHTML='',2500);
+    push(dbRef, newData).then(() => {
+        document.getElementById('surveyForm').reset();
+        document.getElementById('transport').onchange();
+        if(pickerMarker){
+            pickerMap.removeLayer(pickerMarker);
+            pickerMarker=null;
+        }
+        const msg = document.getElementById('msg');
+        msg.innerHTML='<div class="notice success">บันทึกข้อมูลและส่งเข้าระบบเรียบร้อยแล้ว</div>';
+        setTimeout(()=>msg.innerHTML='',2500);
+    }).catch(err => alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " + err));
 };
 
-function exportPDF(){document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;window.print();}
-function exportCSV(){
+window.exportPDF = function(){document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;window.print();}
+window.exportCSV = function(){
     const h=['วันที่','ชื่อ-นามสกุล','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','Latitude','Longitude','Update'];
     const csv=[h,...daily().map(r=>[r.date,r.name,r.address,r.homeImpact,r.waterLevel,r.status,r.transport,r.busLine,r.lat,r.lng,r.updatedAt])].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
@@ -185,22 +211,16 @@ function exportCSV(){
     a.click();
     URL.revokeObjectURL(a.href);
 }
-
-function clearData(){
-    const pwd=prompt('กรุณากรอกรหัสผ่านเพื่อยืนยันการล้างข้อมูลทั้งหมด:');
+window.clearData = function(){
+    const pwd=prompt('กรุณากรอกรหัสผ่านเพื่อยืนยันการล้างข้อมูลทั้งหมดในระบบคลาวด์:');
     if(pwd==='1234@abcd'){
-        rows=[];
-        localStorage.removeItem('dailyReadinessRows');
-        render();
-        alert('ล้างข้อมูลเรียบร้อยแล้ว');
+        set(dbRef, null).then(() => {
+            alert('ล้างข้อมูลเรียบร้อยแล้ว');
+        });
     }else if(pwd!==null){
         alert('รหัสผ่านไม่ถูกต้อง');
     }
 }
-
-window.exportPDF=exportPDF;
-window.exportCSV=exportCSV;
-window.clearData=clearData;
 
 document.getElementById('selectedDate').onchange=render;
 document.getElementById('search').oninput=render;
@@ -212,7 +232,6 @@ document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
     setTimeout(()=>{pickerMap.invalidateSize();summaryMap.invalidateSize();},100);
 });
 
-render();
 setTimeout(()=>{summaryMap.invalidateSize();pickerMap.invalidateSize();},200);
 </script>
 </body>
