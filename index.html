@@ -52,10 +52,48 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
 #missingList::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
 .skill-card { border-left: 4px solid var(--border); display:flex; flex-direction:column; gap:8px; }
 html { scroll-behavior: smooth; }
+
+/* Modal Background */
+.modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center; }
+.modal-box { background:#fff; padding:24px; border-radius:12px; width:320px; max-width:90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
 </style>
 </head>
 <body>
-<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1 id="teamTitle">สำรวจความพร้อมทำงาน (Quality Team)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+
+<!-- Admin Login Modal -->
+<div id="adminModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2 style="margin-top:0; color:var(--navy);">Admin Login</h2>
+        <label>Username</label>
+        <input type="text" id="adminUser" placeholder="Enter username" style="margin-bottom:15px;">
+        <label>Password</label>
+        <input type="password" id="adminPass" placeholder="Enter password" style="margin-bottom:20px;">
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="btn" onclick="closeAdminModal()" style="background:#e2e8f0; color:#475569;">ยกเลิก</button>
+            <button class="btn primary" onclick="checkAdminLogin()">เข้าสู่ระบบ</button>
+        </div>
+    </div>
+</div>
+
+<header>
+    <div class="wrap head">
+        <div>
+            <small>DAILY WORK READINESS</small>
+            <h1 id="teamTitle">สำรวจความพร้อมทำงาน (Quality Team)</h1>
+            <p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
+            <div class="datebox">
+                <label>วันที่แสดงผล</label>
+                <input type="date" id="selectedDate">
+            </div>
+            <div>
+                <button id="adminLoginBtn" class="btn" style="background:#0f172a; color:#fff;" onclick="openAdminModal()">Admin Login</button>
+                <button id="adminLogoutBtn" class="btn danger" onclick="logoutAdmin()" style="display:none;">Logout (Admin)</button>
+            </div>
+        </div>
+    </div>
+</header>
 
 <main class="wrap">
 <!-- ================= TEAM SELECTOR ================= -->
@@ -147,7 +185,18 @@ html { scroll-behavior: smooth; }
   <p class="hint">หมุดสีเขียว: มาได้ | สีแดง: มาไม่ได้ | สีส้ม: มีความเสี่ยง</p>
 </div>
 
-<div id="tableCard" class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div><button class="btn danger" onclick="window.clearData()">ล้างข้อมูลทั้งหมด</button> <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button></div></div><div class="tablewrap"><table><thead><tr><th>ชื่อ-นามสกุล</th><th>ที่อยู่</th><th>ผลกระทบบ้าน</th><th>ระดับน้ำ</th><th>สถานะ</th><th>การเดินทาง</th><th>หมายเหตุ</th><th>พิกัด</th><th>Update</th><th>จัดการ</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<div id="tableCard" class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div>
+    <button id="btnClearAll" class="btn danger" onclick="window.clearData()" style="display:none;">ล้างข้อมูลทั้งหมด</button> 
+    <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> 
+    <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button>
+</div></div><div class="tablewrap">
+    <table>
+        <thead id="tableHead">
+            <!-- Header ตารางจะถูกสร้างโดยอัตโนมัติตามสถานะ Admin -->
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+</div></div>
 </section>
 
 <!-- ================= SKILL PANEL ================= -->
@@ -242,15 +291,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ประกาศ DB Reference ของทั้ง 2 ทีม
 const dbRefQuality = ref(db, 'dailyReadiness');
 const dbRefJig = ref(db, 'dailyReadiness_JigKaizen');
 
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
 
-// ----------------------------------------------------
-// ข้อมูลพนักงานทีม Quality (36 ท่าน)
-// ----------------------------------------------------
 const EMPLOYEES_QUALITY = {
     "นาย สุนทร ไชยแสน": { group: "Project", skills: ["Chisel", "Inspect"] },
     "นาย อดิเรก แซ่ซิ้ม": { group: "Project", skills: ["Chisel"] },
@@ -290,9 +335,6 @@ const EMPLOYEES_QUALITY = {
     "นาย วัชรินทร์ ดีธรรม": { group: "Receiving", skills: ["Chisel"] }
 };
 
-// ----------------------------------------------------
-// ข้อมูลพนักงานทีม Jig MTN & Kaizen (28 ท่าน)
-// ----------------------------------------------------
 const EMPLOYEES_JIG = {
     "นาย ศรายุทธ์ วงศ์วิริยะกุล": { group: "(W)JIG MAINTENANCE-D", skills: [] },
     "นาย เกรียงไกร ปิยะราช": { group: "(W)JIG MAINTENANCE-W", skills: [] },
@@ -325,7 +367,6 @@ const EMPLOYEES_JIG = {
     "นาย ยอดชาย จินเจือ": { group: "(W) KAIZEN - D", skills: [] }
 };
 
-// State Variables สำหรับระบบแยกทีม
 let activeTeamName = 'QUALITY';
 let activeEmployees = EMPLOYEES_QUALITY;
 let allActiveEmployeeNames = Object.keys(activeEmployees);
@@ -336,6 +377,8 @@ let rows=[];
 let currentStatusFilter='';
 let pickerMarker;
 let summaryMarkers=[];
+let isAdmin = false; // State เก็บสิทธิ์การเป็น Admin
+
 const today=new Date().toISOString().slice(0,10);
 document.getElementById('selectedDate').value=today;
 
@@ -343,44 +386,68 @@ const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);
 const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);
 [summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
 
-// ----------------------------------------------------
-// ระบบ Switch Team
-// ----------------------------------------------------
+// --- ระบบ Admin Login ---
+window.openAdminModal = function() {
+    document.getElementById('adminModal').style.display = 'flex';
+}
+window.closeAdminModal = function() {
+    document.getElementById('adminModal').style.display = 'none';
+    document.getElementById('adminUser').value = '';
+    document.getElementById('adminPass').value = '';
+}
+window.checkAdminLogin = function() {
+    const user = document.getElementById('adminUser').value;
+    const pass = document.getElementById('adminPass').value;
+    
+    if(user === 'Admin' && pass === '1234@abcd') {
+        isAdmin = true;
+        closeAdminModal();
+        document.getElementById('adminLoginBtn').style.display = 'none';
+        document.getElementById('adminLogoutBtn').style.display = 'inline-block';
+        document.getElementById('btnClearAll').style.display = 'inline-block';
+        render(); // สั่งให้วาดตารางใหม่เพื่อแสดงคอลัมน์พิเศษ
+    } else {
+        alert('Username หรือ Password ไม่ถูกต้อง');
+    }
+}
+window.logoutAdmin = function() {
+    isAdmin = false;
+    document.getElementById('adminLoginBtn').style.display = 'inline-block';
+    document.getElementById('adminLogoutBtn').style.display = 'none';
+    document.getElementById('btnClearAll').style.display = 'none';
+    render(); // สั่งให้วาดตารางใหม่เพื่อซ่อนคอลัมน์
+}
+// -----------------------
+
 window.switchTeam = function(team) {
     activeTeamName = team;
     if (team === 'QUALITY') {
         activeEmployees = EMPLOYEES_QUALITY;
         currentDbRef = dbRefQuality;
-        document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Quality Team) by น้อนเนิร์ดคนเดิม❤️";
+        document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Quality Team)";
         document.getElementById('pdfMainTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality Team)";
         document.getElementById('dashboardTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality)";
     } else {
         activeEmployees = EMPLOYEES_JIG;
         currentDbRef = dbRefJig;
-        document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Jig MTN & Kaizen) by น้อนเนิร์ดคนเดิม❤️";
+        document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Jig MTN & Kaizen)";
         document.getElementById('pdfMainTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Jig MTN & Kaizen)";
         document.getElementById('dashboardTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Jig MTN & Kaizen)";
     }
     
-    // อัปเดตรายชื่อใน Datalist 
     allActiveEmployeeNames = Object.keys(activeEmployees);
     document.getElementById('employeeNames').innerHTML = allActiveEmployeeNames.map(n => `<option value="${n}"></option>`).join('');
     
-    // ล้างแบบฟอร์มเพื่อป้องกันข้อมูลค้างจากทีมเก่า
     document.getElementById('surveyForm').reset();
     document.getElementById('status').onchange();
     document.getElementById('transport').onchange();
     if(pickerMarker) { pickerMap.removeLayer(pickerMarker); pickerMarker=null; }
 
-    // เปลี่ยน Database Listener
-    if(firebaseUnsubscribe) {
-        firebaseUnsubscribe(); // ยกเลิกการฟังข้อมูลจาก DB เดิม
-    }
+    if(firebaseUnsubscribe) firebaseUnsubscribe(); 
     
-    rows = []; // เคลียร์ตารางเดิม
-    render(); // ล้างหน้าจอก่อนโหลดข้อมูลใหม่
+    rows = []; 
+    render(); 
     
-    // ผูก Listener กับฐานข้อมูลใหม่
     firebaseUnsubscribe = onValue(currentDbRef, (snapshot) => {
         rows = [];
         snapshot.forEach((child) => {
@@ -393,8 +460,6 @@ window.switchTeam = function(team) {
         renderSkills(); 
     });
 }
-
-// ----------------------------------------------------
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function daily(){return rows.filter(r=>r.date===document.getElementById('selectedDate').value)}
@@ -416,7 +481,6 @@ document.getElementById('status').onchange = () => {
     }
 };
 
-// ระบบ Autofill ปรับปรุงใหม่ให้ทำงานสมบูรณ์ขึ้น
 document.getElementById('empName').addEventListener('input', function() {
     const selectedName = this.value.trim();
     if (!allActiveEmployeeNames.includes(selectedName)) return; 
@@ -530,13 +594,44 @@ function render(){
     document.getElementById('reportDate').textContent='วันที่ '+document.getElementById('selectedDate').value;
     document.getElementById('rowCount').textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';
     
+    // สร้างส่วน Header ตารางตามสถานะ Admin
+    document.getElementById('tableHead').innerHTML = `
+        <tr>
+            <th>ชื่อ-นามสกุล</th>
+            <th>ที่อยู่</th>
+            <th>ผลกระทบบ้าน</th>
+            <th>ระดับน้ำ</th>
+            <th>สถานะ</th>
+            <th>การเดินทาง</th>
+            <th>หมายเหตุ</th>
+            ${isAdmin ? '<th>พิกัด</th>' : ''}
+            <th>Update</th>
+            ${isAdmin ? '<th>จัดการ</th>' : ''}
+        </tr>
+    `;
+
+    // สร้างข้อมูล Row ในตาราง
     document.getElementById('tbody').innerHTML=filtered.map(r=>{
         let statusDisplay = `<span class="badge ${badge(r.status)}">${esc(r.status)}</span>`;
         if (r.status === 'ไม่สามารถไปทำงานได้' && r.reason) {
             statusDisplay += `<br><small style="color:var(--red); display:block; margin-top:4px;">สาเหตุ: ${esc(r.reason)}</small>`;
         }
         
-        return `<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.address)}</td><td>${esc(r.homeImpact)}</td><td><b>${r.waterLevel} cm</b></td><td>${statusDisplay}</td><td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td><td style="white-space:normal; min-width:150px; color:#475569;">${r.note ? esc(r.note) : '-'}</td><td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td><td>${esc(r.updatedAt)}</td><td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td></tr>`;
+        let coordHtml = isAdmin ? `<td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td>` : '';
+        let manageHtml = isAdmin ? `<td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td>` : '';
+
+        return `<tr>
+            <td><b>${esc(r.name)}</b></td>
+            <td>${esc(r.address)}</td>
+            <td>${esc(r.homeImpact)}</td>
+            <td><b>${r.waterLevel} cm</b></td>
+            <td>${statusDisplay}</td>
+            <td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td>
+            <td style="white-space:normal; min-width:150px; color:#475569;">${r.note ? esc(r.note) : '-'}</td>
+            ${coordHtml}
+            <td>${esc(r.updatedAt)}</td>
+            ${manageHtml}
+        </tr>`;
     }).join('');
     
     summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
@@ -547,7 +642,6 @@ function render(){
         summaryMap.fitBounds(group.getBounds().pad(.25),{maxZoom:13});
     }
 
-    // PDF Summary Data Generation
     document.getElementById('pdfTotal').textContent = allActiveEmployeeNames.length;
     document.getElementById('pdfTotalSub').textContent = `อัปเดตข้อมูลแล้ว ${submittedNames.length} คน`;
     document.getElementById('pdfCan').textContent = can;
@@ -790,24 +884,20 @@ window.setStatusFilter = function(status) {
 }
 
 window.clearData = function(){
-    const pwd=prompt('กรุณากรอกรหัสผ่านเพื่อยืนยันการ "ล้างข้อมูลทั้งหมด" ในระบบคลาวด์:');
-    if(pwd==='1234@abcd'){
+    if(!isAdmin) return;
+    if(confirm('ยืนยันการ "ล้างข้อมูลทั้งหมด" ในระบบคลาวด์?')) {
         set(currentDbRef, null).then(() => {
             alert('ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว');
         });
-    }else if(pwd!==null){
-        alert('รหัสผ่านไม่ถูกต้อง');
     }
 }
 
 window.deleteRow = function(key){
-    const pwd=prompt('กรุณากรอกรหัสผ่านเพื่อ "ลบข้อมูลรายการนี้":');
-    if(pwd==='1234@abcd'){
+    if(!isAdmin) return;
+    if(confirm('ยืนยันการ "ลบข้อมูลรายการนี้"?')) {
         remove(ref(db, (activeTeamName === 'QUALITY' ? 'dailyReadiness/' : 'dailyReadiness_JigKaizen/') + key)).then(() => {
             alert('ลบข้อมูลเรียบร้อยแล้ว');
         });
-    }else if(pwd!==null){
-        alert('รหัสผ่านไม่ถูกต้อง');
     }
 }
 
@@ -822,7 +912,7 @@ document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
 });
 
 // เริ่มทำงานเมื่อเปิดเว็บ
-window.switchTeam('QUALITY'); // ตั้งค่า Default ให้โหลด Quality Team ขึ้นมาก่อน
+window.switchTeam('QUALITY'); 
 setTimeout(()=>{summaryMap.invalidateSize();pickerMap.invalidateSize();},200);
 document.getElementById('status').onchange();
 </script>
