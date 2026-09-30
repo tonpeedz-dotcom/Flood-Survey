@@ -14,6 +14,11 @@ table{width:100%;border-collapse:collapse;min-width:1050px}
 th,td{text-align:left;padding:11px;border-bottom:1px solid #e8edf3;vertical-align:middle;white-space:nowrap}
 th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:#d1fae5;color:#065f46}.no{background:#ffe4e6;color:#9f1239}.risk{background:#fef3c7;color:#92400e}.gray{background:#e2e8f0;color:#475569}.map{height:340px;border-radius:14px;border:1px solid var(--border);overflow:hidden}.mapactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e3a8a;margin-bottom:15px}.success{background:#ecfdf5;color:#065f46}
 
+/* Team Selector */
+.team-selector { background: #fff; padding: 16px 20px; border-radius: 12px; box-shadow: 0 4px 12px #0f172a0f; display: flex; align-items: center; gap: 15px; margin-top: -20px; position: relative; z-index: 10; border: 1px solid var(--border); flex-wrap: wrap; }
+.team-selector label { margin: 0; font-size: 16px; color: var(--navy); }
+.team-selector select { max-width: 400px; font-weight: bold; color: var(--navy); border: 2px solid var(--navy); background-color: #f8fafc; font-size: 16px;}
+
 /* PDF Summary Dashboard Styling */
 #pdfSummary { display: none; }
 
@@ -22,7 +27,7 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
     @page { size: A2 portrait; margin: 15mm; }
     body{background:#fff;}
     .wrap{max-width:none;}
-    header, .tabs, #surveyPanel, #skillPanel, .toolbar button, .toolbar input, footer, .map, .hint, .reportHead, #dashboardPanel > .grid4, #dashboardPanel > .card:nth-child(2), #dashboardPanel > .card:nth-child(3) {display:none!important}
+    header, .team-selector, .tabs, #surveyPanel, #skillPanel, .toolbar button, .toolbar input, footer, .map, .hint, .reportHead, #dashboardPanel > .grid4, #dashboardPanel > .card:nth-child(2), #dashboardPanel > .card:nth-child(3) {display:none!important}
     .card{box-shadow:none;border:none;padding:0;}
     .tablewrap{overflow:visible}
     table{min-width:0;font-size:12px}
@@ -50,17 +55,26 @@ html { scroll-behavior: smooth; }
 </style>
 </head>
 <body>
-<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1>สำรวจความพร้อมทำงาน (by น้อนเนิร์ด คนดีย์คนเดิม❤️)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+<header><div class="wrap head"><div><small>DAILY WORK READINESS</small><h1 id="teamTitle">สำรวจความพร้อมทำงาน (Quality Team)</h1><p>ติดตามผลกระทบจากน้ำท่วม เส้นทาง พิกัดที่พัก และสถานะการเดินทาง</p></div><div class="datebox"><label>วันที่แสดงผล</label><input type="date" id="selectedDate"></div></div></header>
+
 <main class="wrap">
+<!-- ================= TEAM SELECTOR ================= -->
+<div class="team-selector">
+    <label><b>👥 เลือกทีมที่ต้องการจัดการข้อมูล:</b></label>
+    <select id="teamSelect" onchange="window.switchTeam(this.value)">
+        <option value="QUALITY">Quality Team by Duangrat P. (36 ท่าน)</option>
+        <option value="JIG">Jig MTN & Kaizen (28 ท่าน)</option>
+    </select>
+</div>
 
 <!-- ================= PDF SUMMARY DASHBOARD ================= -->
 <div id="pdfSummary">
-    <div class="pdf-title">รายงานความพร้อมมาทำงานรายวัน (Executive Summary)</div>
+    <div class="pdf-title" id="pdfMainTitle">รายงานความพร้อมมาทำงานรายวัน</div>
     <div class="pdf-subtitle" id="pdfSubtitle">ประจำวันที่: DD/MM/YYYY</div>
     
     <div class="pdf-grid">
         <div class="pdf-box">
-            <small>พนักงานทั้งหมด (อิงตามฐานข้อมูล)</small>
+            <small>พนักงานทั้งหมด</small>
             <strong id="pdfTotal" style="color:var(--navy);">0</strong>
             <span id="pdfTotalSub">อัปเดตข้อมูลแล้ว 0 คน</span>
         </div>
@@ -104,14 +118,14 @@ html { scroll-behavior: smooth; }
     <button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button>
     <button class="tab" data-panel="skillPanel">Backup (Skills)</button>
     <button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button>
-   <a href="https://chachoengsao-flood.vercel.app/" target="_blank" class="btn primary" style="margin-left:auto; text-decoration:none; background-color:var(--cyan); display:flex; align-items:center; gap:6px; font-size:14px;">🌊 ตรวจสอบสถานการณ์น้ำ "ฉะเชิงเทรา"</a>
+    <a href="https://chachoengsao-flood.vercel.app/" target="_blank" class="btn primary" style="margin-left:auto; text-decoration:none; background-color:var(--cyan); display:flex; align-items:center; gap:6px; font-size:14px;">🌊 ตรวจสอบสถานการณ์น้ำ "ฉะเชิงเทรา"</a>
 </div>
 
 <!-- ================= DASHBOARD PANEL ================= -->
-<section id="dashboardPanel" class="panel active"><div class="reportHead"><h2>รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
+<section id="dashboardPanel" class="panel active"><div class="reportHead"><h2 id="dashboardTitle">รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
 
 <div class="grid4">
-    <div class="card metric active-filter" id="cardTotal" onclick="window.setStatusFilter('')"><small>พนักงานที่ Update</small><strong id="mTotal">0/36</strong><span id="pTotal">0% (คลิกดูทั้งหมด)</span></div>
+    <div class="card metric active-filter" id="cardTotal" onclick="window.setStatusFilter('')"><small>พนักงานที่ Update</small><strong id="mTotal">0/0</strong><span id="pTotal">0% (คลิกดูทั้งหมด)</span></div>
     <div class="card metric" id="cardCan" onclick="window.setStatusFilter('สามารถไปทำงานได้')"><small>สามารถมาทำงานได้</small><strong class="green" id="mCan">0</strong><span id="pCan">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardCannot" onclick="window.setStatusFilter('ไม่สามารถไปทำงานได้')"><small>ไม่สามารถมาทำงานได้</small><strong class="red" id="mCannot">0</strong><span id="pCannot">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardRisk" onclick="window.setStatusFilter('มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)')"><small>มีความเสี่ยง</small><strong class="amber" id="mRisk">0</strong><span id="pRisk">0% (คลิกเพื่อดู)</span></div>
@@ -212,7 +226,7 @@ html { scroll-behavior: smooth; }
 <!-- โค้ดเชื่อมต่อฐานข้อมูล Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+import { getDatabase, ref, push, onValue, set, remove, off } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDy8TZAeEZBoNv8IsT0hrCDZuyoPxcaVEE",
@@ -227,11 +241,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const dbRef = ref(db, 'dailyReadiness');
+
+// ประกาศ DB Reference ของทั้ง 2 ทีม
+const dbRefQuality = ref(db, 'dailyReadiness');
+const dbRefJig = ref(db, 'dailyReadiness_JigKaizen');
 
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
 
-const EMPLOYEES = {
+// ----------------------------------------------------
+// ข้อมูลพนักงานทีม Quality (36 ท่าน)
+// ----------------------------------------------------
+const EMPLOYEES_QUALITY = {
     "นาย สุนทร ไชยแสน": { group: "Project", skills: ["Chisel", "Inspect"] },
     "นาย อดิเรก แซ่ซิ้ม": { group: "Project", skills: ["Chisel"] },
     "นาย สิทธินนท์ จิรพัธนนท์": { group: "Project", skills: [] },
@@ -270,9 +290,46 @@ const EMPLOYEES = {
     "นาย วัชรินทร์ ดีธรรม": { group: "Receiving", skills: ["Chisel"] }
 };
 
-const ALL_EMPLOYEES = Object.keys(EMPLOYEES);
+// ----------------------------------------------------
+// ข้อมูลพนักงานทีม Jig MTN & Kaizen (28 ท่าน)
+// ----------------------------------------------------
+const EMPLOYEES_JIG = {
+    "นาย ศรายุทธ์ วงศ์วิริยะกุล": { group: "(W)JIG MAINTENANCE-D", skills: [] },
+    "นาย เกรียงไกร ปิยะราช": { group: "(W)JIG MAINTENANCE-W", skills: [] },
+    "นาย วิโรจน์ รังกลาง": { group: "(W) KAIZEN - D", skills: [] },
+    "นาย บุญเหลือ ภูเทพคำ": { group: "(W) KAIZEN - D", skills: [] },
+    "นาย ขวัญชัย ศรีนวลนิ่ม": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
+    "นาย วิรัตน์ น้อยสวัสดิ์": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
+    "นาย ชัชวาล อาจพงษา": { group: "(W) KAIZEN - D", skills: [] },
+    "นาย ปรัชญา สุขวิพัฒน์": { group: "(W) KAIZEN - D", skills: [] },
+    "นาย เข็ม เนียมพันธ์": { group: "(W)JIG MAINTENANCE-D", skills: [] },
+    "นาย นพพร ศิริ": { group: "(W)JIG MAINTENANCE-W", skills: [] },
+    "นาย บุญเรือง สงมูลนาค": { group: "(W) KAIZEN - D", skills: [] },
+    "นาย วัชระ รัตนทองดี": { group: "(W)JIG MAINTENANCE-W", skills: [] },
+    "นาย ศรนรินทร์ พลชม": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
+    "นาย เมฆ โกเสยะโยธิน": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
+    "นาย วิทยา คุชิตา": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
+    "นาย ศุภณัฐ พานแก้ว": { group: "(W)JIG MAINTENANCE-W", skills: [] },
+    "นาย ศิวดล ศรีคำตำบล": { group: "(W) KAIZEN - D", skills: [] },
+    "นาย ฉัตรชัย นนทบท": { group: "(W)JIG MAINTENANCE-W", skills: [] },
+    "นาย วารุต แสนกาสา": { group: "(W)JIG MAINTENANCE-D", skills: [] },
+    "นาย ธวัชชัย จันทร์เขียน": { group: "(W)JIG MAINTENANCE-W", skills: [] },
+    "นาย ชาตรี หวานสูงเนิน": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
+    "นาย แสวง เหล็กมา": { group: "(W) KAIZEN - D", skills: [] },
+    "นาย เทอดศักดิ์ ขำเหมือน": { group: "(W)JIG MAINTENANCE-W", skills: [] },
+    "นาย อนิรุธ ท้งเจริญ": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
+    "นาย ยศพัทธ์ อัศวจิระโภคิน": { group: "Try & Test (BEB)-D", skills: [] },
+    "นาย ทวัชชัย จักรโสภณไพศาล": { group: "Try & Test (BEB)-D", skills: [] },
+    "นาย ณัฐพล": { group: "(W)JIG MAINTENANCE-D", skills: [] },
+    "นาย ยอดชาย จินเจือ": { group: "(W) KAIZEN - D", skills: [] }
+};
 
-document.getElementById('employeeNames').innerHTML = ALL_EMPLOYEES.map(n => `<option value="${n}"></option>`).join('');
+// State Variables สำหรับระบบแยกทีม
+let activeTeamName = 'QUALITY';
+let activeEmployees = EMPLOYEES_QUALITY;
+let allActiveEmployeeNames = Object.keys(activeEmployees);
+let currentDbRef = dbRefQuality;
+let firebaseUnsubscribe = null;
 
 let rows=[];
 let currentStatusFilter='';
@@ -285,17 +342,58 @@ const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);
 const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);
 [summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
 
-onValue(dbRef, (snapshot) => {
-    rows = [];
-    snapshot.forEach((child) => {
-        let val = child.val();
-        val.key = child.key; 
-        rows.push(val);
+// ----------------------------------------------------
+// ระบบ Switch Team
+// ----------------------------------------------------
+window.switchTeam = function(team) {
+    activeTeamName = team;
+    if (team === 'QUALITY') {
+        activeEmployees = EMPLOYEES_QUALITY;
+        currentDbRef = dbRefQuality;
+        document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Quality Team) by น้อนเนิร์ดคนเดิม❤️";
+        document.getElementById('pdfMainTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality Team)";
+        document.getElementById('dashboardTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality)";
+    } else {
+        activeEmployees = EMPLOYEES_JIG;
+        currentDbRef = dbRefJig;
+        document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Jig MTN & Kaizen) by น้อนเนิร์ดคนเดิม❤️";
+        document.getElementById('pdfMainTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Jig MTN & Kaizen)";
+        document.getElementById('dashboardTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Jig MTN & Kaizen)";
+    }
+    
+    // อัปเดตรายชื่อใน Datalist 
+    allActiveEmployeeNames = Object.keys(activeEmployees);
+    document.getElementById('employeeNames').innerHTML = allActiveEmployeeNames.map(n => `<option value="${n}"></option>`).join('');
+    
+    // ล้างแบบฟอร์มเพื่อป้องกันข้อมูลค้างจากทีมเก่า
+    document.getElementById('surveyForm').reset();
+    document.getElementById('status').onchange();
+    document.getElementById('transport').onchange();
+    if(pickerMarker) { pickerMap.removeLayer(pickerMarker); pickerMarker=null; }
+
+    // เปลี่ยน Database Listener
+    if(firebaseUnsubscribe) {
+        firebaseUnsubscribe(); // ยกเลิกการฟังข้อมูลจาก DB เดิม
+    }
+    
+    rows = []; // เคลียร์ตารางเดิม
+    render(); // ล้างหน้าจอก่อนโหลดข้อมูลใหม่
+    
+    // ผูก Listener กับฐานข้อมูลใหม่
+    firebaseUnsubscribe = onValue(currentDbRef, (snapshot) => {
+        rows = [];
+        snapshot.forEach((child) => {
+            let val = child.val();
+            val.key = child.key; 
+            rows.push(val);
+        });
+        rows.reverse(); 
+        render();
+        renderSkills(); 
     });
-    rows.reverse(); 
-    render();
-    renderSkills(); 
-});
+}
+
+// ----------------------------------------------------
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function daily(){return rows.filter(r=>r.date===document.getElementById('selectedDate').value)}
@@ -320,18 +418,16 @@ document.getElementById('status').onchange = () => {
 // ระบบ Autofill ปรับปรุงใหม่ให้ทำงานสมบูรณ์ขึ้น
 document.getElementById('empName').addEventListener('input', function() {
     const selectedName = this.value.trim();
-    // ตรวจสอบว่าพิมพ์ชื่อจนครบตรงกับในระบบแล้วค่อยดึงข้อมูลมาแสดง (ป้องกันการดึงข้อมูลผิดพลาดตอนกำลังพิมพ์)
-    if (!ALL_EMPLOYEES.includes(selectedName)) return; 
+    if (!allActiveEmployeeNames.includes(selectedName)) return; 
 
     const currentDate = document.getElementById('selectedDate').value;
     const allRecordsForUser = rows.filter(r => r.name.trim() === selectedName);
     
     if (allRecordsForUser.length > 0) {
         const todayRecord = allRecordsForUser.find(r => r.date === currentDate);
-        const lastRecord = allRecordsForUser[0]; // ข้อมูลที่เคยกรอกล่าสุด
+        const lastRecord = allRecordsForUser[0];
 
         if (todayRecord) {
-            // กรณี: มีการกรอกแก้ไขในวันเดียวกัน จะดึงข้อมูลมาทุกช่อง ไม่ปล่อย Blank
             if (todayRecord.address) document.getElementById('address').value = todayRecord.address;
             if (todayRecord.homeImpact) document.getElementById('homeImpact').value = todayRecord.homeImpact;
             if (todayRecord.waterLevel !== undefined) document.getElementById('waterLevel').value = todayRecord.waterLevel;
@@ -358,9 +454,7 @@ document.getElementById('empName').addEventListener('input', function() {
                 setPin(todayRecord.lat, todayRecord.lng);
             }
         } else {
-            // กรณี: วันใหม่ ดึงมาเฉพาะข้อมูลที่อยู่และการเดินทาง (ไม่ต้องพิมพ์ใหม่)
             if (lastRecord.address) document.getElementById('address').value = lastRecord.address;
-            
             if (lastRecord.transport) {
                 document.getElementById('transport').value = lastRecord.transport;
                 document.getElementById('transport').onchange();
@@ -371,8 +465,6 @@ document.getElementById('empName').addEventListener('input', function() {
             if (lastRecord.lat && lastRecord.lng) {
                 setPin(lastRecord.lat, lastRecord.lng);
             }
-            
-            // รีเซ็ตข้อมูลที่เปลี่ยนรายวัน
             document.getElementById('homeImpact').value = 'น้ำไม่ท่วมบ้าน';
             document.getElementById('waterLevel').value = 0;
             document.getElementById('status').value = 'สามารถไปทำงานได้';
@@ -398,11 +490,11 @@ function render(){
     });
     
     const submittedNames = [...new Set(data.map(r => r.name.trim()))];
-    const missingNames = ALL_EMPLOYEES.filter(name => !submittedNames.includes(name));
+    const missingNames = allActiveEmployeeNames.filter(name => !submittedNames.includes(name));
     
     const missingByGroup = {};
     missingNames.forEach(n => {
-        const g = EMPLOYEES[n]?.group || 'อื่นๆ';
+        const g = activeEmployees[n]?.group || 'อื่นๆ';
         if(!missingByGroup[g]) missingByGroup[g] = [];
         missingByGroup[g].push(n);
     });
@@ -412,8 +504,8 @@ function render(){
     const cannot=cannotList.length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
     
-    document.getElementById('mTotal').textContent = submittedNames.length + '/' + ALL_EMPLOYEES.length;
-    document.getElementById('pTotal').textContent = pct(submittedNames.length, ALL_EMPLOYEES.length) + '% (คลิกดูทั้งหมด)';
+    document.getElementById('mTotal').textContent = submittedNames.length + '/' + allActiveEmployeeNames.length;
+    document.getElementById('pTotal').textContent = pct(submittedNames.length, allActiveEmployeeNames.length) + '% (คลิกดูทั้งหมด)';
     
     document.getElementById('mCan').textContent=can;
     document.getElementById('mCannot').textContent=cannot;
@@ -455,14 +547,14 @@ function render(){
     }
 
     // PDF Summary Data Generation
-    document.getElementById('pdfTotal').textContent = ALL_EMPLOYEES.length;
+    document.getElementById('pdfTotal').textContent = allActiveEmployeeNames.length;
     document.getElementById('pdfTotalSub').textContent = `อัปเดตข้อมูลแล้ว ${submittedNames.length} คน`;
     document.getElementById('pdfCan').textContent = can;
-    document.getElementById('pdfCanSub').textContent = `คิดเป็น ${pct(can, ALL_EMPLOYEES.length)}%`;
+    document.getElementById('pdfCanSub').textContent = `คิดเป็น ${pct(can, allActiveEmployeeNames.length)}%`;
     document.getElementById('pdfCannot').textContent = cannot;
-    document.getElementById('pdfCannotSub').textContent = `คิดเป็น ${pct(cannot, ALL_EMPLOYEES.length)}%`;
+    document.getElementById('pdfCannotSub').textContent = `คิดเป็น ${pct(cannot, allActiveEmployeeNames.length)}%`;
     document.getElementById('pdfRisk').textContent = risk; 
-    document.getElementById('pdfRiskSub').textContent = `คิดเป็น ${pct(risk, ALL_EMPLOYEES.length)}%`;
+    document.getElementById('pdfRiskSub').textContent = `คิดเป็น ${pct(risk, allActiveEmployeeNames.length)}%`;
 
     let reasonBus = 0; let reasonHome = 0; let reasonRoute = 0; let reasonOther = 0;
     cannotList.forEach(r => {
@@ -479,7 +571,7 @@ function render(){
 
     let skillTotal = 0; let skillSpot = 0; let skillChisel = 0; let skillInspect = 0;
     data.filter(r=>r.status===STATUS.CAN).forEach(r => {
-        const empData = EMPLOYEES[r.name.trim()];
+        const empData = activeEmployees[r.name.trim()];
         if(empData && empData.skills.length > 0) {
             skillTotal++;
             if(empData.skills.includes('Spot')) skillSpot++;
@@ -501,8 +593,8 @@ window.renderSkills = function() {
     let resultHTML = '';
     let matchCount = 0;
 
-    ALL_EMPLOYEES.forEach(name => {
-        const empData = EMPLOYEES[name];
+    allActiveEmployeeNames.forEach(name => {
+        const empData = activeEmployees[name];
         
         if (reqSkill && !empData.skills.includes(reqSkill)) return;
         
@@ -598,14 +690,12 @@ document.getElementById('transport').onchange=()=>{
     if(busLine.disabled) busLine.value='';
 };
 
-// จัดการเรื่อง Update ทับของเดิม หรือบันทึกใหม่ พร้อมป้องกันการกรอกชื่อผิด
 document.getElementById('surveyForm').onsubmit=e=>{
     e.preventDefault();
     const nameVal = document.getElementById('empName').value.trim();
 
-    // ระบบ Validation เช็คชื่อที่กรอกให้ตรงกับในฐานข้อมูล
-    if (!ALL_EMPLOYEES.includes(nameVal)) {
-        alert("❌ ไม่อนุญาตให้บันทึกข้อมูล!\nกรุณาเลือก หรือ พิมพ์ ชื่อ-นามสกุล ให้ตรงกับรายชื่อที่มีอยู่ในระบบ 36 ท่านเท่านั้นครับ");
+    if (!allActiveEmployeeNames.includes(nameVal)) {
+        alert(`❌ ไม่อนุญาตให้บันทึกข้อมูล!\nกรุณาเลือก หรือ พิมพ์ ชื่อ-นามสกุล ให้ตรงกับรายชื่อที่มีอยู่ในระบบ ${allActiveEmployeeNames.length} ท่านเท่านั้นครับ`);
         document.getElementById('empName').focus();
         return;
     }
@@ -649,12 +739,12 @@ document.getElementById('surveyForm').onsubmit=e=>{
 
     if (existingRecord) {
         if (confirm(`คุณ ${nameVal} ได้กรอกข้อมูลของวันที่ ${dateVal} ไปแล้ว\nยืนยันการ Update ข้อมูลใหม่ใช่หรือไม่?`)) {
-            set(ref(db, 'dailyReadiness/' + existingRecord.key), newData)
+            set(ref(db, (activeTeamName === 'QUALITY' ? 'dailyReadiness/' : 'dailyReadiness_JigKaizen/') + existingRecord.key), newData)
                 .then(onSuccess)
                 .catch(err => alert("เกิดข้อผิดพลาดในการ Update ฐานข้อมูล: " + err));
         }
     } else {
-        push(dbRef, newData)
+        push(currentDbRef, newData)
             .then(onSuccess)
             .catch(err => alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " + err));
     }
@@ -662,7 +752,7 @@ document.getElementById('surveyForm').onsubmit=e=>{
 
 window.exportPDF = function(){
     document.getElementById('pdfSubtitle').textContent = `ประจำวันที่: ${document.getElementById('selectedDate').value}`;
-    document.title='Daily_Readiness_Report_'+document.getElementById('selectedDate').value;
+    document.title='Daily_Readiness_Report_'+ (activeTeamName === 'QUALITY' ? 'Quality' : 'JigKaizen') + '_' + document.getElementById('selectedDate').value;
     window.print();
 }
 window.exportCSV = function(){
@@ -675,7 +765,7 @@ window.exportCSV = function(){
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
-    a.download='daily_readiness_'+document.getElementById('selectedDate').value+'.csv';
+    a.download='daily_readiness_'+ (activeTeamName === 'QUALITY' ? 'Quality' : 'JigKaizen') + '_' + document.getElementById('selectedDate').value+'.csv';
     a.click();
     URL.revokeObjectURL(a.href);
 }
@@ -701,7 +791,7 @@ window.setStatusFilter = function(status) {
 window.clearData = function(){
     const pwd=prompt('กรุณากรอกรหัสผ่านเพื่อยืนยันการ "ล้างข้อมูลทั้งหมด" ในระบบคลาวด์:');
     if(pwd==='1234@abcd'){
-        set(dbRef, null).then(() => {
+        set(currentDbRef, null).then(() => {
             alert('ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว');
         });
     }else if(pwd!==null){
@@ -712,7 +802,7 @@ window.clearData = function(){
 window.deleteRow = function(key){
     const pwd=prompt('กรุณากรอกรหัสผ่านเพื่อ "ลบข้อมูลรายการนี้":');
     if(pwd==='1234@abcd'){
-        remove(ref(db, 'dailyReadiness/' + key)).then(() => {
+        remove(ref(db, (activeTeamName === 'QUALITY' ? 'dailyReadiness/' : 'dailyReadiness_JigKaizen/') + key)).then(() => {
             alert('ลบข้อมูลเรียบร้อยแล้ว');
         });
     }else if(pwd!==null){
@@ -730,6 +820,8 @@ document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
     setTimeout(()=>{pickerMap.invalidateSize();summaryMap.invalidateSize();},100);
 });
 
+// เริ่มทำงานเมื่อเปิดเว็บ
+window.switchTeam('QUALITY'); // ตั้งค่า Default ให้โหลด Quality Team ขึ้นมาก่อน
 setTimeout(()=>{summaryMap.invalidateSize();pickerMap.invalidateSize();},200);
 document.getElementById('status').onchange();
 </script>
