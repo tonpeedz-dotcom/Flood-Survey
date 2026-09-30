@@ -64,8 +64,8 @@ html { scroll-behavior: smooth; }
 <div id="adminModal" class="modal-overlay">
     <div class="modal-box">
         <h2 style="margin-top:0; color:var(--navy);">Admin Login</h2>
-        <label>Username</label>
-        <input type="text" id="adminUser" placeholder="Enter username" style="margin-bottom:15px;">
+        <label>Email / Username</label>
+        <input type="email" id="adminUser" placeholder="เช่น admin@quality.com" style="margin-bottom:15px;">
         <label>Password</label>
         <input type="password" id="adminPass" placeholder="Enter password" style="margin-bottom:20px;">
         <div style="display:flex; justify-content:flex-end; gap:10px;">
@@ -262,13 +262,15 @@ html { scroll-behavior: smooth; }
 <div class="full"><label>7. หมายเหตุ/รายละเอียดเพิ่มเติม</label><textarea id="note" placeholder="เช่น ลากิจ, ลาป่วย, รถเสีย, น้ำท่วมสูงมาก เป็นต้น" style="min-height:50px;"></textarea></div>
 <div class="full"><label>8. พิกัดที่พัก</label>
 <div class="notice">
-    <strong>ค้นหาพิกัด:</strong> วางชื่อสถานที่ หรือพิกัด Lat,Lng จาก Google Maps ด้านล่างนี้ หรือกด "ใช้ตำแหน่งปัจจุบัน" 
+    <strong>ค้นหาพิกัด:</strong> พิมพ์ชื่อ, วางพิกัด Lat,Lng หรือ <b>ลิงก์ที่ก๊อปปี้มาจาก Google Maps</b> ด้านล่างนี้
     <div style="display:flex; gap:8px; margin-top:10px;">
-        <input id="mapSearchText" placeholder="เช่น บางพลี สมุทรปราการ หรือ 13.6,100.7" style="flex:1;">
+        <input id="mapSearchText" placeholder="เช่น 13.60,100.70 หรือ ลิงก์ Google Maps" style="flex:1;">
         <button type="button" class="btn primary" id="searchMapBtn">ค้นหาตำแหน่ง</button>
     </div>
 </div>
-<div id="pickerMap" class="map"></div><div class="mapactions"><button type="button" class="btn secondary" id="locateBtn">ใช้ตำแหน่งปัจจุบัน (GPS)</button><button type="button" class="btn secondary" id="googleBtn">เปิดหมุดใน Google Maps</button><input id="lat" type="number" step="any" placeholder="Latitude" required style="max-width:180px"><input id="lng" type="number" step="any" placeholder="Longitude" required style="max-width:180px"></div><p class="hint">การใช้ตำแหน่ง GPS ต้องเปิดสิทธิ์ Location ใน Browser และควรใช้งานผ่าน HTTPS</p></div><div class="full notice">เวลา Update บันทึกอัตโนมัติ ข้อมูลที่อยู่และพิกัดเป็นข้อมูลส่วนบุคคล ควรจำกัดสิทธิ์เฉพาะผู้รับผิดชอบและกำหนดระยะเวลาจัดเก็บ</div><button class="btn primary full" type="submit">ส่งข้อมูลสถานการณ์วันนี้</button></form></div></section>
+<div id="pickerMap" class="map"></div><div class="mapactions"><button type="button" class="btn secondary" id="locateBtn">ใช้ตำแหน่งปัจจุบัน (GPS)</button><button type="button" class="btn secondary" id="googleBtn">เปิดหมุดใน Google Maps</button><input id="lat" type="number" step="any" placeholder="Latitude" required style="max-width:180px"><input id="lng" type="number" step="any" placeholder="Longitude" required style="max-width:180px"></div><p class="hint">การใช้ตำแหน่ง GPS ต้องเปิดสิทธิ์ Location ใน Browser และควรใช้งานผ่าน HTTPS</p></div><div class="full notice">เวลา Update บันทึกอัตโนมัติ ข้อมูลที่อยู่และพิกัดเป็นข้อมูลส่วนบุคคล ควรจำกัดสิทธิ์เฉพาะผู้รับผิดชอบและกำหนดระยะเวลาจัดเก็บ</div>
+<button id="submitBtn" class="btn primary full" type="submit">ส่งข้อมูลสถานการณ์วันนี้</button>
+</form></div></section>
 </main><footer>เชื่อมต่อฐานข้อมูลแบบ Realtime ระบบบันทึกอัตโนมัติ</footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -276,6 +278,7 @@ html { scroll-behavior: smooth; }
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getDatabase, ref, push, onValue, set, remove, off } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDy8TZAeEZBoNv8IsT0hrCDZuyoPxcaVEE",
@@ -290,6 +293,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app); // ประกาศตัวแปรเรียกใช้ Auth
 
 const dbRefQuality = ref(db, 'dailyReadiness');
 const dbRefJig = ref(db, 'dailyReadiness_JigKaizen');
@@ -377,7 +381,7 @@ let rows=[];
 let currentStatusFilter='';
 let pickerMarker;
 let summaryMarkers=[];
-let isAdmin = false; // State เก็บสิทธิ์การเป็น Admin
+let isAdmin = false; 
 
 const today=new Date().toISOString().slice(0,10);
 document.getElementById('selectedDate').value=today;
@@ -386,7 +390,7 @@ const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);
 const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);
 [summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
 
-// --- ระบบ Admin Login ---
+// --- ระบบ Admin Login (Firebase Auth) ---
 window.openAdminModal = function() {
     document.getElementById('adminModal').style.display = 'flex';
 }
@@ -399,24 +403,37 @@ window.checkAdminLogin = function() {
     const user = document.getElementById('adminUser').value;
     const pass = document.getElementById('adminPass').value;
     
-    if(user === 'Admin' && pass === '1234@abcd') {
+    // ตรวจสอบกับเซิร์ฟเวอร์ Firebase ของจริง
+    signInWithEmailAndPassword(auth, user, pass)
+        .then(() => {
+            closeAdminModal();
+            alert('เข้าสู่ระบบ Admin สำเร็จ');
+        })
+        .catch((error) => {
+            alert('อีเมล หรือ รหัสผ่านไม่ถูกต้อง');
+        });
+}
+window.logoutAdmin = function() {
+    signOut(auth).then(() => {
+        alert('ออกจากระบบเรียบร้อย');
+    });
+}
+
+// เช็คสถานะล็อกอินอัตโนมัติ (แม้จะ Refresh หน้าเว็บ ถ้าเคยล็อกอินไว้ก็ยังเป็น Admin อยู่)
+onAuthStateChanged(auth, (user) => {
+    if (user) {
         isAdmin = true;
-        closeAdminModal();
         document.getElementById('adminLoginBtn').style.display = 'none';
         document.getElementById('adminLogoutBtn').style.display = 'inline-block';
         document.getElementById('btnClearAll').style.display = 'inline-block';
-        render(); // สั่งให้วาดตารางใหม่เพื่อแสดงคอลัมน์พิเศษ
     } else {
-        alert('Username หรือ Password ไม่ถูกต้อง');
+        isAdmin = false;
+        document.getElementById('adminLoginBtn').style.display = 'inline-block';
+        document.getElementById('adminLogoutBtn').style.display = 'none';
+        document.getElementById('btnClearAll').style.display = 'none';
     }
-}
-window.logoutAdmin = function() {
-    isAdmin = false;
-    document.getElementById('adminLoginBtn').style.display = 'inline-block';
-    document.getElementById('adminLogoutBtn').style.display = 'none';
-    document.getElementById('btnClearAll').style.display = 'none';
-    render(); // สั่งให้วาดตารางใหม่เพื่อซ่อนคอลัมน์
-}
+    render(); // สั่งให้วาดตารางใหม่เพื่อสลับคอลัมน์ลบข้อมูล
+});
 // -----------------------
 
 window.switchTeam = function(team) {
@@ -744,12 +761,19 @@ pickerMap.on('click',e=>setPin(e.latlng.lat,e.latlng.lng));
 
 document.getElementById('searchMapBtn').onclick = async () => {
     const query = document.getElementById('mapSearchText').value.trim();
-    if (!query) return alert('กรุณาระบุชื่อสถานที่ หรือ พิกัด ที่ต้องการค้นหา');
+    if (!query) return alert('กรุณาระบุชื่อสถานที่, พิกัด (Lat,Lng) หรือ ลิงก์จาก Google Maps');
 
-    document.getElementById('searchMapBtn').textContent = 'กำลังหา...';
+    document.getElementById('searchMapBtn').textContent = 'กำลังตรวจสอบ...';
     
-    const latLngMatch = query.match(/@?(-?\d+\.\d+)[\s,]+(-?\d+\.\d+)/);
-    if (latLngMatch) {
+    // ดักจับกรณีผู้ใช้วางลิงก์ยาวๆ จาก Google Maps หรือพิกัด
+    const urlMatch = query.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    const latLngMatch = query.match(/(-?\d+\.\d+)[\s,]+(-?\d+\.\d+)/);
+
+    if (urlMatch) {
+        setPin(parseFloat(urlMatch[1]), parseFloat(urlMatch[2]));
+        document.getElementById('searchMapBtn').textContent = 'ค้นหาตำแหน่ง';
+        return;
+    } else if (latLngMatch) {
         setPin(parseFloat(latLngMatch[1]), parseFloat(latLngMatch[2]));
         document.getElementById('searchMapBtn').textContent = 'ค้นหาตำแหน่ง';
         return;
@@ -761,13 +785,15 @@ document.getElementById('searchMapBtn').onclick = async () => {
         if (data && data.length > 0) {
             setPin(parseFloat(data[0].lat), parseFloat(data[0].lon));
         } else {
-            alert('ไม่พบสถานที่นี้ กรุณาลองใช้ชื่อที่ชัดเจนขึ้น หรือวางเป็นพิกัด (Lat,Lng)');
+            alert('ไม่พบสถานที่นี้ ลองก๊อปปี้ "ลิงก์จากเว็บ Google Maps" หรือ "พิกัดตัวเลข" มาวางแทนครับ');
         }
     } catch (err) {
         alert('เกิดข้อผิดพลาดในการเชื่อมต่อระบบค้นหาสถานที่');
     }
+    
     document.getElementById('searchMapBtn').textContent = 'ค้นหาตำแหน่ง';
 };
+
 
 document.getElementById('locateBtn').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPin(p.coords.latitude,p.coords.longitude),e=>alert('ไม่สามารถอ่านตำแหน่งได้: '+e.message),{enableHighAccuracy:true}):alert('Browser ไม่รองรับ Geolocation');
 
@@ -794,6 +820,10 @@ document.getElementById('surveyForm').onsubmit=e=>{
         document.getElementById('empName').focus();
         return;
     }
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'กำลังส่งข้อมูล...';
 
     const isCannot = document.getElementById('status').value === 'ไม่สามารถไปทำงานได้';
     const dateVal = document.getElementById('selectedDate').value;
@@ -826,22 +856,30 @@ document.getElementById('surveyForm').onsubmit=e=>{
             pickerMarker=null;
         }
         
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ส่งข้อมูลสถานการณ์วันนี้';
         alert('Completed');
         
         window.setStatusFilter('');
         document.querySelector('.tab[data-panel="dashboardPanel"]').click();
     };
 
+    const onError = (err) => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ส่งข้อมูลสถานการณ์วันนี้';
+        alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " + err);
+    };
+
     if (existingRecord) {
         if (confirm(`คุณ ${nameVal} ได้กรอกข้อมูลของวันที่ ${dateVal} ไปแล้ว\nยืนยันการ Update ข้อมูลใหม่ใช่หรือไม่?`)) {
             set(ref(db, (activeTeamName === 'QUALITY' ? 'dailyReadiness/' : 'dailyReadiness_JigKaizen/') + existingRecord.key), newData)
-                .then(onSuccess)
-                .catch(err => alert("เกิดข้อผิดพลาดในการ Update ฐานข้อมูล: " + err));
+                .then(onSuccess).catch(onError);
+        } else {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'ส่งข้อมูลสถานการณ์วันนี้';
         }
     } else {
-        push(currentDbRef, newData)
-            .then(onSuccess)
-            .catch(err => alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " + err));
+        push(currentDbRef, newData).then(onSuccess).catch(onError);
     }
 };
 
@@ -888,7 +926,7 @@ window.clearData = function(){
     if(confirm('ยืนยันการ "ล้างข้อมูลทั้งหมด" ในระบบคลาวด์?')) {
         set(currentDbRef, null).then(() => {
             alert('ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว');
-        });
+        }).catch(err => alert("ล้มเหลว อาจเกิดจากไม่มีสิทธิ์ลบข้อมูล: " + err));
     }
 }
 
@@ -897,7 +935,7 @@ window.deleteRow = function(key){
     if(confirm('ยืนยันการ "ลบข้อมูลรายการนี้"?')) {
         remove(ref(db, (activeTeamName === 'QUALITY' ? 'dailyReadiness/' : 'dailyReadiness_JigKaizen/') + key)).then(() => {
             alert('ลบข้อมูลเรียบร้อยแล้ว');
-        });
+        }).catch(err => alert("ล้มเหลว อาจเกิดจากไม่มีสิทธิ์ลบข้อมูล: " + err));
     }
 }
 
