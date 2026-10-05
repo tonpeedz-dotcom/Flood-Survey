@@ -101,7 +101,6 @@ html { scroll-behavior: smooth; }
     <label><b>👥 เลือกทีมที่ต้องการจัดการข้อมูล:</b></label>
     <select id="teamSelect" onchange="window.switchTeam(this.value)">
         <option value="QUALITY">Quality Team by Duangrat P. (36 ท่าน)</option>
-        <option value="JIG">Jig MTN & Kaizen (29 ท่าน)</option>
     </select>
 </div>
 
@@ -296,7 +295,6 @@ const db = getDatabase(app);
 const auth = getAuth(app); // ประกาศตัวแปรเรียกใช้ Auth
 
 const dbRefQuality = ref(db, 'dailyReadiness');
-const dbRefJig = ref(db, 'dailyReadiness_JigKaizen');
 
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
 
@@ -339,37 +337,6 @@ const EMPLOYEES_QUALITY = {
     "นาย วัชรินทร์ ดีธรรม": { group: "Receiving", skills: ["Chisel"] }
 };
 
-const EMPLOYEES_JIG = {
-    "นาย ศรายุทธ์ วงศ์วิริยะกุล": { group: "(W)JIG MAINTENANCE-D", skills: [] },
-    "นาย เกรียงไกร ปิยะราช": { group: "(W)JIG MAINTENANCE-W", skills: [] },
-    "นาย วิโรจน์ รังกลาง": { group: "(W) KAIZEN - D", skills: [] },
-    "นาย บุญเหลือ ภูเทพคำ": { group: "(W) KAIZEN - D", skills: [] },
-    "นาย ขวัญชัย ศรีนวลนิ่ม": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
-    "นาย วิรัตน์ น้อยสวัสดิ์": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
-    "นาย ชัชวาล อาจพงษา": { group: "(W) KAIZEN - D", skills: [] },
-    "นาย ปรัชญา สุขวิพัฒน์": { group: "(W) KAIZEN - D", skills: [] },
-    "นาย เข็ม เนียมพันธ์": { group: "(W)JIG MAINTENANCE-D", skills: [] },
-    "นาย นพพร ศิริ": { group: "(W)JIG MAINTENANCE-W", skills: [] },
-    "นาย บุญเรือง สงมูลนาค": { group: "(W) KAIZEN - D", skills: [] },
-    "นาย วัชระ รัตนทองดี": { group: "(W)JIG MAINTENANCE-W", skills: [] },
-    "นาย ศรนรินทร์ พลชม": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
-    "นาย เมฆ โกเสยะโยธิน": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
-    "นาย วิทยา คุชิตา": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
-    "นาย ศุภณัฐ พานแก้ว": { group: "(W)JIG MAINTENANCE-W", skills: [] },
-    "นาย ศิวดล ศรีคำตำบล": { group: "(W) KAIZEN - D", skills: [] },
-    "นาย ฉัตรชัย นนทบท": { group: "(W)JIG MAINTENANCE-W", skills: [] },
-    "นาย วารุต แสนกาสา": { group: "(W)JIG MAINTENANCE-D", skills: [] },
-    "นาย ธวัชชัย จันทร์เขียน": { group: "(W)JIG MAINTENANCE-W", skills: [] },
-    "นาย ชาตรี หวานสูงเนิน": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
-    "นาย แสวง เหล็กมา": { group: "(W) KAIZEN - D", skills: [] },
-    "นาย เทอดศักดิ์ ขำเหมือน": { group: "(W)JIG MAINTENANCE-W", skills: [] },
-    "นาย อนิรุธ ท้งเจริญ": { group: "(W)JIG MAINTENANCE-Y", skills: [] },
-    "นาย ยศพัทธ์ อัศวจิระโภคิน": { group: "Try & Test (BEB)-D", skills: [] },
-    "นาย ทวัชชัย จักรโสภณไพศาล": { group: "Try & Test (BEB)-D", skills: [] },
-    "นาย ณัฐพนธ์ จิตรอารีย์": { group: "(W)JIG MAINTENANCE-D", skills: [] },
-    "นาย กิตติสักดิ์ เขียวสะอาด": { group: "(W)JIG MAINTENANCE-W", skills: [] },
-    "นาย ยอดชาย จินเจือ": { group: "(W) KAIZEN - D", skills: [] }
-};
 
 let activeTeamName = 'QUALITY';
 let activeEmployees = EMPLOYEES_QUALITY;
@@ -437,20 +404,12 @@ onAuthStateChanged(auth, (user) => {
 // -----------------------
 
 window.switchTeam = function(team) {
-    activeTeamName = team;
-    if (team === 'QUALITY') {
-        activeEmployees = EMPLOYEES_QUALITY;
-        currentDbRef = dbRefQuality;
-        document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Quality Team)";
-        document.getElementById('pdfMainTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality Team)";
-        document.getElementById('dashboardTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality)";
-    } else {
-        activeEmployees = EMPLOYEES_JIG;
-        currentDbRef = dbRefJig;
-        document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Jig MTN & Kaizen)";
-        document.getElementById('pdfMainTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Jig MTN & Kaizen)";
-        document.getElementById('dashboardTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Jig MTN & Kaizen)";
-    }
+    activeTeamName = 'QUALITY';
+    activeEmployees = EMPLOYEES_QUALITY;
+    currentDbRef = dbRefQuality;
+    document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Quality Team)";
+    document.getElementById('pdfMainTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality Team)";
+    document.getElementById('dashboardTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality)";
     
     allActiveEmployeeNames = Object.keys(activeEmployees);
     document.getElementById('employeeNames').innerHTML = allActiveEmployeeNames.map(n => `<option value="${n}"></option>`).join('');
@@ -872,7 +831,7 @@ document.getElementById('surveyForm').onsubmit=e=>{
 
     if (existingRecord) {
         if (confirm(`คุณ ${nameVal} ได้กรอกข้อมูลของวันที่ ${dateVal} ไปแล้ว\nยืนยันการ Update ข้อมูลใหม่ใช่หรือไม่?`)) {
-            set(ref(db, (activeTeamName === 'QUALITY' ? 'dailyReadiness/' : 'dailyReadiness_JigKaizen/') + existingRecord.key), newData)
+            set(ref(db, 'dailyReadiness/' + existingRecord.key), newData)
                 .then(onSuccess).catch(onError);
         } else {
             submitBtn.disabled = false;
@@ -885,7 +844,7 @@ document.getElementById('surveyForm').onsubmit=e=>{
 
 window.exportPDF = function(){
     document.getElementById('pdfSubtitle').textContent = `ประจำวันที่: ${document.getElementById('selectedDate').value}`;
-    document.title='Daily_Readiness_Report_'+ (activeTeamName === 'QUALITY' ? 'Quality' : 'JigKaizen') + '_' + document.getElementById('selectedDate').value;
+    document.title='Daily_Readiness_Report_'+ 'Quality' + '_' + document.getElementById('selectedDate').value;
     window.print();
 }
 window.exportCSV = function(){
@@ -898,7 +857,7 @@ window.exportCSV = function(){
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
-    a.download='daily_readiness_'+ (activeTeamName === 'QUALITY' ? 'Quality' : 'JigKaizen') + '_' + document.getElementById('selectedDate').value+'.csv';
+    a.download='daily_readiness_'+ 'Quality' + '_' + document.getElementById('selectedDate').value+'.csv';
     a.click();
     URL.revokeObjectURL(a.href);
 }
@@ -933,7 +892,7 @@ window.clearData = function(){
 window.deleteRow = function(key){
     if(!isAdmin) return;
     if(confirm('ยืนยันการ "ลบข้อมูลรายการนี้"?')) {
-        remove(ref(db, (activeTeamName === 'QUALITY' ? 'dailyReadiness/' : 'dailyReadiness_JigKaizen/') + key)).then(() => {
+        remove(ref(db, 'dailyReadiness/' + key)).then(() => {
             alert('ลบข้อมูลเรียบร้อยแล้ว');
         }).catch(err => alert("ล้มเหลว อาจเกิดจากไม่มีสิทธิ์ลบข้อมูล: " + err));
     }
