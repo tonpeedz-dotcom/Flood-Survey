@@ -56,9 +56,92 @@ html { scroll-behavior: smooth; }
 /* Modal Background */
 .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center; }
 .modal-box { background:#fff; padding:24px; border-radius:12px; width:320px; max-width:90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+
+/* ================= CLOSURE POP-UP CSS ================= */
+.closure-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 2147483647; /* บนสุดครอบจักรวาล */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.closure-box {
+    background: #7f1d1d;
+    border: 6px solid #450a0a;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: center;
+    padding: 40px 30px;
+}
+.closure-icon {
+    font-size: 80px;
+    line-height: 1;
+    margin-bottom: 20px;
+}
+.closure-text {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 1.55;
+    margin-bottom: 30px;
+    font-family: "Noto Sans Thai", sans-serif;
+}
+.closure-btn {
+    background: #ffffff;
+    color: #7f1d1d;
+    font-weight: bold;
+    font-size: 26px;
+    padding: 14px 56px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: "Noto Sans Thai", sans-serif;
+}
+.closure-btn:hover {
+    background: #fee2e2;
+}
+.body-locked {
+    overflow: hidden !important;
+}
+
+@media(max-width: 850px) {
+    .closure-text { font-size: 28px; }
+    .closure-icon { font-size: 60px; }
+    .closure-box { padding: 30px 20px; }
+}
+
+@media print {
+    .closure-overlay { display: none !important; }
+}
+/* ==================================================== */
+
 </style>
 </head>
 <body>
+
+<!-- ================= CLOSURE POP-UP HTML ================= -->
+<div id="closureModal" class="closure-overlay" role="alertdialog" aria-modal="true">
+    <div class="closure-box">
+        <div class="closure-icon">⚠️</div>
+        <div class="closure-text">
+            ระบบ รายงานความพร้อมมาทำงานรายวัน (Jig MTN & Kaizen) - 29 ท่าน ได้ปิดตัวลงแล้วครับ เนื่องจากพนักงานไม่ได้ให้ความสำคัญต่อการให้ความร่วมมือในกรอกข้อมูล
+        </div>
+        <button id="closureBtn" class="closure-btn">รับทราบ</button>
+    </div>
+</div>
+<!-- ==================================================== -->
 
 <!-- Admin Login Modal -->
 <div id="adminModal" class="modal-overlay">
@@ -271,6 +354,35 @@ html { scroll-behavior: smooth; }
 <button id="submitBtn" class="btn primary full" type="submit">ส่งข้อมูลสถานการณ์วันนี้</button>
 </form></div></section>
 </main><footer>เชื่อมต่อฐานข้อมูลแบบ Realtime ระบบบันทึกอัตโนมัติ</footer>
+
+<!-- ================= SCRIPT FOR CLOSURE POP-UP ================= -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById('closureModal');
+        var btn = document.getElementById('closureBtn');
+        
+        // 1. ล็อกการ Scroll หน้าจอทันที
+        document.body.classList.add('body-locked');
+        
+        // 2. ให้ Focus ไปที่ปุ่มอัตโนมัติเมื่อ Pop-up เด้ง
+        btn.focus();
+
+        // 3. กด "รับทราบ" ถึงจะปิด และปลดล็อก Scroll
+        btn.addEventListener('click', function() {
+            modal.style.display = 'none';
+            document.body.classList.remove('body-locked');
+        });
+
+        // 4. ห้ามปิดด้วยปุ่ม ESC บนคีย์บอร์ด
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display !== 'none') {
+                event.preventDefault(); 
+            }
+        });
+    });
+</script>
+<!-- ========================================================== -->
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <!-- โค้ดเชื่อมต่อฐานข้อมูล Firebase -->
