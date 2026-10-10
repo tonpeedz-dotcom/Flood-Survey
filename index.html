@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
 <title>ระบบสำรวจความพร้อมมาทำงานรายวัน</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,15 +15,12 @@
 table{width:100%;border-collapse:collapse;min-width:1050px}
 th,td{text-align:left;padding:11px;border-bottom:1px solid #e8edf3;vertical-align:middle;white-space:nowrap}
 th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:#d1fae5;color:#065f46}.no{background:#ffe4e6;color:#9f1239}.risk{background:#fef3c7;color:#92400e}.gray{background:#e2e8f0;color:#475569}.map{height:340px;border-radius:14px;border:1px solid var(--border);overflow:hidden}.mapactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e3a8a;margin-bottom:15px}.success{background:#ecfdf5;color:#065f46}
-
 /* Team Selector */
 .team-selector { background: #fff; padding: 16px 20px; border-radius: 12px; box-shadow: 0 4px 12px #0f172a0f; display: flex; align-items: center; gap: 15px; margin-top: -20px; position: relative; z-index: 10; border: 1px solid var(--border); flex-wrap: wrap; }
 .team-selector label { margin: 0; font-size: 16px; color: var(--navy); }
 .team-selector select { max-width: 400px; font-weight: bold; color: var(--navy); border: 2px solid var(--navy); background-color: #f8fafc; font-size: 16px;}
-
 /* PDF Summary Dashboard Styling */
 #pdfSummary { display: none; }
-
 @media(max-width:850px){.grid4,.formgrid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}.full{grid-column:auto}}
 @media print{
     @page { size: A2 portrait; margin: 15mm; }
@@ -32,7 +31,6 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
     .tablewrap{overflow:visible}
     table{min-width:0;font-size:12px}
     th,td{padding:8px; border:1px solid #cbd5e1; white-space:normal;}
-    
     #pdfSummary { display: block !important; margin-bottom: 30px; }
     .pdf-title { text-align: center; font-size: 32px; font-weight: 800; color: var(--navy); margin-bottom: 5px; }
     .pdf-subtitle { text-align: center; font-size: 18px; color: #64748b; margin-bottom: 25px; }
@@ -41,22 +39,18 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
     .pdf-box strong { display: block; font-size: 36px; margin: 10px 0; }
     .pdf-box-red { border-color: #fecdd3; background: #fff1f2; }
     .pdf-box-green { border-color: #a7f3d0; background: #ecfdf5; }
-    
     .pdf-details { display: flex; gap: 20px; margin-bottom: 30px; }
     .pdf-detail-card { flex: 1; border: 1px solid #cbd5e1; border-radius: 10px; padding: 15px; }
     .pdf-detail-title { font-weight: 700; font-size: 16px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
     .pdf-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
 }
-
 #missingList::-webkit-scrollbar { height: 6px; }
 #missingList::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
 .skill-card { border-left: 4px solid var(--border); display:flex; flex-direction:column; gap:8px; }
 html { scroll-behavior: smooth; }
-
 /* Modal Background */
 .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center; }
 .modal-box { background:#fff; padding:24px; border-radius:12px; width:320px; max-width:90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-
 /* ================= CLOSURE POP-UP CSS ================= */
 .closure-overlay {
     position: fixed;
@@ -115,34 +109,73 @@ html { scroll-behavior: smooth; }
 .body-locked {
     overflow: hidden !important;
 }
-
 @media(max-width: 850px) {
     .closure-text { font-size: 28px; }
     .closure-icon { font-size: 60px; }
     .closure-box { padding: 30px 20px; }
 }
-
 @media print {
     .closure-overlay { display: none !important; }
 }
 /* ==================================================== */
-
+/* ================= G-WIN STYLE SURVEY ================= */
+.sv{max-width:600px;margin:0 auto;padding-bottom:150px}
+.sv-head{position:sticky;top:0;z-index:20;background:#0f172a;color:#fff;border-radius:0 0 14px 14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sv-head b{font-size:17px;display:block}.sv-head small{color:#cbd5e1}
+.chip{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;border:0;white-space:nowrap}
+.chip.on{background:#064e3b;color:#6ee7b7}.chip.off{background:#7f1d1d;color:#fecaca}
+.chip.link{background:#1e293b;color:#e2e8f0;cursor:pointer}
+.sv-card{background:#fff;border:1px solid #e7edf5;border-radius:20px;padding:18px;margin-top:14px;box-shadow:0 4px 14px #0f172a08}
+.sv-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.sv-step>span{flex:none;width:28px;height:28px;border-radius:50%;background:#0f172a;color:#fff;display:grid;place-items:center;font-weight:700}
+.sv-step h3{margin:0;font-size:18px}.sv-step p{margin:2px 0 0;color:#64748b;font-size:13px}
+.sv-label{margin:16px 0 8px}
+input.big{font-size:20px;padding:14px;text-align:center;letter-spacing:.5px}
+.suggest{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.suggest button{border:1px solid var(--border);background:#f8fafc;border-radius:12px;padding:8px 12px;cursor:pointer;text-align:left}
+.suggest button small{display:block;color:#64748b;font-size:11px}
+.empcard{margin-top:10px;padding:12px 14px;border-radius:14px;background:#eff6ff;border:1px solid #bfdbfe}
+.empcard .row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.empcard a{font-size:13px}
+.seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px}
+.seg button{border:1.5px solid var(--border);background:#fff;border-radius:14px;padding:14px 8px;font-size:16px;cursor:pointer;font-weight:600;color:#334155}
+.seg button small{display:block;font-size:11px;color:#94a3b8;font-weight:400}
+.seg button.sel{border-color:#0f172a;background:#0f172a;color:#fff}.seg button.sel small{color:#cbd5e1}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;border:1.5px solid var(--border);border-radius:16px;padding:14px 16px;cursor:pointer;background:#fff;text-align:left;width:100%}
+.opt .ic{font-size:28px;line-height:1}.opt .tx{flex:1}.opt b{display:block;font-size:16px}.opt small{color:#64748b}
+.opt .rd{width:22px;height:22px;border-radius:50%;border:2px solid #cbd5e1;flex:none}
+.opt.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 8%,#fff)}
+.opt.sel .rd{border:7px solid var(--c)}
+details{margin-top:14px;border:1px solid var(--border);border-radius:14px;padding:12px 14px}
+summary{cursor:pointer;font-weight:600;display:flex;justify-content:space-between;gap:8px;list-style:none}
+summary::-webkit-details-marker{display:none}summary::after{content:'▾';color:#94a3b8}
+details[open] summary::after{content:'▴'}
+.sv-sticky{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#ffffffee;backdrop-filter:blur(6px);border-top:1px solid var(--border);padding:10px 16px 12px}
+.sv-sticky>*{max-width:600px;margin-left:auto;margin-right:auto}
+#svMissing{text-align:center;margin-bottom:6px;font-weight:600}
+.sv-submit{display:block;width:100%;border:0;border-radius:14px;padding:15px;font-size:18px;font-weight:700;background:#0f172a;color:#fff;cursor:pointer;margin-bottom:6px}
+.sv-submit:disabled{background:#cbd5e1;cursor:not-allowed}
+.done{text-align:center;padding:30px 18px}.done .big{font-size:64px}
+.toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:99999;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+body.survey-only header,body.survey-only .team-selector,body.survey-only .tabs,body.survey-only footer{display:none!important}
+body:not(.survey-mode) .sv-sticky{display:none}
+@media print{.sv-sticky,.toast{display:none!important}}
 </style>
 </head>
 <body>
-
 <!-- ================= CLOSURE POP-UP HTML ================= -->
 <div id="closureModal" class="closure-overlay" role="alertdialog" aria-modal="true">
     <div class="closure-box">
         <div class="closure-icon">⚠️</div>
         <div class="closure-text">
-            ระบบ รายงานความพร้อมมาทำงานรายวัน (Jig MTN & Kaizen) - 29 ท่าน ได้ปิดตัวลงแล้วครับ เนื่องจากพนักงานไม่ได้ให้ความสำคัญต่อการให้ความร่วมมือในกรอกข้อมูล
+            ⚠️ระบบรายงานความพร้อมมาทำงานรายวัน⚠️ Jig MTN & Kaizen ได้ปิดตัวลงแล้วครับ เนื่องจากพนักงาน "ไม่ได้ให้ความสำคัญต่อการให้ความร่วมมือในกรอกข้อมูล"
         </div>
         <button id="closureBtn" class="closure-btn">รับทราบ</button>
     </div>
 </div>
 <!-- ==================================================== -->
-
 <!-- Admin Login Modal -->
 <div id="adminModal" class="modal-overlay">
     <div class="modal-box">
@@ -157,7 +190,6 @@ html { scroll-behavior: smooth; }
         </div>
     </div>
 </div>
-
 <header>
     <div class="wrap head">
         <div>
@@ -177,7 +209,6 @@ html { scroll-behavior: smooth; }
         </div>
     </div>
 </header>
-
 <main class="wrap">
 <!-- ================= TEAM SELECTOR ================= -->
 <div class="team-selector">
@@ -186,12 +217,10 @@ html { scroll-behavior: smooth; }
         <option value="QUALITY">Quality Team by Duangrat P. (36 ท่าน)</option>
     </select>
 </div>
-
 <!-- ================= PDF SUMMARY DASHBOARD ================= -->
 <div id="pdfSummary">
     <div class="pdf-title" id="pdfMainTitle">รายงานความพร้อมมาทำงานรายวัน</div>
     <div class="pdf-subtitle" id="pdfSubtitle">ประจำวันที่: DD/MM/YYYY</div>
-    
     <div class="pdf-grid">
         <div class="pdf-box">
             <small>พนักงานทั้งหมด</small>
@@ -214,7 +243,6 @@ html { scroll-behavior: smooth; }
             <span id="pdfRiskSub">ต้องติดตามเร่งด่วน</span>
         </div>
     </div>
-
     <div class="pdf-details">
         <div class="pdf-detail-card" style="border-left: 4px solid var(--red);">
             <div class="pdf-detail-title" style="color:var(--red);">วิเคราะห์สาเหตุ (กลุ่มที่ไม่สามารถมาทำงานได้)</div>
@@ -233,24 +261,20 @@ html { scroll-behavior: smooth; }
     </div>
     <h3 style="margin-bottom:10px; font-size:18px; color:var(--navy); border-bottom: 2px solid var(--navy); padding-bottom:5px;">รายละเอียดพนักงาน (รายบุคคล)</h3>
 </div>
-
 <div class="tabs">
     <button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button>
     <button class="tab" data-panel="skillPanel">Backup (Skills)</button>
     <button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button>
     <a href="https://chachoengsao-flood.vercel.app/" target="_blank" class="btn primary" style="margin-left:auto; text-decoration:none; background-color:var(--cyan); display:flex; align-items:center; gap:6px; font-size:14px;">🌊 ตรวจสอบสถานการณ์น้ำ "ฉะเชิงเทรา"</a>
 </div>
-
 <!-- ================= DASHBOARD PANEL ================= -->
 <section id="dashboardPanel" class="panel active"><div class="reportHead"><h2 id="dashboardTitle">รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
-
 <div class="grid4">
     <div class="card metric active-filter" id="cardTotal" onclick="window.setStatusFilter('')"><small>พนักงานที่ Update</small><strong id="mTotal">0/0</strong><span id="pTotal">0% (คลิกดูทั้งหมด)</span></div>
     <div class="card metric" id="cardCan" onclick="window.setStatusFilter('สามารถไปทำงานได้')"><small>สามารถมาทำงานได้</small><strong class="green" id="mCan">0</strong><span id="pCan">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardCannot" onclick="window.setStatusFilter('ไม่สามารถไปทำงานได้')"><small>ไม่สามารถมาทำงานได้</small><strong class="red" id="mCannot">0</strong><span id="pCannot">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardRisk" onclick="window.setStatusFilter('มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)')"><small>มีความเสี่ยง</small><strong class="amber" id="mRisk">0</strong><span id="pRisk">0% (คลิกเพื่อดู)</span></div>
 </div>
-
 <div class="card" style="margin-top:18px; border-left: 4px solid var(--red);">
     <div style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="window.toggleMissingList()">
         <h3 style="margin:0; color: var(--red);">พนักงานที่ยังไม่กรอกข้อมูล (<span id="mMissingCount">0</span> คน)</h3>
@@ -260,13 +284,11 @@ html { scroll-behavior: smooth; }
         <div id="missingList" style="display:flex; overflow-x:auto; gap:24px; padding-bottom:12px;"></div>
     </div>
 </div>
-
 <div class="card" style="margin-top:18px">
   <h3>แผนที่พิกัดที่พักของพนักงาน</h3>
   <div id="summaryMap" class="map"></div>
   <p class="hint">หมุดสีเขียว: มาได้ | สีแดง: มาไม่ได้ | สีส้ม: มีความเสี่ยง</p>
 </div>
-
 <div id="tableCard" class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div>
     <button id="btnClearAll" class="btn danger" onclick="window.clearData()" style="display:none;">ล้างข้อมูลทั้งหมด</button> 
     <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> 
@@ -280,13 +302,11 @@ html { scroll-behavior: smooth; }
     </table>
 </div></div>
 </section>
-
 <!-- ================= SKILL PANEL ================= -->
 <section id="skillPanel" class="panel">
     <div class="card">
         <h2>Backup Management System (Skill Matrix)</h2>
         <p class="hint" style="margin-top:-10px; margin-bottom:20px;">ค้นหาพนักงานที่มีทักษะตรงตามที่ต้องการ และตรวจสอบความพร้อมในการมาทำงานวันนี้</p>
-        
         <div class="formgrid" style="margin-bottom:20px;">
             <div>
                 <label>เลือกทักษะที่ต้องการหา (Skill)</label>
@@ -305,74 +325,112 @@ html { scroll-behavior: smooth; }
                 </select>
             </div>
         </div>
-
         <div id="skillResults" class="grid4">
             <!-- ข้อมูลพนักงานตาม Skill จะโชว์ที่นี่ -->
         </div>
     </div>
 </section>
-
 <!-- ================= SURVEY PANEL ================= -->
-<section id="surveyPanel" class="panel"><div class="card"><h2>แบบสอบถามสถานการณ์รายวัน</h2><div id="msg"></div><form id="surveyForm" class="formgrid">
-<div class="full">
-<label>1. ชื่อ - นามสกุล</label>
-<input id="empName" list="employeeNames" autocomplete="off" required>
-<datalist id="employeeNames">
-</datalist>
-</div>
-<div class="full"><label>2. ที่อยู่โดยละเอียด</label><textarea id="address" required placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea></div><div><label>3. ผลกระทบที่อยู่อาศัย</label><select id="homeImpact"><option>น้ำท่วมบ้าน (หนัก)</option><option>น้ำท่วมบ้าน (เล็กน้อย)</option><option selected>น้ำไม่ท่วมบ้าน</option></select></div><div><label>4. ระดับน้ำสูงสุดบนเส้นทาง (cm)</label><input id="waterLevel" type="number" min="0" max="300" value="0" required></div>
-
-<div>
-    <label>5. สถานะปัจจุบัน</label>
-    <select id="status">
-        <option>สามารถไปทำงานได้</option>
-        <option>ไม่สามารถไปทำงานได้</option>
-        <option>มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)</option>
-    </select>
-</div>
-<div id="reasonContainer" style="display:none;">
-    <label style="color:var(--red);">สาเหตุ (ระบุเพิ่มเติม)</label>
-    <select id="reason">
-        <option value="">-- กรุณาเลือกสาเหตุ --</option>
-        <option>บ้านพัก/สถานที่พัก "ถูกน้ำท่วม"</option>
-        <option>เส้นทางมาทำงาน "ไม่สามารถเดินทางได้"</option>
-        <option>รถบัสบริษัทไม่สามารถเข้ามารับได้</option>
-    </select>
-</div>
-
-<div><label>6. เดินทางโดย</label><select id="transport"><option>รถส่วนตัว</option><option>รถบัสรับ-ส่ง</option></select></div><div><label>สายรถบัสรับ-ส่ง</label><input id="busLine" placeholder="เช่น สาย B2" disabled></div>
-<div class="full"><label>7. หมายเหตุ/รายละเอียดเพิ่มเติม</label><textarea id="note" placeholder="เช่น ลากิจ, ลาป่วย, รถเสีย, น้ำท่วมสูงมาก เป็นต้น" style="min-height:50px;"></textarea></div>
-<div class="full"><label>8. พิกัดที่พัก</label>
-<div class="notice">
-    <strong>ค้นหาพิกัด:</strong> พิมพ์ชื่อ, วางพิกัด Lat,Lng หรือ <b>ลิงก์ที่ก๊อปปี้มาจาก Google Maps</b> ด้านล่างนี้
-    <div style="display:flex; gap:8px; margin-top:10px;">
-        <input id="mapSearchText" placeholder="เช่น 13.60,100.70 หรือ ลิงก์ Google Maps" style="flex:1;">
-        <button type="button" class="btn primary" id="searchMapBtn">ค้นหาตำแหน่ง</button>
+<section id="surveyPanel" class="panel">
+<div class="sv">
+  <div class="sv-head">
+    <div><b>สำรวจสถานการณ์น้ำท่วมพนักงาน</b><small>Quality Team · กรอกเสร็จใน 30 วินาที</small></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button type="button" class="chip link" id="shareBtn" title="คัดลอกลิงก์สำหรับส่งใน LINE">🔗 แชร์ลิงก์</button>
+      <span id="netChip" class="chip on">ออนไลน์</span>
     </div>
+  </div>
+  <div id="svDone" class="sv-card done" style="display:none"></div>
+  <div id="svForm">
+    <div class="sv-card">
+      <div class="sv-step"><span>1</span><div><h3>วันที่ทำการสำรวจ</h3><p>ค่าเริ่มต้นคือวันนี้ (เวลาไทย GMT+7) — แก้ไขได้หากกรอกย้อนหลัง</p></div></div>
+      <input type="date" id="svDate">
+    </div>
+    <div class="sv-card">
+      <div class="sv-step"><span>2</span><div><h3>คุณคือใคร?</h3><p>พิมพ์ชื่อหรือนามสกุลบางส่วน ระบบจะดึงข้อมูลให้ตรวจสอบ</p></div></div>
+      <input id="empQuery" class="big" placeholder="เช่น สุนทร" autocomplete="off">
+      <div id="empSuggest" class="suggest"></div>
+      <div id="empCard" class="empcard" style="display:none"></div>
+      <label class="sv-label">Shift (กะการทำงาน) <b class="red">*</b></label>
+      <div class="seg" id="shiftSeg">
+        <button type="button" data-v="Day">Day</button>
+        <button type="button" data-v="White">White</button>
+        <button type="button" data-v="Yellow">Yellow</button>
+      </div>
+    </div>
+    <div class="sv-card">
+      <div class="sv-step"><span>3</span><div><h3>สถานะปัจจุบันของคุณ?</h3><p>เลือก 1 ข้อ</p></div></div>
+      <div id="statusCards" class="opts"></div>
+      <div id="waterWrap" style="display:none">
+        <label class="sv-label">ระดับน้ำสูงสุดบนเส้นทาง (โดยประมาณ)</label>
+        <div class="seg wrap" id="waterSeg">
+          <button type="button" data-v="0">ไม่มี</button>
+          <button type="button" data-v="10">~10 cm<small>ข้อเท้า</small></button>
+          <button type="button" data-v="30">~30 cm<small>ครึ่งแข้ง</small></button>
+          <button type="button" data-v="50">~50 cm<small>หัวเข่า</small></button>
+          <button type="button" data-v="80">~80 cm<small>ต้นขา</small></button>
+          <button type="button" data-v="120">100+ cm<small>เอว</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="sv-card">
+      <div class="sv-step"><span>4</span><div><h3>การเดินทางและที่พัก</h3><p id="travelHint">ครั้งแรกต้องกรอก ครั้งต่อไประบบจะจำให้</p></div></div>
+      <div class="seg" id="transSeg">
+        <button type="button" data-v="รถส่วนตัว">🚗 รถส่วนตัว</button>
+        <button type="button" data-v="รถบัสรับ-ส่ง">🚌 รถบัสรับ-ส่ง</button>
+      </div>
+      <div id="busWrap" style="display:none;margin-top:10px">
+        <input id="busLine" list="busLines" placeholder="สายรถบัส เช่น สาย B2" autocomplete="off">
+        <datalist id="busLines"></datalist>
+      </div>
+      <details id="homeDetails">
+        <summary><span>🏠 ที่พักและพิกัด</span><span id="homeSummary" class="hint"></span></summary>
+        <label class="sv-label">ที่อยู่โดยละเอียด</label>
+        <textarea id="address" placeholder="เช่น หมู่บ้านชญาดา ซอยวัดปลัดเปลียง"></textarea>
+        <div class="notice" style="margin-top:10px">
+          <strong>ค้นหาพิกัด:</strong> พิมพ์ชื่อ, วางพิกัด Lat,Lng หรือ <b>ลิงก์จาก Google Maps</b> หรือแตะบนแผนที่
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input id="mapSearchText" placeholder="เช่น 13.60,100.70 หรือ ลิงก์ Google Maps" style="flex:1">
+            <button type="button" class="btn primary" id="searchMapBtn">ค้นหาตำแหน่ง</button>
+          </div>
+        </div>
+        <div id="pickerMap" class="map" style="height:280px"></div>
+        <div class="mapactions">
+          <button type="button" class="btn secondary" id="locateBtn">📍 ใช้ตำแหน่งปัจจุบัน (GPS)</button>
+          <button type="button" class="btn secondary" id="googleBtn">เปิดใน Google Maps</button>
+          <input id="lat" type="number" step="any" placeholder="Latitude" style="max-width:140px">
+          <input id="lng" type="number" step="any" placeholder="Longitude" style="max-width:140px">
+        </div>
+      </details>
+      <details id="noteDetails">
+        <summary><span>📝 หมายเหตุเพิ่มเติม (ถ้ามี)</span></summary>
+        <textarea id="note" placeholder="เช่น ลากิจ, ลาป่วย, รถเสีย, ต้องการความช่วยเหลือ" style="min-height:60px"></textarea>
+      </details>
+    </div>
+  </div>
+  <div class="sv-sticky" id="svSticky">
+    <div id="svMissing" class="hint"></div>
+    <button type="button" id="submitBtn" class="sv-submit" disabled>ส่งข้อมูล</button>
+    <div class="hint" style="text-align:center">ข้อมูลนี้ใช้เพื่อช่วยเหลือพนักงานและวางแผนกำลังคนเท่านั้น · <a href="#" id="toManager">สำหรับผู้จัดการ</a></div>
+  </div>
 </div>
-<div id="pickerMap" class="map"></div><div class="mapactions"><button type="button" class="btn secondary" id="locateBtn">ใช้ตำแหน่งปัจจุบัน (GPS)</button><button type="button" class="btn secondary" id="googleBtn">เปิดหมุดใน Google Maps</button><input id="lat" type="number" step="any" placeholder="Latitude" required style="max-width:180px"><input id="lng" type="number" step="any" placeholder="Longitude" required style="max-width:180px"></div><p class="hint">การใช้ตำแหน่ง GPS ต้องเปิดสิทธิ์ Location ใน Browser และควรใช้งานผ่าน HTTPS</p></div><div class="full notice">เวลา Update บันทึกอัตโนมัติ ข้อมูลที่อยู่และพิกัดเป็นข้อมูลส่วนบุคคล ควรจำกัดสิทธิ์เฉพาะผู้รับผิดชอบและกำหนดระยะเวลาจัดเก็บ</div>
-<button id="submitBtn" class="btn primary full" type="submit">ส่งข้อมูลสถานการณ์วันนี้</button>
-</form></div></section>
+</section>
+<div id="toast" class="toast"></div>
 </main><footer>เชื่อมต่อฐานข้อมูลแบบ Realtime ระบบบันทึกอัตโนมัติ</footer>
-
 <!-- ================= SCRIPT FOR CLOSURE POP-UP ================= -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var modal = document.getElementById('closureModal');
         var btn = document.getElementById('closureBtn');
-        
         // 1. ล็อกการ Scroll หน้าจอทันที
         document.body.classList.add('body-locked');
-        
         // 2. ให้ Focus ไปที่ปุ่มอัตโนมัติเมื่อ Pop-up เด้ง
         btn.focus();
-
         // 3. กด "รับทราบ" ถึงจะปิด และปลดล็อก Scroll
         btn.addEventListener('click', function() {
             modal.style.display = 'none';
             document.body.classList.remove('body-locked');
         });
-
         // 4. ห้ามปิดด้วยปุ่ม ESC บนคีย์บอร์ด
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape' && modal.style.display !== 'none') {
@@ -382,15 +440,12 @@ html { scroll-behavior: smooth; }
     });
 </script>
 <!-- ========================================================== -->
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <!-- โค้ดเชื่อมต่อฐานข้อมูล Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getDatabase, ref, push, onValue, set, remove, off } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyDy8TZAeEZBoNv8IsT0hrCDZuyoPxcaVEE",
   authDomain: "kanin-flood.firebaseapp.com",
@@ -401,15 +456,11 @@ const firebaseConfig = {
   appId: "1:973994907913:web:a3c8fe93d624ec3db51bd8",
   measurementId: "G-TJ6RCWHDV5"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app); // ประกาศตัวแปรเรียกใช้ Auth
-
 const dbRefQuality = ref(db, 'dailyReadiness');
-
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
-
 const EMPLOYEES_QUALITY = {
     "นาย สุนทร ไชยแสน": { group: "Project", skills: ["Chisel", "Inspect"] },
     "นาย อดิเรก แซ่ซิ้ม": { group: "Project", skills: ["Chisel"] },
@@ -448,27 +499,21 @@ const EMPLOYEES_QUALITY = {
     "นาย พีรพงษ์ เดชทิศ": { group: "CMM", skills: [] },
     "นาย วัชรินทร์ ดีธรรม": { group: "Receiving", skills: ["Chisel"] }
 };
-
-
 let activeTeamName = 'QUALITY';
 let activeEmployees = EMPLOYEES_QUALITY;
 let allActiveEmployeeNames = Object.keys(activeEmployees);
 let currentDbRef = dbRefQuality;
 let firebaseUnsubscribe = null;
-
 let rows=[];
 let currentStatusFilter='';
 let pickerMarker;
 let summaryMarkers=[];
 let isAdmin = false; 
-
-const today=new Date().toISOString().slice(0,10);
+const today=new Date(Date.now()+7*3600e3).toISOString().slice(0,10); // เวลาไทย GMT+7
 document.getElementById('selectedDate').value=today;
-
 const summaryMap=L.map('summaryMap').setView([13.60,100.70],9);
 const pickerMap=L.map('pickerMap').setView([13.60,100.70],10);
 [summaryMap,pickerMap].forEach(m=>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(m));
-
 // --- ระบบ Admin Login (Firebase Auth) ---
 window.openAdminModal = function() {
     document.getElementById('adminModal').style.display = 'flex';
@@ -481,7 +526,6 @@ window.closeAdminModal = function() {
 window.checkAdminLogin = function() {
     const user = document.getElementById('adminUser').value;
     const pass = document.getElementById('adminPass').value;
-    
     // ตรวจสอบกับเซิร์ฟเวอร์ Firebase ของจริง
     signInWithEmailAndPassword(auth, user, pass)
         .then(() => {
@@ -497,7 +541,6 @@ window.logoutAdmin = function() {
         alert('ออกจากระบบเรียบร้อย');
     });
 }
-
 // เช็คสถานะล็อกอินอัตโนมัติ (แม้จะ Refresh หน้าเว็บ ถ้าเคยล็อกอินไว้ก็ยังเป็น Admin อยู่)
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -514,7 +557,6 @@ onAuthStateChanged(auth, (user) => {
     render(); // สั่งให้วาดตารางใหม่เพื่อสลับคอลัมน์ลบข้อมูล
 });
 // -----------------------
-
 window.switchTeam = function(team) {
     activeTeamName = 'QUALITY';
     activeEmployees = EMPLOYEES_QUALITY;
@@ -522,20 +564,11 @@ window.switchTeam = function(team) {
     document.getElementById('teamTitle').textContent = "สำรวจความพร้อมทำงาน (Quality Team)";
     document.getElementById('pdfMainTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality Team)";
     document.getElementById('dashboardTitle').textContent = "รายงานความพร้อมมาทำงานรายวัน (Quality)";
-    
     allActiveEmployeeNames = Object.keys(activeEmployees);
-    document.getElementById('employeeNames').innerHTML = allActiveEmployeeNames.map(n => `<option value="${n}"></option>`).join('');
-    
-    document.getElementById('surveyForm').reset();
-    document.getElementById('status').onchange();
-    document.getElementById('transport').onchange();
-    if(pickerMarker) { pickerMap.removeLayer(pickerMarker); pickerMarker=null; }
-
+    resetSurvey();
     if(firebaseUnsubscribe) firebaseUnsubscribe(); 
-    
     rows = []; 
     render(); 
-    
     firebaseUnsubscribe = onValue(currentDbRef, (snapshot) => {
         rows = [];
         snapshot.forEach((child) => {
@@ -545,128 +578,47 @@ window.switchTeam = function(team) {
         });
         rows.reverse(); 
         render();
-        renderSkills(); 
+        renderSkills();
+        onRowsLoaded();
     });
 }
-
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function daily(){return rows.filter(r=>r.date===document.getElementById('selectedDate').value)}
 function pct(n,t){return t?Math.round(n/t*100):0}
 function color(status){return status===STATUS.CAN?'#059669':status===STATUS.CANNOT?'#e11d48':'#d97706'}
 function badge(status){return status===STATUS.CAN?'ok':status===STATUS.CANNOT?'no':'risk'}
-
-document.getElementById('status').onchange = () => {
-    const st = document.getElementById('status').value;
-    const rc = document.getElementById('reasonContainer');
-    const rs = document.getElementById('reason');
-    if(st === 'ไม่สามารถไปทำงานได้') {
-        rc.style.display = 'block';
-        rs.required = true;
-    } else {
-        rc.style.display = 'none';
-        rs.required = false;
-        rs.value = '';
-    }
-};
-
-document.getElementById('empName').addEventListener('input', function() {
-    const selectedName = this.value.trim();
-    if (!allActiveEmployeeNames.includes(selectedName)) return; 
-
-    const currentDate = document.getElementById('selectedDate').value;
-    const allRecordsForUser = rows.filter(r => r.name.trim() === selectedName);
-    
-    if (allRecordsForUser.length > 0) {
-        const todayRecord = allRecordsForUser.find(r => r.date === currentDate);
-        const lastRecord = allRecordsForUser[0];
-
-        if (todayRecord) {
-            if (todayRecord.address) document.getElementById('address').value = todayRecord.address;
-            if (todayRecord.homeImpact) document.getElementById('homeImpact').value = todayRecord.homeImpact;
-            if (todayRecord.waterLevel !== undefined) document.getElementById('waterLevel').value = todayRecord.waterLevel;
-            
-            if (todayRecord.status) {
-                document.getElementById('status').value = todayRecord.status;
-                document.getElementById('status').onchange();
-                if (todayRecord.status === 'ไม่สามารถไปทำงานได้' && todayRecord.reason) {
-                    document.getElementById('reason').value = todayRecord.reason;
-                }
-            }
-            
-            if (todayRecord.transport) {
-                document.getElementById('transport').value = todayRecord.transport;
-                document.getElementById('transport').onchange();
-                if (todayRecord.transport === 'รถบัสรับ-ส่ง' && todayRecord.busLine) {
-                    document.getElementById('busLine').value = todayRecord.busLine;
-                }
-            }
-            
-            document.getElementById('note').value = todayRecord.note || '';
-            
-            if (todayRecord.lat && todayRecord.lng) {
-                setPin(todayRecord.lat, todayRecord.lng);
-            }
-        } else {
-            if (lastRecord.address) document.getElementById('address').value = lastRecord.address;
-            if (lastRecord.transport) {
-                document.getElementById('transport').value = lastRecord.transport;
-                document.getElementById('transport').onchange();
-                if (lastRecord.transport === 'รถบัสรับ-ส่ง' && lastRecord.busLine) {
-                    document.getElementById('busLine').value = lastRecord.busLine;
-                }
-            }
-            if (lastRecord.lat && lastRecord.lng) {
-                setPin(lastRecord.lat, lastRecord.lng);
-            }
-            document.getElementById('homeImpact').value = 'น้ำไม่ท่วมบ้าน';
-            document.getElementById('waterLevel').value = 0;
-            document.getElementById('status').value = 'สามารถไปทำงานได้';
-            document.getElementById('status').onchange();
-            document.getElementById('note').value = '';
-        }
-    }
-});
-
 function render(){
     const data=daily();
     const q=document.getElementById('search').value.toLowerCase();
-    
     document.getElementById('cardTotal').classList.toggle('active-filter', currentStatusFilter === '');
     document.getElementById('cardCan').classList.toggle('active-filter', currentStatusFilter === STATUS.CAN);
     document.getElementById('cardCannot').classList.toggle('active-filter', currentStatusFilter === STATUS.CANNOT);
     document.getElementById('cardRisk').classList.toggle('active-filter', currentStatusFilter === STATUS.RISK);
-
     const filtered=data.filter(r=>{
-        const matchSearch = (r.name+' '+r.address+' '+r.busLine).toLowerCase().includes(q);
+        const matchSearch = (r.name+' '+r.address+' '+r.busLine+' '+(r.shift||'')).toLowerCase().includes(q);
         const matchStatus = currentStatusFilter === '' || r.status === currentStatusFilter;
         return matchSearch && matchStatus;
     });
-    
     const submittedNames = [...new Set(data.map(r => r.name.trim()))];
     const missingNames = allActiveEmployeeNames.filter(name => !submittedNames.includes(name));
-    
     const missingByGroup = {};
     missingNames.forEach(n => {
         const g = activeEmployees[n]?.group || 'อื่นๆ';
         if(!missingByGroup[g]) missingByGroup[g] = [];
         missingByGroup[g].push(n);
     });
-    
     const can=data.filter(r=>r.status===STATUS.CAN).length;
     const cannotList = data.filter(r=>r.status===STATUS.CANNOT); 
     const cannot=cannotList.length;
     const risk=data.filter(r=>r.status===STATUS.RISK).length;
-    
     document.getElementById('mTotal').textContent = submittedNames.length + '/' + allActiveEmployeeNames.length;
     document.getElementById('pTotal').textContent = pct(submittedNames.length, allActiveEmployeeNames.length) + '% (คลิกดูทั้งหมด)';
-    
     document.getElementById('mCan').textContent=can;
     document.getElementById('mCannot').textContent=cannot;
     document.getElementById('mRisk').textContent=risk;
     document.getElementById('pCan').textContent=pct(can, data.length)+'% (คลิกเพื่อดู)';
     document.getElementById('pCannot').textContent=pct(cannot, data.length)+'% (คลิกเพื่อดู)';
     document.getElementById('pRisk').textContent=pct(risk, data.length)+'% (คลิกเพื่อดู)';
-    
     document.getElementById('mMissingCount').textContent = missingNames.length;
     if(missingNames.length === 0) {
         document.getElementById('missingList').innerHTML = '<span class="badge ok" style="font-size:14px; padding:6px 12px; margin-top:8px;">กรอกข้อมูลครบทุกคนแล้ว 🎉</span>';
@@ -678,14 +630,13 @@ function render(){
                     </div>`;
         }).join('');
     }
-    
     document.getElementById('reportDate').textContent='วันที่ '+document.getElementById('selectedDate').value;
     document.getElementById('rowCount').textContent='แสดง '+filtered.length+' จาก '+data.length+' รายการ';
-    
     // สร้างส่วน Header ตารางตามสถานะ Admin
     document.getElementById('tableHead').innerHTML = `
         <tr>
             <th>ชื่อ-นามสกุล</th>
+            <th>กะ</th>
             <th>ที่อยู่</th>
             <th>ผลกระทบบ้าน</th>
             <th>ระดับน้ำ</th>
@@ -697,19 +648,17 @@ function render(){
             ${isAdmin ? '<th>จัดการ</th>' : ''}
         </tr>
     `;
-
     // สร้างข้อมูล Row ในตาราง
     document.getElementById('tbody').innerHTML=filtered.map(r=>{
         let statusDisplay = `<span class="badge ${badge(r.status)}">${esc(r.status)}</span>`;
         if (r.status === 'ไม่สามารถไปทำงานได้' && r.reason) {
             statusDisplay += `<br><small style="color:var(--red); display:block; margin-top:4px;">สาเหตุ: ${esc(r.reason)}</small>`;
         }
-        
         let coordHtml = isAdmin ? `<td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td>` : '';
         let manageHtml = isAdmin ? `<td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td>` : '';
-
         return `<tr>
             <td><b>${esc(r.name)}</b></td>
+            <td>${esc(r.shift||'-')}</td>
             <td>${esc(r.address)}</td>
             <td>${esc(r.homeImpact)}</td>
             <td><b>${r.waterLevel} cm</b></td>
@@ -721,15 +670,12 @@ function render(){
             ${manageHtml}
         </tr>`;
     }).join('');
-    
     summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
     summaryMarkers=filtered.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:color(r.status),fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.status)}<br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));
-    
     if(summaryMarkers.length){
         const group=L.featureGroup(summaryMarkers);
         summaryMap.fitBounds(group.getBounds().pad(.25),{maxZoom:13});
     }
-
     document.getElementById('pdfTotal').textContent = allActiveEmployeeNames.length;
     document.getElementById('pdfTotalSub').textContent = `อัปเดตข้อมูลแล้ว ${submittedNames.length} คน`;
     document.getElementById('pdfCan').textContent = can;
@@ -738,7 +684,6 @@ function render(){
     document.getElementById('pdfCannotSub').textContent = `คิดเป็น ${pct(cannot, allActiveEmployeeNames.length)}%`;
     document.getElementById('pdfRisk').textContent = risk; 
     document.getElementById('pdfRiskSub').textContent = `คิดเป็น ${pct(risk, allActiveEmployeeNames.length)}%`;
-
     let reasonBus = 0; let reasonHome = 0; let reasonRoute = 0; let reasonOther = 0;
     cannotList.forEach(r => {
         if(!r.reason) reasonOther++;
@@ -751,7 +696,6 @@ function render(){
     document.getElementById('pdfReasonHome').textContent = reasonHome + ' คน';
     document.getElementById('pdfReasonRoute').textContent = reasonRoute + ' คน';
     document.getElementById('pdfReasonOther').textContent = reasonOther + ' คน';
-
     let skillTotal = 0; let skillSpot = 0; let skillChisel = 0; let skillInspect = 0;
     data.filter(r=>r.status===STATUS.CAN).forEach(r => {
         const empData = activeEmployees[r.name.trim()];
@@ -767,37 +711,27 @@ function render(){
     document.getElementById('pdfSkillChisel').textContent = skillChisel + ' คน';
     document.getElementById('pdfSkillInspect').textContent = skillInspect + ' คน';
 }
-
 window.renderSkills = function() {
     const data = daily();
     const reqSkill = document.getElementById('skillFilter').value;
     const reqStatus = document.getElementById('skillStatusFilter').value;
-    
     let resultHTML = '';
     let matchCount = 0;
-
     allActiveEmployeeNames.forEach(name => {
         const empData = activeEmployees[name];
-        
         if (reqSkill && !empData.skills.includes(reqSkill)) return;
-        
         const record = data.find(r => r.name.trim() === name);
         const currentStatus = record ? record.status : 'ยังไม่ระบุข้อมูล (Not Updated)';
-        
         if (reqStatus && currentStatus !== reqStatus) return;
-
         matchCount++;
-        
         let statusBadge = 'gray';
         let borderColor = 'var(--border)';
         if(currentStatus === STATUS.CAN) { statusBadge = 'ok'; borderColor = 'var(--green)'; }
         else if(currentStatus === STATUS.CANNOT) { statusBadge = 'no'; borderColor = 'var(--red)'; }
         else if(currentStatus === STATUS.RISK) { statusBadge = 'risk'; borderColor = 'var(--amber)'; }
-
         const skillTags = empData.skills.length > 0 
             ? empData.skills.map(s => `<span class="badge" style="background:#0f4c81; color:#fff;">${s}</span>`).join(' ') 
             : `<small style="color:#94a3b8;">ไม่มีทักษะพิเศษระบุ</small>`;
-
         resultHTML += `
             <div class="card skill-card" style="border-left-color: ${borderColor};">
                 <div style="display:flex; justify-content:space-between;">
@@ -811,15 +745,11 @@ window.renderSkills = function() {
             </div>
         `;
     });
-
     if(matchCount === 0) {
         resultHTML = `<div class="full hint" style="text-align:center; padding:20px;">ไม่พบพนักงานที่มีคุณสมบัติตรงตามที่ค้นหา</div>`;
     }
-
     document.getElementById('skillResults').innerHTML = resultHTML;
 }
-
-
 function setPin(a,b){
     document.getElementById('lat').value=(+a).toFixed(6);
     document.getElementById('lng').value=(+b).toFixed(6);
@@ -827,19 +757,14 @@ function setPin(a,b){
     pickerMarker=L.marker([a,b]).addTo(pickerMap);
     pickerMap.setView([a,b],15);
 }
-
 pickerMap.on('click',e=>setPin(e.latlng.lat,e.latlng.lng));
-
 document.getElementById('searchMapBtn').onclick = async () => {
     const query = document.getElementById('mapSearchText').value.trim();
     if (!query) return alert('กรุณาระบุชื่อสถานที่, พิกัด (Lat,Lng) หรือ ลิงก์จาก Google Maps');
-
     document.getElementById('searchMapBtn').textContent = 'กำลังตรวจสอบ...';
-    
     // ดักจับกรณีผู้ใช้วางลิงก์ยาวๆ จาก Google Maps หรือพิกัด
     const urlMatch = query.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
     const latLngMatch = query.match(/(-?\d+\.\d+)[\s,]+(-?\d+\.\d+)/);
-
     if (urlMatch) {
         setPin(parseFloat(urlMatch[1]), parseFloat(urlMatch[2]));
         document.getElementById('searchMapBtn').textContent = 'ค้นหาตำแหน่ง';
@@ -849,7 +774,6 @@ document.getElementById('searchMapBtn').onclick = async () => {
         document.getElementById('searchMapBtn').textContent = 'ค้นหาตำแหน่ง';
         return;
     }
-
     try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`);
         const data = await res.json();
@@ -861,111 +785,26 @@ document.getElementById('searchMapBtn').onclick = async () => {
     } catch (err) {
         alert('เกิดข้อผิดพลาดในการเชื่อมต่อระบบค้นหาสถานที่');
     }
-    
     document.getElementById('searchMapBtn').textContent = 'ค้นหาตำแหน่ง';
 };
-
-
 document.getElementById('locateBtn').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPin(p.coords.latitude,p.coords.longitude),e=>alert('ไม่สามารถอ่านตำแหน่งได้: '+e.message),{enableHighAccuracy:true}):alert('Browser ไม่รองรับ Geolocation');
-
 document.getElementById('googleBtn').onclick=()=>{
     const lat = document.getElementById('lat').value;
     const lng = document.getElementById('lng').value;
     if(!lat||!lng)return alert('กรุณาปักหมุดก่อน');
     window.open(`https://www.google.com/maps?q=${lat},${lng}`,'_blank');
 };
-
-document.getElementById('transport').onchange=()=>{
-    const transport = document.getElementById('transport').value;
-    const busLine = document.getElementById('busLine');
-    busLine.disabled = transport !== 'รถบัสรับ-ส่ง';
-    if(busLine.disabled) busLine.value='';
-};
-
-document.getElementById('surveyForm').onsubmit=e=>{
-    e.preventDefault();
-    const nameVal = document.getElementById('empName').value.trim();
-
-    if (!allActiveEmployeeNames.includes(nameVal)) {
-        alert(`❌ ไม่อนุญาตให้บันทึกข้อมูล!\nกรุณาเลือก หรือ พิมพ์ ชื่อ-นามสกุล ให้ตรงกับรายชื่อที่มีอยู่ในระบบ ${allActiveEmployeeNames.length} ท่านเท่านั้นครับ`);
-        document.getElementById('empName').focus();
-        return;
-    }
-
-    const submitBtn = document.getElementById('submitBtn');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'กำลังส่งข้อมูล...';
-
-    const isCannot = document.getElementById('status').value === 'ไม่สามารถไปทำงานได้';
-    const dateVal = document.getElementById('selectedDate').value;
-
-    const newData = {
-        date: dateVal,
-        name: nameVal,
-        address: document.getElementById('address').value.trim(),
-        homeImpact: document.getElementById('homeImpact').value,
-        waterLevel: +document.getElementById('waterLevel').value,
-        status: document.getElementById('status').value,
-        reason: isCannot ? document.getElementById('reason').value : '', 
-        transport: document.getElementById('transport').value,
-        busLine: document.getElementById('busLine').value.trim(),
-        note: document.getElementById('note').value.trim(), 
-        lat: +document.getElementById('lat').value,
-        lng: +document.getElementById('lng').value,
-        updatedAt: new Date().toLocaleString('th-TH',{hour12:false})
-    };
-    
-    const existingRecord = rows.find(r => r.date === dateVal && r.name.trim() === nameVal);
-
-    const onSuccess = () => {
-        document.getElementById('surveyForm').reset();
-        document.getElementById('transport').onchange();
-        document.getElementById('status').onchange();
-        document.getElementById('mapSearchText').value='';
-        if(pickerMarker){
-            pickerMap.removeLayer(pickerMarker);
-            pickerMarker=null;
-        }
-        
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'ส่งข้อมูลสถานการณ์วันนี้';
-        alert('Completed');
-        
-        window.setStatusFilter('');
-        document.querySelector('.tab[data-panel="dashboardPanel"]').click();
-    };
-
-    const onError = (err) => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'ส่งข้อมูลสถานการณ์วันนี้';
-        alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: " + err);
-    };
-
-    if (existingRecord) {
-        if (confirm(`คุณ ${nameVal} ได้กรอกข้อมูลของวันที่ ${dateVal} ไปแล้ว\nยืนยันการ Update ข้อมูลใหม่ใช่หรือไม่?`)) {
-            set(ref(db, 'dailyReadiness/' + existingRecord.key), newData)
-                .then(onSuccess).catch(onError);
-        } else {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'ส่งข้อมูลสถานการณ์วันนี้';
-        }
-    } else {
-        push(currentDbRef, newData).then(onSuccess).catch(onError);
-    }
-};
-
 window.exportPDF = function(){
     document.getElementById('pdfSubtitle').textContent = `ประจำวันที่: ${document.getElementById('selectedDate').value}`;
     document.title='Daily_Readiness_Report_'+ 'Quality' + '_' + document.getElementById('selectedDate').value;
     window.print();
 }
 window.exportCSV = function(){
-    const h=['วันที่','ชื่อ-นามสกุล','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','หมายเหตุ','Latitude','Longitude','Update'];
+    const h=['วันที่','ชื่อ-นามสกุล','กะ','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','หมายเหตุ','Latitude','Longitude','Update'];
     const csv=[h,...daily().map(r=>{
         const statusWithReason = r.status + (r.reason ? ` (${r.reason})` : '');
-        return [r.date,r.name,r.address,r.homeImpact,r.waterLevel,statusWithReason,r.transport,r.busLine,r.note||'-',r.lat,r.lng,r.updatedAt];
+        return [r.date,r.name,r.shift||'-',r.address,r.homeImpact,r.waterLevel,statusWithReason,r.transport,r.busLine,r.note||'-',r.lat,r.lng,r.updatedAt];
     })].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
-    
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
@@ -973,7 +812,6 @@ window.exportCSV = function(){
     a.click();
     URL.revokeObjectURL(a.href);
 }
-
 window.toggleMissingList = function() {
     const wrap = document.getElementById('missingListWrap');
     const icon = document.getElementById('toggleIcon');
@@ -985,13 +823,11 @@ window.toggleMissingList = function() {
         icon.textContent = '▶';
     }
 }
-
 window.setStatusFilter = function(status) {
     currentStatusFilter = status;
     render();
     document.getElementById('tableCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
 window.clearData = function(){
     if(!isAdmin) return;
     if(confirm('ยืนยันการ "ล้างข้อมูลทั้งหมด" ในระบบคลาวด์?')) {
@@ -1000,7 +836,6 @@ window.clearData = function(){
         }).catch(err => alert("ล้มเหลว อาจเกิดจากไม่มีสิทธิ์ลบข้อมูล: " + err));
     }
 }
-
 window.deleteRow = function(key){
     if(!isAdmin) return;
     if(confirm('ยืนยันการ "ลบข้อมูลรายการนี้"?')) {
@@ -1009,21 +844,192 @@ window.deleteRow = function(key){
         }).catch(err => alert("ล้มเหลว อาจเกิดจากไม่มีสิทธิ์ลบข้อมูล: " + err));
     }
 }
-
 document.getElementById('selectedDate').onchange=() => { render(); renderSkills(); };
 document.getElementById('search').oninput=render;
-
 document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
     document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(btn.dataset.panel).classList.add('active');
     setTimeout(()=>{pickerMap.invalidateSize();summaryMap.invalidateSize();},100);
 });
-
+// ================= G-WIN STYLE SURVEY LOGIC =================
+const OPTS = [
+  {id:'home',  ic:'🚨', t:'บ้านน้ำท่วม',                 s:'ไม่สามารถมาทำงานได้',      c:'#e11d48', status:STATUS.CANNOT, reason:'บ้านพัก/สถานที่พัก "ถูกน้ำท่วม"',     impact:'น้ำท่วมบ้าน (หนัก)',    water:true},
+  {id:'route', ic:'⚠️', t:'บ้านไม่ท่วม แต่ถนนถูกตัดขาด', s:'เดินทางมาทำงานไม่ได้',     c:'#e11d48', status:STATUS.CANNOT, reason:'เส้นทางมาทำงาน "ไม่สามารถเดินทางได้"', impact:'น้ำไม่ท่วมบ้าน',        water:true},
+  {id:'bus',   ic:'🚌', t:'รถบัสบริษัทเข้ามารับไม่ได้',    s:'ไม่มีวิธีเดินทางมาทำงาน',   c:'#e11d48', status:STATUS.CANNOT, reason:'รถบัสบริษัทไม่สามารถเข้ามารับได้',      impact:'น้ำไม่ท่วมบ้าน',        water:true},
+  {id:'risk',  ic:'⏳', t:'มีความเสี่ยง รอดูสถานการณ์',    s:'น้ำกำลังขึ้น อาจมาไม่ได้',   c:'#d97706', status:STATUS.RISK,   reason:'',                                     impact:'น้ำท่วมบ้าน (เล็กน้อย)', water:true},
+  {id:'wetok', ic:'🌊', t:'บ้าน/ถนน น้ำท่วม',              s:'แต่เดินทางมาทำงานได้',      c:'#0e7490', status:STATUS.CAN,    reason:'',                                     impact:'น้ำท่วมบ้าน (เล็กน้อย)', water:true},
+  {id:'ok',    ic:'✅', t:'บ้านไม่ท่วม ถนนปกติ',           s:'มาทำงานได้ตามปกติ',         c:'#059669', status:STATUS.CAN,    reason:'',                                     impact:'น้ำไม่ท่วมบ้าน',        water:false},
+];
+const sv = {emp:'', shift:'', opt:'', water:0, transport:'', touched:false};
+let isOnline = true;
+const $ = id => document.getElementById(id);
+function thaiToday(){ return new Date(Date.now()+7*3600e3).toISOString().slice(0,10); }
+function shortName(n){ return n.replace(/^(นาย|นางสาว|นาง|น\.ส\.)\s*/,''); }
+function toast(msg, ms=2800){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),ms); }
+function inferOpt(r){
+  if(r.statusCode) return r.statusCode;
+  if(r.status===STATUS.RISK) return 'risk';
+  if(r.status===STATUS.CANNOT){ const x=r.reason||''; return x.includes('รถบัส')?'bus':x.includes('เส้นทาง')?'route':'home'; }
+  return (r.homeImpact && r.homeImpact!=='น้ำไม่ท่วมบ้าน') || r.waterLevel>0 ? 'wetok' : 'ok';
+}
+// ---------- render pieces ----------
+$('statusCards').innerHTML = OPTS.map(o=>`<button type="button" class="opt" data-id="${o.id}" style="--c:${o.c}"><span class="ic">${o.ic}</span><span class="tx"><b>${o.t}</b><small>${o.s}</small></span><span class="rd"></span></button>`).join('');
+function paintSeg(id, val){ document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.toggle('sel', b.dataset.v===String(val))); }
+function paintAll(){
+  document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('sel', b.dataset.id===sv.opt));
+  paintSeg('shiftSeg', sv.shift); paintSeg('transSeg', sv.transport); paintSeg('waterSeg', sv.water);
+  const o = OPTS.find(x=>x.id===sv.opt);
+  $('waterWrap').style.display = o && o.water ? 'block' : 'none';
+  $('busWrap').style.display = sv.transport==='รถบัสรับ-ส่ง' ? 'block' : 'none';
+  const lat=$('lat').value, lng=$('lng').value, addr=$('address').value.trim();
+  $('homeSummary').textContent = (addr? '✓ '+addr.slice(0,22)+(addr.length>22?'…':'') : 'ยังไม่ระบุ') + (lat&&lng ? ' · 📍' : '');
+  validate();
+}
+function hasHistory(){ return sv.emp && rows.some(r=>r.name.trim()===sv.emp); }
+function missing(){
+  const m=[];
+  if(!sv.emp) m.push('ชื่อพนักงาน');
+  if(!sv.shift) m.push('กะการทำงาน');
+  if(!sv.opt) m.push('สถานะปัจจุบัน');
+  if(!sv.transport) m.push('การเดินทาง');
+  if(sv.transport==='รถบัสรับ-ส่ง' && !$('busLine').value.trim()) m.push('สายรถบัส');
+  if(!$('address').value.trim()) m.push('ที่อยู่');
+  if(!$('lat').value || !$('lng').value) m.push('พิกัดที่พัก');
+  return m;
+}
+function validate(){
+  const m=missing();
+  $('submitBtn').disabled = m.length>0;
+  $('svMissing').innerHTML = m.length ? `ยังต้องกรอก: <span class="red">${m.join(' · ')}</span>` : '<span class="green">✓ ครบแล้ว พร้อมส่ง</span>';
+}
+// ---------- employee lookup ----------
+function suggest(q){
+  q=q.trim().toLowerCase();
+  if(!q || sv.emp){ $('empSuggest').innerHTML=''; return; }
+  const list = allActiveEmployeeNames.filter(n=>shortName(n).toLowerCase().includes(q)).slice(0,6);
+  $('empSuggest').innerHTML = list.length
+    ? list.map(n=>`<button type="button" data-n="${esc(n)}">${esc(shortName(n))}<small>${esc(activeEmployees[n].group)}</small></button>`).join('')
+    : '<span class="hint">ไม่พบชื่อนี้ในทีม Quality</span>';
+}
+$('empQuery').addEventListener('input', e=>{ suggest(e.target.value); });
+$('empQuery').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); const b=$('empSuggest').querySelector('button'); if(b) selectEmp(b.dataset.n); }});
+$('empSuggest').addEventListener('click', e=>{ const b=e.target.closest('button'); if(b) selectEmp(b.dataset.n); });
+function selectEmp(name, silent){
+  if(!activeEmployees[name]) return;
+  sv.emp=name; localStorage.setItem('qr_lastEmp', name);
+  $('empQuery').value=shortName(name); $('empQuery').disabled=true; $('empSuggest').innerHTML='';
+  prefill();
+  if(!silent) toast('สวัสดีคุณ '+shortName(name).split(' ')[0]+' 👋');
+}
+function clearEmp(){
+  sv.emp=''; localStorage.removeItem('qr_lastEmp');
+  $('empQuery').disabled=false; $('empQuery').value=''; $('empCard').style.display='none';
+  resetFields(); $('empQuery').focus();
+}
+window.clearEmp = clearEmp;
+function prefill(){
+  if(!sv.emp) return;
+  const d=$('svDate').value, emp=activeEmployees[sv.emp];
+  const mine=rows.filter(r=>r.name.trim()===sv.emp);
+  const todayRec=mine.find(r=>r.date===d), last=mine[0];
+  const skills=emp.skills.length? emp.skills.map(s=>`<span class="badge" style="background:#0f4c81;color:#fff">${s}</span>`).join(' ') : '<small class="hint">ไม่มีทักษะพิเศษ</small>';
+  let info = todayRec ? `<div class="hint" style="margin-top:6px;color:#92400e">⚠️ กรอกของวันนี้แล้วเมื่อ ${esc(todayRec.updatedAt)} — ส่งใหม่จะเป็นการอัปเดต</div>`
+           : last ? `<div class="hint" style="margin-top:6px">ดึงที่พัก/การเดินทางจากครั้งล่าสุด (${esc(last.date)}) ให้แล้ว</div>`
+           : `<div class="hint" style="margin-top:6px">กรอกครั้งแรก กรุณาระบุที่พักและพิกัดในข้อ 4</div>`;
+  $('empCard').innerHTML = `<div class="row"><div><b>${esc(sv.emp)}</b> · <small>${esc(emp.group)}</small></div><a href="#" onclick="clearEmp();return false;">ไม่ใช่ฉัน / เปลี่ยน</a></div><div style="margin-top:6px">${skills}</div>${info}`;
+  $('empCard').style.display='block';
+  const src = todayRec || last;
+  if(src){
+    $('address').value = src.address||'';
+    sv.transport = src.transport||''; $('busLine').value = src.busLine||'';
+    sv.shift = src.shift||sv.shift;
+    if(src.lat && src.lng) setPin(src.lat, src.lng);
+    $('travelHint').textContent='ระบบจำข้อมูลเดิมไว้แล้ว แก้ไขได้หากย้ายที่พัก';
+  }
+  if(todayRec){ sv.opt=inferOpt(todayRec); sv.water=todayRec.waterLevel||0; $('note').value=todayRec.note||''; }
+  $('homeDetails').open = !src || !src.lat;
+  if($('homeDetails').open) setTimeout(()=>pickerMap.invalidateSize(),150);
+  paintAll();
+}
+function resetFields(){
+  Object.assign(sv,{shift:'',opt:'',water:0,transport:''});
+  ['address','busLine','note','mapSearchText','lat','lng'].forEach(i=>$(i).value='');
+  if(pickerMarker){ pickerMap.removeLayer(pickerMarker); pickerMarker=null; }
+  $('travelHint').textContent='ครั้งแรกต้องกรอก ครั้งต่อไประบบจะจำให้';
+  paintAll();
+}
+function resetSurvey(){ sv.emp=''; $('empQuery').disabled=false; $('empQuery').value=''; $('empCard').style.display='none'; resetFields(); }
+function onRowsLoaded(){
+  $('busLines').innerHTML=[...new Set(rows.map(r=>r.busLine).filter(Boolean))].map(b=>`<option value="${esc(b)}">`).join('');
+  if(!sv.emp){ const s=localStorage.getItem('qr_lastEmp'); if(s && activeEmployees[s]) selectEmp(s,true); }
+  else if(!sv.touched) prefill();
+}
+// ---------- buttons ----------
+$('statusCards').addEventListener('click',e=>{const b=e.target.closest('.opt'); if(!b) return; sv.opt=b.dataset.id; sv.touched=true; if(sv.opt==='ok') sv.water=0; paintAll();});
+$('shiftSeg').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){sv.shift=b.dataset.v; sv.touched=true; paintAll();}});
+$('transSeg').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){sv.transport=b.dataset.v; sv.touched=true; paintAll(); if(sv.transport==='รถบัสรับ-ส่ง' && !$('busLine').value) $('busLine').focus();}});
+$('waterSeg').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){sv.water=+b.dataset.v; paintAll();}});
+['address','busLine','lat','lng'].forEach(i=>$(i).addEventListener('input',()=>{sv.touched=true; paintAll();}));
+$('homeDetails').addEventListener('toggle',()=>setTimeout(()=>pickerMap.invalidateSize(),100));
+$('svDate').value = thaiToday();
+$('svDate').addEventListener('change',()=>{ sv.touched=false; prefill(); });
+const _setPin = setPin; setPin = function(a,b){ _setPin(a,b); paintAll(); };
+$('shareBtn').onclick=()=>{
+  const url = location.origin + location.pathname + '#survey';
+  (navigator.share ? navigator.share({title:'สำรวจสถานการณ์น้ำท่วม Quality Team',url}) : navigator.clipboard.writeText(url).then(()=>toast('คัดลอกลิงก์แล้ว นำไปวางใน LINE ได้เลย')))
+    .catch(()=>prompt('คัดลอกลิงก์นี้', url));
+};
+$('toManager').onclick=e=>{ e.preventDefault(); document.body.classList.remove('survey-only'); location.hash=''; document.querySelector('.tab[data-panel="dashboardPanel"]').click(); };
+// ---------- online indicator ----------
+onValue(ref(db,'.info/connected'), s=>{
+  isOnline = s.val()===true;
+  const c=$('netChip'); c.textContent = isOnline?'ออนไลน์':'ออฟไลน์'; c.className='chip '+(isOnline?'on':'off');
+});
+// ---------- submit ----------
+$('submitBtn').onclick = ()=>{
+  if(missing().length) return validate();
+  const o=OPTS.find(x=>x.id===sv.opt), dateVal=$('svDate').value;
+  const newData = {
+    date: dateVal, name: sv.emp, group: activeEmployees[sv.emp].group, shift: sv.shift,
+    address: $('address').value.trim(), homeImpact: o.impact, waterLevel: o.water ? sv.water : 0,
+    status: o.status, statusCode: o.id, reason: o.reason,
+    transport: sv.transport, busLine: sv.transport==='รถบัสรับ-ส่ง' ? $('busLine').value.trim() : '',
+    note: $('note').value.trim(), lat: +$('lat').value, lng: +$('lng').value,
+    updatedAt: new Date().toLocaleString('th-TH',{hour12:false})
+  };
+  const existing = rows.find(r=>r.date===dateVal && r.name.trim()===sv.emp);
+  const btn=$('submitBtn'); btn.disabled=true; btn.textContent='กำลังส่ง...';
+  const p = existing ? set(ref(db,'dailyReadiness/'+existing.key), newData) : push(currentDbRef, newData);
+  const done = queued => {
+    btn.textContent='ส่งข้อมูล';
+    $('svForm').style.display='none'; $('svSticky').style.display='none';
+    $('svDone').style.display='block';
+    $('svDone').innerHTML = `<div class="big">${queued?'📥':o.ic}</div><h2>${queued?'บันทึกไว้ในเครื่องแล้ว':(existing?'อัปเดตข้อมูลเรียบร้อย':'ส่งข้อมูลเรียบร้อย')}</h2>
+      <p>${esc(shortName(sv.emp))} · กะ ${esc(sv.shift)} · ${esc(dateVal)}<br><b style="color:${o.c}">${o.t}</b> — ${o.s}</p>
+      ${queued?'<p class="hint">ตอนนี้ไม่มีสัญญาณ ระบบจะส่งให้อัตโนมัติเมื่อกลับมาออนไลน์ (อย่าปิดหน้านี้)</p>':''}
+      ${o.status!==STATUS.CAN?'<p class="notice">หัวหน้างานจะเห็นสถานะของคุณทันที หากต้องการความช่วยเหลือเร่งด่วน โทร 1784 (ปภ.) หรือ 1669</p>':''}
+      <button class="btn secondary" onclick="window.svAgain()">แก้ไข / กรอกอีกครั้ง</button>`;
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  if(!isOnline){ done(true); p.then(()=>toast('ส่งข้อมูลที่ค้างไว้สำเร็จแล้ว ✅')).catch(()=>{}); return; }
+  p.then(()=>done(false)).catch(err=>{ btn.disabled=false; btn.textContent='ส่งข้อมูล'; toast('ส่งไม่สำเร็จ: '+err.message,5000); });
+};
+window.svAgain = ()=>{ $('svDone').style.display='none'; $('svForm').style.display='block'; $('svSticky').style.display='block'; sv.touched=false; prefill(); };
+// ---------- survey mode / deep link ----------
+function syncMode(){ document.body.classList.toggle('survey-mode', $('surveyPanel').classList.contains('active')); }
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>setTimeout(syncMode,0)));
+if(/survey/.test(location.hash) || new URLSearchParams(location.search).has('survey')){
+  document.body.classList.add('survey-only');
+  document.querySelector('.tab[data-panel="surveyPanel"]').click();
+}
+syncMode(); paintAll();
+// ---------- PWA ----------
+// (ไม่บังคับ) ถ้าวางไฟล์ sw.js ไว้โฟลเดอร์เดียวกัน ระบบจะใช้ให้อัตโนมัติ ถ้าไม่มีก็ทำงานได้ปกติ
+if('serviceWorker' in navigator && location.protocol==='https:') fetch('sw.js',{method:'HEAD'}).then(r=>{if(r.ok) navigator.serviceWorker.register('sw.js');}).catch(()=>{});
 // เริ่มทำงานเมื่อเปิดเว็บ
 window.switchTeam('QUALITY'); 
 setTimeout(()=>{summaryMap.invalidateSize();pickerMap.invalidateSize();},200);
-document.getElementById('status').onchange();
 </script>
 </body>
 </html>
