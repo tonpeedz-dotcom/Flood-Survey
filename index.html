@@ -26,7 +26,7 @@ th{background:#f1f5f9;color:#475569}.badge{display:inline-block;padding:4px 9px;
     @page { size: A2 portrait; margin: 15mm; }
     body{background:#fff;}
     .wrap{max-width:none;}
-    header, .team-selector, .tabs, #surveyPanel, #skillPanel, .toolbar button, .toolbar input, footer, .map, .hint, .reportHead, #dashboardPanel > .grid4, #dashboardPanel > .card:nth-child(2), #dashboardPanel > .card:nth-child(3) {display:none!important}
+    header, .team-selector, .tabs, #surveyPanel, #skillPanel, .toolbar button, .toolbar input, footer, .map, .hint, .reportHead, #dashboardPanel > .grid4, #dashboardPanel > .card:nth-child(4), #dashboardPanel > .card:nth-child(5) {display:none!important}
     .card{box-shadow:none;border:none;padding:0;}
     .tablewrap{overflow:visible}
     table{min-width:0;font-size:12px}
@@ -51,73 +51,6 @@ html { scroll-behavior: smooth; }
 /* Modal Background */
 .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center; }
 .modal-box { background:#fff; padding:24px; border-radius:12px; width:320px; max-width:90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-/* ================= CLOSURE POP-UP CSS ================= */
-.closure-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 2147483647; /* บนสุดครอบจักรวาล */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.closure-box {
-    background: #7f1d1d;
-    border: 6px solid #450a0a;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    max-width: 900px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    text-align: center;
-    padding: 40px 30px;
-}
-.closure-icon {
-    font-size: 80px;
-    line-height: 1;
-    margin-bottom: 20px;
-}
-.closure-text {
-    color: #ffffff;
-    font-weight: 800;
-    font-size: 40px;
-    line-height: 1.55;
-    margin-bottom: 30px;
-    font-family: "Noto Sans Thai", sans-serif;
-}
-.closure-btn {
-    background: #ffffff;
-    color: #7f1d1d;
-    font-weight: bold;
-    font-size: 26px;
-    padding: 14px 56px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-family: "Noto Sans Thai", sans-serif;
-}
-.closure-btn:hover {
-    background: #fee2e2;
-}
-.body-locked {
-    overflow: hidden !important;
-}
-@media(max-width: 850px) {
-    .closure-text { font-size: 28px; }
-    .closure-icon { font-size: 60px; }
-    .closure-box { padding: 30px 20px; }
-}
-@media print {
-    .closure-overlay { display: none !important; }
-}
-/* ==================================================== */
 /* ================= G-WIN STYLE SURVEY ================= */
 .sv{max-width:600px;margin:0 auto;padding-bottom:150px}
 .sv-head{position:sticky;top:0;z-index:20;background:#0f172a;color:#fff;border-radius:0 0 14px 14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -162,20 +95,36 @@ details[open] summary::after{content:'▴'}
 body.survey-only header,body.survey-only .team-selector,body.survey-only .tabs,body.survey-only footer{display:none!important}
 body:not(.survey-mode) .sv-sticky{display:none}
 @media print{.sv-sticky,.toast{display:none!important}}
+/* ===== 6 STATUS CARDS ===== */
+.s6-title{margin:22px 0 10px;font-size:17px;color:var(--navy);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;cursor:pointer;user-select:none}
+.grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.s6{display:flex;gap:12px;align-items:center;cursor:pointer;background:#fff;border:2px solid transparent;border-left:6px solid var(--c);border-radius:16px;padding:14px 16px;box-shadow:0 5px 18px #0f172a0a;transition:transform .2s,box-shadow .2s}
+.s6:hover{transform:translateY(-3px);box-shadow:0 8px 25px #0f172a15}
+.s6.active-filter{border-color:var(--c);background:var(--bg6)}
+.s6 .ic{font-size:30px;line-height:1}.s6 .tx{flex:1;min-width:0}
+.s6 .s6n{font-size:12px;color:#94a3b8;font-weight:700}
+.s6 b{display:block;font-size:15px;color:#172033}.s6 small{color:#64748b}
+.s6 .num{text-align:right}.s6 .num strong{display:block;font-size:30px;color:var(--c);line-height:1.1}.s6 .num span{font-size:12px;color:#64748b}
+@media(max-width:1000px){.grid6{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid6{grid-template-columns:1fr}}
+.pdf-grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:25px}
+.pdf-s6{border:1px solid #cbd5e1;border-left:6px solid var(--c);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.pdf-s6 strong{font-size:26px;color:var(--c)}
+@media print{#statusGrid6,#s6Title{display:none!important}}
+/* ===== BUS AUTO-FILL ===== */
+.busbox{position:relative;margin-top:10px}
+.bus-list{margin-top:8px;display:flex;flex-direction:column;gap:6px;max-height:320px;overflow:auto}
+.bus-item{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px 12px;cursor:pointer;width:100%}
+.bus-item:hover{background:#f1f5f9;border-color:#94a3b8}
+.bus-item b{display:block;font-size:15px}.bus-item small{color:#64748b}
+.bus-item .tm{text-align:right;font-size:12px;color:#0f4c81;white-space:nowrap;font-weight:600}
+.bus-item mark{background:#fef08a;border-radius:3px;padding:0 1px}
+.bus-sel{margin-top:10px;padding:12px 14px;border-radius:14px;background:#ecfdf5;border:1px solid #a7f3d0}
+.bus-sel .row{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap}
+.bus-sec{font-size:12px;font-weight:700;color:#64748b;margin:6px 2px 0}
 </style>
 </head>
 <body>
-<!-- ================= CLOSURE POP-UP HTML ================= -->
-<div id="closureModal" class="closure-overlay" role="alertdialog" aria-modal="true">
-    <div class="closure-box">
-        <div class="closure-icon">⚠️</div>
-        <div class="closure-text">
-            ⚠️ระบบรายงานความพร้อมมาทำงานรายวัน⚠️ Jig MTN & Kaizen ได้ปิดตัวลงแล้วครับ เนื่องจากพนักงาน "ไม่ได้ให้ความสำคัญต่อการให้ความร่วมมือในกรอกข้อมูล"
-        </div>
-        <button id="closureBtn" class="closure-btn">รับทราบ</button>
-    </div>
-</div>
-<!-- ==================================================== -->
 <!-- Admin Login Modal -->
 <div id="adminModal" class="modal-overlay">
     <div class="modal-box">
@@ -243,6 +192,8 @@ body:not(.survey-mode) .sv-sticky{display:none}
             <span id="pdfRiskSub">ต้องติดตามเร่งด่วน</span>
         </div>
     </div>
+    <h3 style="margin:0 0 10px;font-size:18px;color:var(--navy)">สถานะปัจจุบันของพนักงาน (6 สถานะ)</h3>
+    <div class="pdf-grid6" id="pdfGrid6"></div>
     <div class="pdf-details">
         <div class="pdf-detail-card" style="border-left: 4px solid var(--red);">
             <div class="pdf-detail-title" style="color:var(--red);">วิเคราะห์สาเหตุ (กลุ่มที่ไม่สามารถมาทำงานได้)</div>
@@ -262,23 +213,30 @@ body:not(.survey-mode) .sv-sticky{display:none}
     <h3 style="margin-bottom:10px; font-size:18px; color:var(--navy); border-bottom: 2px solid var(--navy); padding-bottom:5px;">รายละเอียดพนักงาน (รายบุคคล)</h3>
 </div>
 <div class="tabs">
-    <button class="tab active" data-panel="dashboardPanel">ภาพรวมรายวัน</button>
+    <button class="tab active" data-panel="surveyPanel">กรอกแบบสอบถาม</button>
+    <button class="tab" data-panel="dashboardPanel">ภาพรวมรายวัน</button>
     <button class="tab" data-panel="skillPanel">Backup (Skills)</button>
-    <button class="tab" data-panel="surveyPanel">กรอกแบบสอบถาม</button>
     <a href="https://chachoengsao-flood.vercel.app/" target="_blank" class="btn primary" style="margin-left:auto; text-decoration:none; background-color:var(--cyan); display:flex; align-items:center; gap:6px; font-size:14px;">🌊 ตรวจสอบสถานการณ์น้ำ "ฉะเชิงเทรา"</a>
 </div>
 <!-- ================= DASHBOARD PANEL ================= -->
-<section id="dashboardPanel" class="panel active"><div class="reportHead"><h2 id="dashboardTitle">รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
+<section id="dashboardPanel" class="panel"><div class="reportHead"><h2 id="dashboardTitle">รายงานความพร้อมมาทำงานรายวัน</h2><div id="reportDate"></div></div>
 <div class="grid4">
     <div class="card metric active-filter" id="cardTotal" onclick="window.setStatusFilter('')"><small>พนักงานที่ Update</small><strong id="mTotal">0/0</strong><span id="pTotal">0% (คลิกดูทั้งหมด)</span></div>
     <div class="card metric" id="cardCan" onclick="window.setStatusFilter('สามารถไปทำงานได้')"><small>สามารถมาทำงานได้</small><strong class="green" id="mCan">0</strong><span id="pCan">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardCannot" onclick="window.setStatusFilter('ไม่สามารถไปทำงานได้')"><small>ไม่สามารถมาทำงานได้</small><strong class="red" id="mCannot">0</strong><span id="pCannot">0% (คลิกเพื่อดู)</span></div>
     <div class="card metric" id="cardRisk" onclick="window.setStatusFilter('มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)')"><small>มีความเสี่ยง</small><strong class="amber" id="mRisk">0</strong><span id="pRisk">0% (คลิกเพื่อดู)</span></div>
 </div>
+<h3 class="s6-title" id="s6Title" onclick="window.toggleS6()">
+  <span>สถานะปัจจุบันของพนักงาน (6 สถานะ)</span>
+  <span style="display:flex;align-items:center;gap:10px"><small class="hint" id="s6Hint">คลิกการ์ดเพื่อกรองรายชื่อ · คลิกซ้ำเพื่อดูทั้งหมด</small>
+  <button type="button" id="s6Toggle" class="btn secondary" style="padding:6px 12px;font-size:13px">▲ ซ่อน</button></span>
+</h3>
+<div class="grid6" id="statusGrid6"></div>
 <div class="card" style="margin-top:18px; border-left: 4px solid var(--red);">
     <div style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="window.toggleMissingList()">
         <h3 style="margin:0; color: var(--red);">พนักงานที่ยังไม่กรอกข้อมูล (<span id="mMissingCount">0</span> คน)</h3>
-        <span id="toggleIcon" style="color:var(--red); font-size:16px; font-weight:bold;">▼</span>
+        <span style="display:flex;align-items:center;gap:10px"><small class="hint" id="missingHint">คลิกเพื่อซ่อน/แสดงรายชื่อ</small>
+        <button type="button" id="toggleIcon" class="btn secondary" style="padding:6px 12px;font-size:13px">▲ ซ่อน</button></span>
     </div>
     <div id="missingListWrap" style="margin-top:14px; display:block; transition: all 0.3s ease;">
         <div id="missingList" style="display:flex; overflow-x:auto; gap:24px; padding-bottom:12px;"></div>
@@ -287,9 +245,9 @@ body:not(.survey-mode) .sv-sticky{display:none}
 <div class="card" style="margin-top:18px">
   <h3>แผนที่พิกัดที่พักของพนักงาน</h3>
   <div id="summaryMap" class="map"></div>
-  <p class="hint">หมุดสีเขียว: มาได้ | สีแดง: มาไม่ได้ | สีส้ม: มีความเสี่ยง</p>
+  <p class="hint">หมุดสีแดง: มาไม่ได้ | สีส้ม: มีความเสี่ยง | สีฟ้า: น้ำท่วมแต่มาได้ | สีเขียว: ปกติ</p>
 </div>
-<div id="tableCard" class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ ที่อยู่ หรือสายรถบัส"><div>
+<div id="tableCard" class="card" style="margin-top:18px"><div class="toolbar"><div><h3 style="margin:0">รายละเอียดพนักงาน</h3><small id="rowCount"></small></div><input id="search" placeholder="ค้นหาชื่อ กะ สถานะ ที่อยู่ สายรถ หรือจุดรับ"><div>
     <button id="btnClearAll" class="btn danger" onclick="window.clearData()" style="display:none;">ล้างข้อมูลทั้งหมด</button> 
     <button class="btn secondary" onclick="window.exportCSV()">Export CSV</button> 
     <button class="btn primary" onclick="window.exportPDF()">Output Report PDF</button>
@@ -331,7 +289,7 @@ body:not(.survey-mode) .sv-sticky{display:none}
     </div>
 </section>
 <!-- ================= SURVEY PANEL ================= -->
-<section id="surveyPanel" class="panel">
+<section id="surveyPanel" class="panel active">
 <div class="sv">
   <div class="sv-head">
     <div><b>สำรวจสถานการณ์น้ำท่วมพนักงาน</b><small>Quality Team · กรอกเสร็จใน 30 วินาที</small></div>
@@ -379,9 +337,13 @@ body:not(.survey-mode) .sv-sticky{display:none}
         <button type="button" data-v="รถส่วนตัว">🚗 รถส่วนตัว</button>
         <button type="button" data-v="รถบัสรับ-ส่ง">🚌 รถบัสรับ-ส่ง</button>
       </div>
-      <div id="busWrap" style="display:none;margin-top:10px">
-        <input id="busLine" list="busLines" placeholder="สายรถบัส เช่น สาย B2" autocomplete="off">
-        <datalist id="busLines"></datalist>
+      <div id="busWrap" class="busbox" style="display:none">
+        <label class="sv-label" style="margin-top:6px">🚏 จุดขึ้นรถของคุณ <b class="red">*</b></label>
+        <input id="busQuery" placeholder="พิมพ์ชื่อจุดรับ / สายรถ / ย่าน เช่น บางวัว, เอื้ออาทร, Big C" autocomplete="off">
+        <div class="hint" id="busHint" style="margin-top:4px">ข้อมูลจากตารางรถรับส่งพนักงาน โรงงานบ้านโพธิ์ 2026 (re4) · 33 สาย</div>
+        <div id="busList" class="bus-list"></div>
+        <div id="busSel" class="bus-sel" style="display:none"></div>
+        <input id="busLine" type="hidden"><input id="busStop" type="hidden">
       </div>
       <details id="homeDetails">
         <summary><span>🏠 ที่พักและพิกัด</span><span id="homeSummary" class="hint"></span></summary>
@@ -416,30 +378,7 @@ body:not(.survey-mode) .sv-sticky{display:none}
 </div>
 </section>
 <div id="toast" class="toast"></div>
-</main><footer>เชื่อมต่อฐานข้อมูลแบบ Realtime ระบบบันทึกอัตโนมัติ</footer>
-<!-- ================= SCRIPT FOR CLOSURE POP-UP ================= -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var modal = document.getElementById('closureModal');
-        var btn = document.getElementById('closureBtn');
-        // 1. ล็อกการ Scroll หน้าจอทันที
-        document.body.classList.add('body-locked');
-        // 2. ให้ Focus ไปที่ปุ่มอัตโนมัติเมื่อ Pop-up เด้ง
-        btn.focus();
-        // 3. กด "รับทราบ" ถึงจะปิด และปลดล็อก Scroll
-        btn.addEventListener('click', function() {
-            modal.style.display = 'none';
-            document.body.classList.remove('body-locked');
-        });
-        // 4. ห้ามปิดด้วยปุ่ม ESC บนคีย์บอร์ด
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && modal.style.display !== 'none') {
-                event.preventDefault(); 
-            }
-        });
-    });
-</script>
-<!-- ========================================================== -->
+</main><footer>เชื่อมต่อฐานข้อมูลแบบ Realtime ระบบบันทึกอัตโนมัติ · <b id="appVer">เวอร์ชัน 10 (ซ่อน/แสดง รายชื่อที่ยังไม่กรอก)</b></footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <!-- โค้ดเชื่อมต่อฐานข้อมูล Firebase -->
 <script type="module">
@@ -461,6 +400,27 @@ const db = getDatabase(app);
 const auth = getAuth(app); // ประกาศตัวแปรเรียกใช้ Auth
 const dbRefQuality = ref(db, 'dailyReadiness');
 const STATUS={CAN:'สามารถไปทำงานได้',CANNOT:'ไม่สามารถไปทำงานได้',RISK:'มีความเสี่ยงที่ไม่สามารถไปทำงานได้ (รอ Update สถานการณ์)'};
+// ข้อมูลแสดงผลของสถานะ 6 แบบ (ตรงกับการ์ดในแบบสอบถาม)
+const SMETA={
+  home:{ic:'🚨',t:'บ้านน้ำท่วม',s:'ไม่สามารถมาทำงานได้',c:'#e11d48',bg:'#ffe4e6'},
+  route:{ic:'⚠️',t:'บ้านไม่ท่วม แต่ถนนถูกตัดขาด',s:'เดินทางมาทำงานไม่ได้',c:'#e11d48',bg:'#ffe4e6'},
+  bus:{ic:'🚌',t:'รถบัสบริษัทเข้ามารับไม่ได้',s:'ไม่มีวิธีเดินทางมาทำงาน',c:'#e11d48',bg:'#ffe4e6'},
+  risk:{ic:'⏳',t:'มีความเสี่ยง รอดูสถานการณ์',s:'น้ำกำลังขึ้น อาจมาไม่ได้',c:'#d97706',bg:'#fef3c7'},
+  wetok:{ic:'🌊',t:'บ้าน/ถนน น้ำท่วม',s:'แต่เดินทางมาทำงานได้',c:'#0e7490',bg:'#cffafe'},
+  ok:{ic:'✅',t:'บ้านไม่ท่วม ถนนปกติ',s:'มาทำงานได้ตามปกติ',c:'#059669',bg:'#d1fae5'}
+};
+function statusCodeOf(r){
+  if(r.statusCode && SMETA[r.statusCode]) return r.statusCode;
+  if(r.status===STATUS.RISK) return 'risk';
+  if(r.status===STATUS.CANNOT){ const x=r.reason||''; return x.includes('รถบัส')?'bus':x.includes('เส้นทาง')?'route':'home'; }
+  return (r.homeImpact && r.homeImpact!=='น้ำไม่ท่วมบ้าน') || r.waterLevel>0 ? 'wetok' : 'ok';
+}
+function waterLabel(cm){
+  cm=+cm||0; if(!cm) return '<span style="color:#94a3b8">ไม่มี</span>';
+  const t=cm>=100?'เอว':cm>=80?'ต้นขา':cm>=50?'หัวเข่า':cm>=30?'ครึ่งแข้ง':'ข้อเท้า';
+  const c=cm>=50?'#e11d48':cm>=30?'#d97706':'#0e7490';
+  return `<b style="color:${c}">${cm>=120?'100+':'~'+cm} cm</b><br><small style="color:#64748b">${t}</small>`;
+}
 const EMPLOYEES_QUALITY = {
     "นาย สุนทร ไชยแสน": { group: "Project", skills: ["Chisel", "Inspect"] },
     "นาย อดิเรก แซ่ซิ้ม": { group: "Project", skills: ["Chisel"] },
@@ -595,8 +555,8 @@ function render(){
     document.getElementById('cardCannot').classList.toggle('active-filter', currentStatusFilter === STATUS.CANNOT);
     document.getElementById('cardRisk').classList.toggle('active-filter', currentStatusFilter === STATUS.RISK);
     const filtered=data.filter(r=>{
-        const matchSearch = (r.name+' '+r.address+' '+r.busLine+' '+(r.shift||'')).toLowerCase().includes(q);
-        const matchStatus = currentStatusFilter === '' || r.status === currentStatusFilter;
+        const matchSearch = (r.name+' '+r.address+' '+r.busLine+' '+(r.busStop||'')+' '+(r.shift||'')+' '+SMETA[statusCodeOf(r)].t+' '+(r.note||'')).toLowerCase().includes(q);
+        const matchStatus = currentStatusFilter === '' || (currentStatusFilter.startsWith('code:') ? statusCodeOf(r) === currentStatusFilter.slice(5) : r.status === currentStatusFilter);
         return matchSearch && matchStatus;
     });
     const submittedNames = [...new Set(data.map(r => r.name.trim()))];
@@ -637,11 +597,10 @@ function render(){
         <tr>
             <th>ชื่อ-นามสกุล</th>
             <th>กะ</th>
-            <th>ที่อยู่</th>
-            <th>ผลกระทบบ้าน</th>
-            <th>ระดับน้ำ</th>
-            <th>สถานะ</th>
+            <th>สถานะปัจจุบัน</th>
+            <th>ระดับน้ำบนเส้นทาง</th>
             <th>การเดินทาง</th>
+            <th>ที่อยู่</th>
             <th>หมายเหตุ</th>
             ${isAdmin ? '<th>พิกัด</th>' : ''}
             <th>Update</th>
@@ -650,20 +609,19 @@ function render(){
     `;
     // สร้างข้อมูล Row ในตาราง
     document.getElementById('tbody').innerHTML=filtered.map(r=>{
-        let statusDisplay = `<span class="badge ${badge(r.status)}">${esc(r.status)}</span>`;
-        if (r.status === 'ไม่สามารถไปทำงานได้' && r.reason) {
-            statusDisplay += `<br><small style="color:var(--red); display:block; margin-top:4px;">สาเหตุ: ${esc(r.reason)}</small>`;
-        }
+        const m = SMETA[statusCodeOf(r)];
+        let statusDisplay = `<div style="display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:12px;background:${m.bg};border-left:4px solid ${m.c};min-width:230px">
+            <span style="font-size:22px;line-height:1">${m.ic}</span>
+            <span><b style="color:${m.c}">${m.t}</b><br><small style="color:#475569">${m.s}</small></span></div>`;
         let coordHtml = isAdmin ? `<td><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">${Number(r.lat).toFixed(5)}, ${Number(r.lng).toFixed(5)}</a></td>` : '';
         let manageHtml = isAdmin ? `<td><button class="btn danger" style="padding:4px 10px; font-size:12px;" onclick="window.deleteRow('${r.key}')">ลบ</button></td>` : '';
         return `<tr>
             <td><b>${esc(r.name)}</b></td>
-            <td>${esc(r.shift||'-')}</td>
-            <td>${esc(r.address)}</td>
-            <td>${esc(r.homeImpact)}</td>
-            <td><b>${r.waterLevel} cm</b></td>
+            <td>${r.shift?`<span class="badge" style="background:#0f172a;color:#fff">${esc(r.shift)}</span>`:'<span style="color:#94a3b8">-</span>'}</td>
             <td>${statusDisplay}</td>
-            <td>${esc(r.transport)}${r.busLine?' · '+esc(r.busLine):''}</td>
+            <td>${waterLabel(r.waterLevel)}</td>
+            <td style="white-space:normal;min-width:170px">${r.transport==='รถบัสรับ-ส่ง'?'🚌':'🚗'} ${esc(r.transport)}${r.busLine?'<br><small style="color:#0f4c81;font-weight:600">สาย '+esc(r.busLine)+'</small>':''}${r.busStop?'<br><small style="color:#64748b">📍 '+esc(r.busStop)+'</small>':''}</td>
+            <td style="white-space:normal;min-width:160px">${esc(r.address)}</td>
             <td style="white-space:normal; min-width:150px; color:#475569;">${r.note ? esc(r.note) : '-'}</td>
             ${coordHtml}
             <td>${esc(r.updatedAt)}</td>
@@ -671,7 +629,7 @@ function render(){
         </tr>`;
     }).join('');
     summaryMarkers.forEach(m=>summaryMap.removeLayer(m));
-    summaryMarkers=filtered.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:color(r.status),fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.status)}<br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));
+    summaryMarkers=filtered.filter(r=>Number.isFinite(+r.lat)&&Number.isFinite(+r.lng)).map(r=>L.circleMarker([r.lat,r.lng],{radius:8,color:'#fff',weight:2,fillColor:SMETA[statusCodeOf(r)].c,fillOpacity:1}).addTo(summaryMap).bindPopup(`<b>${esc(r.name)}</b>${r.shift?' · กะ '+esc(r.shift):''}<br>${SMETA[statusCodeOf(r)].ic} ${SMETA[statusCodeOf(r)].t}<br><small>${SMETA[statusCodeOf(r)].s}</small><br><a target="_blank" href="https://www.google.com/maps?q=${r.lat},${r.lng}">เปิดใน Google Maps</a>`));
     if(summaryMarkers.length){
         const group=L.featureGroup(summaryMarkers);
         summaryMap.fitBounds(group.getBounds().pad(.25),{maxZoom:13});
@@ -686,16 +644,25 @@ function render(){
     document.getElementById('pdfRiskSub').textContent = `คิดเป็น ${pct(risk, allActiveEmployeeNames.length)}%`;
     let reasonBus = 0; let reasonHome = 0; let reasonRoute = 0; let reasonOther = 0;
     cannotList.forEach(r => {
-        if(!r.reason) reasonOther++;
-        else if(r.reason.includes('รถบัส')) reasonBus++;
-        else if(r.reason.includes('ถูกน้ำท่วม')) reasonHome++;
-        else if(r.reason.includes('เส้นทาง')) reasonRoute++;
-        else reasonOther++;
+        const c=statusCodeOf(r);
+        if(c==='bus') reasonBus++; else if(c==='home') reasonHome++; else if(c==='route') reasonRoute++; else reasonOther++;
     });
     document.getElementById('pdfReasonBus').textContent = reasonBus + ' คน';
     document.getElementById('pdfReasonHome').textContent = reasonHome + ' คน';
     document.getElementById('pdfReasonRoute').textContent = reasonRoute + ' คน';
     document.getElementById('pdfReasonOther').textContent = reasonOther + ' คน';
+    // ----- 6 สถานะ -----
+    const s6count = {}; Object.keys(SMETA).forEach(k=>s6count[k]=0);
+    data.forEach(r=>{ s6count[statusCodeOf(r)]++; });
+    document.getElementById('statusGrid6').innerHTML = Object.entries(SMETA).map(([k,m],i)=>{
+        const f='code:'+k, act=currentStatusFilter===f;
+        return `<div class="s6 ${act?'active-filter':''}" style="--c:${m.c};--bg6:${m.bg}" onclick="window.setStatusFilter('${act?'':f}')">
+            <span class="ic">${m.ic}</span>
+            <span class="tx"><span class="s6n">${i+1}.</span><b>${m.t}</b><small>${m.s}</small></span>
+            <span class="num"><strong>${s6count[k]}</strong><span>${pct(s6count[k],data.length)}% · คน</span></span></div>`;
+    }).join('');
+    document.getElementById('pdfGrid6').innerHTML = Object.entries(SMETA).map(([k,m],i)=>
+        `<div class="pdf-s6" style="--c:${m.c}"><span>${m.ic} <b>${i+1}. ${m.t}</b><br><small>${m.s}</small></span><strong>${s6count[k]}</strong></div>`).join('');
     let skillTotal = 0; let skillSpot = 0; let skillChisel = 0; let skillInspect = 0;
     data.filter(r=>r.status===STATUS.CAN).forEach(r => {
         const empData = activeEmployees[r.name.trim()];
@@ -800,10 +767,10 @@ window.exportPDF = function(){
     window.print();
 }
 window.exportCSV = function(){
-    const h=['วันที่','ชื่อ-นามสกุล','กะ','ที่อยู่','ผลกระทบบ้าน','ระดับน้ำ cm','สถานะ','การเดินทาง','สายรถบัส','หมายเหตุ','Latitude','Longitude','Update'];
+    const h=['วันที่','ชื่อ-นามสกุล','กลุ่มงาน','กะ','สถานะปัจจุบัน','รายละเอียดสถานะ','มาทำงานได้?','ระดับน้ำ cm','การเดินทาง','สายรถบัส','จุดรับ','ที่อยู่','หมายเหตุ','Latitude','Longitude','Update'];
     const csv=[h,...daily().map(r=>{
-        const statusWithReason = r.status + (r.reason ? ` (${r.reason})` : '');
-        return [r.date,r.name,r.shift||'-',r.address,r.homeImpact,r.waterLevel,statusWithReason,r.transport,r.busLine,r.note||'-',r.lat,r.lng,r.updatedAt];
+        const m=SMETA[statusCodeOf(r)];
+        return [r.date,r.name,r.group||activeEmployees[r.name.trim()]?.group||'',r.shift||'-',m.t,m.s,r.status,r.waterLevel,r.transport,r.busLine,r.busStop||'',r.address,r.note||'-',r.lat,r.lng,r.updatedAt];
     })].map(a=>a.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
     const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
     const a=document.createElement('a');
@@ -812,17 +779,24 @@ window.exportCSV = function(){
     a.click();
     URL.revokeObjectURL(a.href);
 }
-window.toggleMissingList = function() {
+window.toggleMissingList = function(force) {
     const wrap = document.getElementById('missingListWrap');
-    const icon = document.getElementById('toggleIcon');
-    if(wrap.style.display === 'none') {
-        wrap.style.display = 'block';
-        icon.textContent = '▼';
-    } else {
-        wrap.style.display = 'none';
-        icon.textContent = '▶';
-    }
+    const show = typeof force === 'boolean' ? force : wrap.style.display === 'none';
+    wrap.style.display = show ? 'block' : 'none';
+    document.getElementById('missingHint').style.display = show ? '' : 'none';
+    document.getElementById('toggleIcon').textContent = show ? '▲ ซ่อน' : '▼ แสดง';
+    localStorage.setItem('qr_missShow', show ? '1' : '0');
 }
+if (localStorage.getItem('qr_missShow') === '0') window.toggleMissingList(false);
+window.toggleS6 = function(force) {
+    const g = document.getElementById('statusGrid6');
+    const show = typeof force === 'boolean' ? force : g.style.display === 'none';
+    g.style.display = show ? '' : 'none';
+    document.getElementById('s6Hint').style.display = show ? '' : 'none';
+    document.getElementById('s6Toggle').textContent = show ? '▲ ซ่อน' : '▼ แสดง';
+    localStorage.setItem('qr_s6Show', show ? '1' : '0');
+}
+if (localStorage.getItem('qr_s6Show') === '0') window.toggleS6(false);
 window.setStatusFilter = function(status) {
     currentStatusFilter = status;
     render();
@@ -862,6 +836,54 @@ const OPTS = [
   {id:'ok',    ic:'✅', t:'บ้านไม่ท่วม ถนนปกติ',           s:'มาทำงานได้ตามปกติ',         c:'#059669', status:STATUS.CAN,    reason:'',                                     impact:'น้ำไม่ท่วมบ้าน',        water:false},
 ];
 const sv = {emp:'', shift:'', opt:'', water:0, transport:'', touched:false};
+// ---------- ตารางรถรับส่ง (จาก PDF ตารางรถรับส่งพนักงาน โรงงานบ้านโพธิ์ 2026 re4) ----------
+// z = โซน, r = ชื่อสาย, s = [จุดรับ, เวลากลางวัน, เวลากลางคืน]
+const BUS_ROUTES = [{"z":"สมุทรปราการ-กรุงเทพ","r":"เทพารักษ์ - บางบ่อ","s":[["หมู่บ้านรัตนธานี","5:30","17:00"],["ตรงข้าม ร้านขายยา (เลย) ซอยธนสิทธิ์","5:30","17:00"],["หมู่บ้านสมาพร","5:30","17:00"],["โชว์รูม ISUZU (วินมอเตอร์ไซด์)","5:30","17:00"],["หน้าธนาคารกสิกรไทย (ซอยจริงใจ)","5:30","17:00"],["หมู่บ้านนันทนาการ์เด้น (ปากซอย)","5:35","17:00"],["หมู่บ้านสวนเก้าแสน (ศาลาผู้โดยสาร)","5:35","17:05"],["บางกอกโพลิโฟม","5:35","17:07"],["เซเว่นข้างโรงไก่","5:37","17:07"],["ซอยวัดราษฎร์บูรณะ (วัดบางปลา)","5:37","17:07"],["มัสยิดบางกะสี ข้างตึกสุทิน","5:37","17:07"],["ไทยแอร์โรว์","5:38","17:08"],["ตรงข้าม ไทยประกัน","5:39","17:10"],["หมู่บ้านซิตี้พาร์ค (เซเว่น)","5:40","17:10"],["หมู่บ้านธาราดา","5:35","17:15"],["แฟลต โครงการ 4","5:35","17:15"],["แฟลต โครงการ 3 (ศาลาผู้โดยสาร)","5:36","17:20"],["แฟลต โครงการ 2 (ศาลาผู้โดยสาร)","5:38","17:25"],["สะพานริมบึง (ศาลาผู้โดยสาร)","5:45","17:10"],["การเคหะบางพลี (ร้านทอง)","5:40","17:20"],["หมู่บ้านบางพลีพัฒนา","5:45","17:20"],["ตรงข้าม หน้าหมู่บ้านปรเมษท์","5:46","17:20"],["สุทินแมนชั่น (2)","5:47","17:30"],["กังวาลอพาร์ทเม้นต์","5:49","17:30"],["แฟลตตำรวจศาลาผู้โดยสาร ปากซอยแฟลตตำรวจ","5:49","17:30"],["หมู่บ้านกัลปพฤกษ์","5:50","17:35"],["ตรงข้าม หมู่บ้านวโรชา (ปากซอย)","5:51","17:40"],["สุทินแมนชั่น (1)","5:52","17:50"],["หน้าธนาคารกรุงไทย (สาขาบางบ่อ) ศาลาผู้โดยสาร","6:03","17:30"],["บางบ่อสาย-บางนาตราด (ศาลาผู้โดยสาร)","5:30","17:20"],["กิตตินคร (หน้าหมู่บ้าน)","5:50","17:30"],["หมู่บ้านกลิทเทอร์ทาวน์","5:42","17:30"],["หมู่บ้านทรัพย์มั่งคง (ปากซอย)","5:55","17:30"],["ตรงข้าม วัดบางบ่อ (สะพานลอย)","5:30","17:20"],["สะพานลอยบ้านระกาด (หน้าร้านทอง)","5:30","17:20"],["สะพานลอยหน้าตลาดบางพลีน้อย (ตรงข้ามป้อมตำรวจ)","5:35","17:25"],["บางพลีน้อย (หน้าร้านทอง)","5:35","17:25"],["ตลาดนำไทย (ศาลาผู้โดยสาร)","5:35","17:25"],["ตรงข้าม วัดหอมศิล (สะพานลอย)","5:35","17:30"],["หน้าสหยูเนี่ยน","5:35","17:33"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"หนามแดง","s":[["ตรงข้าม ธนาคารกรุงไทย (หน้าร้านเจริญการช่าง)","05:40","17:30"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"บางกะปิ","s":[["แยกเกษตร นวมินทร์ (ป้ายรถเมล์หน้าปั้มเชลล์)","5:28","17:03"],["นวมินทร์ 36 (หน้าธนาคารกสิกรไทย)","5:30","17:04"],["หน้านิด้า (ธนาคารกรุงเทพ)","5:35","17:10"],["ป้ายรถเมล์ ตรงข้ามตลาดบางกะปิ","5:35","17:15"],["หน้าธนาคารกรุงไทย (ลำสาลี)","5:36","17:20"],["หมู่บ้านนักกีฬา (หน้าธนาคารไทยพาณิชย์)","5:39","17:20"],["แยกพัฒนาการ Jusco (ร้านสมานมิตร)","5:43","17:25"],["ป้ายรถเมล์ หลังแยกพัฒนาการ","5:44","17:28"],["ซอยอนามัย (ป้ายรถเมล์)","5:46","17:30"],["แยกอ่อนนุช (ตรงข้ามตลาดศรีเอี่ยม สะพานลอย)","5:47","17:35"],["อ่อนนุช 51 (ปากซอย)","5:47","17:35"],["หมู่บ้านเสรี (ป้ายรถเมล์)","5:49","17:40"],["แมนชั่นหน้าแฟมีรี มาร์ท","5:51","17:40"],["แยกสวนหลวง (หน้าร้านขายทอง)","5:53","17:40"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"พระราม 2","s":[["แม็คโคร บางบอน (หน้า A.C.T.)","5:05","16:30"],["ตรงข้าม Lotus พระราม 2 (หน้าเซเว่น)","5:10","16:38"],["ตรงข้าม Lotus พระราม 2 (สะพานลอย)","5:10","16:38"],["แยกหัวกระบือ (สะพานลอย)","5:13","16:40"],["เซ็นทรัลพระราม 2 (ป้ายรถเมล์) หน้าโรงเบียร์","5:20","16:43"],["โรงพยาบาลบางมด (สะพานลอย)","5:22","16:48"],["Big C บางปะกอก","5:25","16:50"],["ตรงข้ามวัดสารรอด (สะพานลอย)","5:25","16:50"],["แยก กม.9 (ป้ายรถเมล์)","5:28","16:53"],["วัดสน (ปากซอยมุมสบาย)","5:29","16:57"],["ใต้สะพานก่อนขึ้นทางด่วน (ป้ายรถเมล์)","5:35","17:01"],["จุดลงทางด่วน(แยกสาธุประดิษฐ์) ถัดจากไฟแดง","5:40","17:05"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"บางปู","s":[["ปากซอยอุ่นอารี","5:20","17:10"],["ปากซอยตรากบ","5:21","17:10"],["หอนาฬิกาวงเวียนท้ายบ้าน (หน้าธนาคารกรุงไทย)","5:21","17:00"],["ปากซอยโอ่ง","5:22","17:10"],["ซอยมีจงมี (ศาลาผู้โดยสาร)","5:22","17:10"],["การเคหะบางปู (ปากซอย)","5:22","17:15"],["วัดนิมิตร (สะพานคู่)","5:23","17:15"],["หมู่บ้านทรัพยั่งยืน","5:23","17:15"],["ตรงข้าม วัดอโศการาม (ป้ายวัด)","5:23","17:15"],["ซอยวิทยุการบิน (เยื้องเพชรศรีฟ้า) ป้ายรถเมล์","5:24","17:15"],["ตรงข้าม ไปรษณีย์บางปู (ก่อนขึ้นสะพาน)","5:24","17:20"],["ตรงข้าม วิทยาลัยเทคนิคสมุทรปราการ","5:24","17:20"],["สามห่วง (สะพานลอย)","5:25","17:20"],["เจริญศิลป์คอนโด (ปากซอย)","5:25","17:20"],["บางปูนคร (ปากซอย)","5:25","17:20"],["วัดศรีจันทร์ (สะพานลอย)","5:20","17:25"],["เคหะ 4","5:20","17:25"],["เด่นชัยคอนโด (ปากซอย)","5:20","17:25"],["ตรงข้าม สถานตากอากาศบางปู (ศาลาผู้โดยสาร)","5:20","17:25"],["ซอยเทศบาลบางปู 85","5:20","17:25"],["ซอยโครงการ 4 บางปู (ปากซอย)","5:20","17:25"],["หมู่บ้านเมืองเอก","5:25","17:30"],["ซอยรสทิพ (ปากซอย)","5:25","17:30"],["หน้าหมู่บ้านพฤกษา สุขุมวิท-บางปู","5:25","17:30"],["ตลาดตำหรุ (วินมอเตอร์ไซร์)","5:25","17:30"],["ตรงข้าม หน้าศาลแรงงาน (ศาลาผู้โดยสาร)","5:25","17:35"],["หมู่บ้านทรัพย์ยั่งยืน 2","5:30","17:35"],["ศาลเยาวชนสมุทรปราการ","5:30","17:40"],["ซอยสุขุมวิท 109 (ซ.มีประเสริฐ์)","5:30","17:40"],["ร้านก๋วยเตี๋ยวธัญญารส (ข้างปั๊ม ESSO)","5:30","17:40"],["หน้าไปรษณีย์ (ก่อนขึ้นสะพาน)","5:30","17:45"],["ตลาดคลองด่าน (ป้อมตำรวจ)","5:30","17:50"],["ร้านไดนาโม (เลยปั้มเพียว)","5:40","17:50"],["ปากซอยพัฒนา 2 (ป้ายร้านปูทะเล)","5:40","17:50"],["สุเหร่าคลองด่าน (ปากซอย)","5:45","17:50"],["หน้าวัดสีรุ้ง","5:45","17:55"],["วัดสองคลอง (ศาลาผู้โดยสาร)","5:50","17:55"],["บ้านบางปะกง","5:50","17:57"],["หน้าวัดผีขุด","5:52","18:00"],["ปากซอยคลองอ้อม (ใต้ทางด่วน)","5:55","18:00"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"หลวงพ่อโต","s":[["ตรงข้าม ธนาคารกรุงเทพ (สะพานลอย)","5:45","17:10"],["ป้ายรถเมล์ BIG C บางพลี (สะพานลอย)","5:46","17:10"],["บางพลีนคร","5:50","17:15"],["ร้านหมูกะทะชบา","5:55","17:17"],["วัดหลวงพ่อโต (ศาลาผู้โดยสาร)","6:00","17:20"],["หน้าโรงเป็ด บางกอกแลนด์","6:00","17:20"],["ตรงข้าม หมู่บ้านเมอริท แกรนด์ สุวรรณภูมิ","6:00","17:20"],["ปากซอยจตุโชค 1","6:00","17:20"],["ไปรษณีย์บางพลี","6:00","17:20"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"มีนบุรี","s":[["หมู่บ้านปรีชา 11 (ปากซอยรามอินทรา 123)","5:25","17:00"],["ซื่อตรงคอนโด (ปากซอยรามอินทรา 125)","5:25","17:05"],["ปากซอยสุวินทวงศ์ 1","5:25","17:05"],["หน้าห้าง Big C มีนบุรี (ศาลาผู้โดยสาร)","5:25","17:05"],["ปากซอยสามวา","5:26","17:05"],["สะพานลอย ตรงข้าม CJ More สาขาถนนคุ้มเกล้า","5:40","17:15"],["ป้ายรถเมล์ใต้สะพานข้ามแยกหนองจอก","5:40","17:15"],["สะพานลอยตลาดลำผักชี","5:40","17:30"],["แยกหมู่บ้านอมรทรัพย์ (ศาลาผู้โดยสาร)","5:50","17:35"],["หมู่บ้านเพ็ญศิริเพลส","5:50","17:35"],["หมู่บ้านร่มเย็น","5:50","17:35"],["หมู่บ้านพฤกษา 24","5:50","17:35"],["ปั้มน้ำมัน PT (ตรงข้ามตลาดสุวินทวงศ์)","5:50","17:35"],["นิคมขนมจีน (ศาลาผู้โดยสาร) ซ.นครเนื่องเขต 10","5:50","17:40"],["วัดต้นตาล (ศาลาผู้โดยสาร)","5:50","17:45"],["วัดแพรกวังตะเคียน (ศาลาผู้โดยสาร)","5:50","17:45"],["ศาลาผู้โดยสาร (ก่อนถึงร้านนายก๊วก)","5:50","17:45"],["ศาลาผู้โดยสารตรงข้ามสนามสุบิน","5:50","17:50"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"แพรกษา","s":[["ตรงข้าม เซเว่น (ปากซอยเปล่งปลัง)","5:20","16:55"],["ซอยชำนิ (หน้าร้านขายยา)","5:20","17:00"],["ตรงข้าม ท็อปเซ็นเตอร์ (ป้ายรถเมล์)","5:35","17:00"],["ตลาดแพรกษา (ป้ายรถเมล์)","5:25","17:00"],["หมู่บ้านแสงปัญญา","5:25","17:00"],["ตรงข้าม ซอยมังกร (ป้ายรถเมล์)","5:25","17:00"],["หมู่บ้านพฤกษาสุขุมวิท-แพรกษา","5:25","17:00"],["ปั๊ท ปตท.หน้าหมู่บ้านเดอะ ทรัสต์ แพรกษา","5:24","17:03"],["ซอยสะพานแดง (นิคม) สะพานลอย","5:28","17:03"],["ปากซอยแฟลตเอื่ออาทร","5:30","17:08"],["ตรงข้าม ปากซอยเพชรงาม (ป้ายรถเมล์)","5:30","17:08"],["หมู่บ้านพนาสน (แพรกษา)","5:32","17:09"],["ตลาดเพชรอารี","5:35","17:10"],["หมู่บ้านนคร","5:35","17:10"],["ตรงข้าม หมู่บ้านพฤกษา 15","5:35","17:10"],["ตรงข้าม หมู่บ้านพฤกษา 106","5:35","17:10"],["หน้าวัดแพรกษา (ป้ายรถเมล์)","5:35","17:11"],["ตลาดนัดศิวะ","5:35","17:12"],["หมู่บ้านประดิพัทธ์","5:35","17:13"],["หมู่บ้านออมทอง","5:35","17:14"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"เทพารักษ์ กม.1","s":[["ลาบเป็ดหนองแด (หน้าร้าน)","5:30","17:10"],["ตรงข้าม จุฬาเวชคลินิคเวชกรรม","5:30","17:11"],["สำนักงานแรงงานจังหวัดสมุทรปราการ (ป้ายรถเมล์)","5:31","17:11"],["ตรงข้าม เรือนทองอพาร์ทเม้น","5:31","17:11"],["ตรงข้าม บารมีการแพทย์","5:32","17:12"],["ตรงข้าม หมู่บ้านทิพวัล (สะพานลอย)","5:33","17:13"],["ปั๊ม ปตท. (ป้ายรถเมล์)","5:34","17:15"],["หน้าคอนโดปาล์มพาวิลเลี่ยม (หน้า ตรอ.)","5:34","17:15"],["ซอยเปรมฤทัย (ป้ายรถเมล์)","5:35","17:15"],["ร้านผักหวาน (ป.ปราการ)","5:36","17:15"],["ตรงข้าม โรงแรมคัลเลอร์ลีฟวิ่ง (หน้าเต้นท์ขายรถ)","5:40","17:15"],["หน้าซีเกท (หน้าป๊มน้ำมัน)","5:41","17:15"],["ตรงข้าม โรงงานตราม้า (ป้ายรถเมล์)","5:42","17:15"],["ตรงข้าม หมู่บ้านสราลี (หน้าปั๊มแก๊ส)","5:43","17:15"],["หน้าโรงพยาบาลจุฬารัตน์ 4","5:44","17:15"],["KFC หน้าหมู่บ้านเฟื่องฟ้า","5:44","17:15"],["หน้าโรงเรียนสุขเจริญผล","5:45","17:15"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"เทพารักษ์ กม.13","s":[["ตรงข้าม ซอยมังกร","5:35","17:00"],["ซอยบุญธรรมนุสรน์ (บางแก้ว) ป้ายรถเมล์","5:36","17:00"],["ตรงข้าม ซอยขจรวิทย์ (หน้าปั้มเชลล์)","5:37","17:00"],["ตรงข้าม หมู่บ้านพรสว่างนิเวศน์ (ป้ายรถเมล์)","5:38","17:00"],["ตรงข้าม โรงพยาบาลบางนา 5","5:38","17:00"],["ตรงข้าม ซอยที่ดินไทย (ป้ายรถเมล์)","5:39","17:00"],["HINO (ป้ายรถเมล์)","5:40","17:05"],["แยกคลองขุด (ป้อมตำรวจเก่า)","5:41","17:10"],["หมู่บ้าน สีวลี (ถัดจากหมู่บ้าน 50 ม.)","5:42","17:10"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"รามอินทรา","s":[["ห้าแยกปากเกร็ด (หน้าโรงรับจำนำ)","05:15","16:00"],["ป้ายรถเมล์ Big C แจ้งวัฒนะ","5:17","16:01"],["ตรงข้าม ห้างเซ็นทรัลแจ้งวัฒนะ","5:18","16:01"],["หน้าเต็นท์รถ (ตรงข้าม บ. โทรคมนาคมแห่งชาติ จก.)","5:19","16:05"],["โรงเรียนเจริญผลวิทยา (ศาลาผู้โดยสาร)","5:21","16:06"],["หน้าศูนย์ Toyota หลัก4","5:24","16:45"],["หน้าห้างจัสโก้ หลักสี่ (ศาลาผู้โดยสาร)","5:27","17:00"],["หน้าห้างเซ็นทรัล รามอินทรา","5:29","17:00"],["ตรงข้าม บิ๊กซีเอ็กซ์ตร้า ลาดปลาเค้า","5:30","17:00"],["กม.4 ป้ายรถเมล์ (ศาลาผู้โดยสาร) ก่อนถึง ซ.รามอินทรา 39","5:32","17:00"],["กม.5 ศาลาผู้โดยสารหน้าสำนักงานจเรตำรวจ (ก่อนขึ้นทางด่วน)","5:34","17:00"],["กม.5 ศาลาผู้โดยสารปากซอยวัชรพล (เลยทางขึ้นทางด่วน)","5:35","17:05"],["ปากซอยรามอินทรา 65","5:38","17:10"],["หน้าโชว์รรูอีซุซุ กม.8","5:39","17:10"],["ตรงข้าม หน้า โรงพยาบาลสินแพทย์","5:40","17:10"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"จรัญสนิทวงศ์","s":[["ปั้มเชลล์ (ปากซอยจรัญฯ 13)","05:20","-"],["แมคโคร จรัญฯ (ปากซอยจรัญฯ 39)","5:25","-"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"ท่าน้ำพระประแดง","s":[["ท่าน้ำปากทางลงแพ","5:25","16:55"],["ตรงข้าม ปากซอยโรงเหล็ก","5:26","16:55"],["ตรงข้าม ซอยเอราวัณ (ศาลาผู้โดยสาร)","5:28","16:57"],["ตรงข้าม บริษัทอิซูซุ (ใต้สะพานลอย)","5:29","17:00"],["ตรงข้าม เทศบาลสำโรงใต้","5:30","17:02"],["ตรงข้าม ซอยวัดสวนส้ม (ข้าวแกงรสทิพย์ สะพานลอย)","5:31","17:05"],["หน้า Big One","5:32","17:07"],["Big C Jumbo (ศาลาผู้โดยสาร)","5:34","17:10"],["หน้าโรงงาน Panasonic","5:37","17:10"],["โค้งเกริก (ป้ายรถเมล์)","5:38","17:10"],["อุดมเดช (ป้ายรถเมล์)","5:39","17:15"],["ปากซอยข้างโรงนมมะลิ","5:40","17:15"],["ปากซอยนาถสุทร","5:26","17:15"],["ซอยบุญศิริ (นายเรือ) ป้ายรถเมล์","5:27","17:20"],["ตรงข้าม โรงเรียนสารพัดช่าง (ศาลาผู้โดยสาร)","5:28","17:22"],["ร้าน VDO EASY","5:30","17:25"],["ตรงข้าม โรงพยาบาลเปาโล (สะพานลอย)","5:33","17:30"],["ดีดีคาเฟ่","5:35","17:33"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"อิมพีเรียลสำโรง (สำโรง)","s":[["อิมพีเรียลสำโรง (หน้าร้านดำรงค์ชัย)","5:35","17:15"],["ตรงข้าม หน้าซอยแบริ่ง (ป้ายรถเมล์)","5:38","17:17"],["ป้ายรถเมล์สถานีรถไฟแบริ่ง (ตรงข้าม ซ.ลาซาล)","5:38","17:18"],["สี่แยกบางนา (คิวรถตู้)","5:42","17:25"],["ตรงข้าม ไบเทค (สะพานลอย)","5:43","17:25"],["เซ็นทรัลบางนา (Big C) ถัดไป 20 ม.","5:45","17:15"],["หน้า SB Furniture","5:46","17:15"],["ร.ร. เปรมฤทัย (1) ตรงข้าม The Nation (ข้ามสะพาน)","5:47","17:20"],["ร.ร เปรม (2) ศูนย์ KIA (สะพานลอย)","5:48","17:20"],["หน้าร้านสวนสนาน (ศาลาผู้โดยสาร)","5:49","17:20"],["หมู่บ้านสันตินคร (บริเวณทางขึ้นทางด่วนบางแก้ว)","5:50","17:25"],["Lotus กม.8 (ศาลาผู้โดยสาร ตู้โทรศ พท์)","5:53","17:25"],["หน้าบุญถาวร","5:50","17:25"],["แยกวัดกิ่งแก้ว กม.13 (เลยสะพานลอย ตู้โทรศัพท์)","5:55","17:25"],["ตรงข้าม ซอยมหาชัย (สะพานลอย)","5:55","17:25"],["โชว์รูมนิสสัน (ตรงข้ามทางเข้าวัดหลวงพ่อโต)","5:54","17:30"],["หน้าธนาซิตี้ (ข้ามสะพาน)","5:55","17:30"],["ปั้มน้ำมันปิโตรนัส กม.16 (หน้าปั้ม)","5:45","17:25"],["หน้าองค์การบริหารส่วนตำบลบางโฉลง","5:50","17:25"],["หน้ามหาวิทยาลัยหัวเฉียว กม.18 (ศาลา)","5:57","17:30"],["โอ่งแตก (ศาลาผู้โดยสาร)","6:00","17:35"],["คลองจระเข้ใหญ่ (หน้าปั๊มน้ำมันเอสโซ่)","6:05","17:35"],["ตรงข้าม โรงพยาบาลบางนา 2 (ศาลาผู้โดยสาร)","6:10","17:35"],["มหาวิทยาลัยอัสสัมชัญ ABAC (ปากซอย)","6:15","17:35"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"ดิสแฮม","s":[["ซอยสุขุมวิท 93 หน้าธนาคารกรุงไทย","5:35","17:20"],["ปากซอยสุขุมวิท 101 (ปั้มเชลล์เก่า)","5:40","17:20"],["วิสซ์คอม101 Piyarom Place","5:42","17:25"],["ปากซอยสุขุมวิท 101/1 (หน้าวัดธรรมมงคล)","5:43","17:26"],["ปากซอยสุขุมวิท 103 (หน้าโรงรับจำนำ)","5:46","17:28"]]},{"z":"สมุทรปราการ-กรุงเทพ","r":"ลาดกระบัง - คลองสวน 100 ปี","s":[["ปั้มน้ำมัน ESSO (วัดลาญบุญ)","5:30","17:10"],["บจก. แด๊กซิน ตรงข้ามหมู่บ้าน I condo","5:32","17:11"],["ตรงข้าม ซอยลาดกระบัง 24 (ก่อนป้ายรถเมล์)","5:33","17:13"],["ลาดกระบัง (แยกวัดกิ่ง)","5:34","17:17"],["ลาดกระบัง แยกร่มเกล้า (คิวมอเตอร์ไซร์)","5:35","17:17"],["ครัวริมน้ำ","5:36","17:22"],["ซอยดีดี (ปากซอย)","5:37","17:22"],["หัวตะเข้ (หน้าธนาคารกรุงเทพ)","5:40","17:27"],["ซอยหมาเมิน (ลงสะพานหัวตะเข้)","5:40","17:27"],["ตรงข้าม เคหะหัวตะเข้ (หน้าร้านคาเฟ่ 747)","5:42","17:37"],["ตรงข้าม หมู่บ้าน The Trop","5:43","17:37"],["ปั้มน้ำมัน PT ข้างร้านสีเบเยอร์","5:43","17:37"],["หน้าหมู่บ้านบาหลีบีช","5:48","17:38"],["ศาลเจ้า (เม้ง) (ศาลาผู้โดยสาร)","5:50","17:40"],["ซอยสถานีตำรวจเปร็งเก่า","5:50","17:43"],["กิตตินคร เปร็ง","5:50","17:43"],["ตลาดคลองสวน (หน้าคลินิค)","5:50","17:45"],["วัดเทพราช","6:00","17:45"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"สนามชัยเขต-พนมสารคาม","s":[["โชว์รูมโตโยต้าสนามชัยเขต","05:35","17:05"],["สภอ.สนามชัยเขต","05:35","17:05"],["ศาลานาน้อย (ย้ายมาจากปั้มน้ำมัน)","05:37","17:07"],["บ้านท่ากง (บ้านทรงเจ้า)","05:40","17:15"],["วัดพงษาราม (หน้าร้านกาแฟ)","05:45","17:15"],["สถานีดับเพลิง เกาะขนุน","05:45","17:15"],["โชคปรีชาคาร์แคร์","05:45","17:20"],["ตรงข้าม หมู่บ้านกิจเกษม (ศาลาผู้โดยสาร)","05:50","17:20"],["วัดดอนทอง","05:50","17:20"],["หน้าพวงทอง (24 ชม.)","05:50","17:20"],["โรงเรียนพนมอดุลวิทยา (ศาลาผู้โดยสาร)","05:50","17:20"],["ส.ภ.อ. พนมสารคาม (ศาลา)","05:55","17:25"],["ศาลาผู้โดยสารตรงข้ามวัดจอมมณี","06:00","17:30"],["หน้าวัดโพธิ์ใหญ่","06:00","17:30"],["แยกหนองปลาตะเพียน (ศาลาผู้โดยสาร)","06:02","17:35"],["คลองนา (ปากซอยคลองนาตรงร้านค้า)","06:20","17:55"],["หน้าตลาดสดบ้านโพธิ์","06:20","17:55"],["วัดอินทราราม","06:20","17:55"],["ศาลาผู้โดยสาร รร.วัดสนามจันทร์","06:25","18:00"],["หน้าบริษัทวูดเทค","06:25","18:05"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"รถต่อช่วงหนองยาว (สองแถว) – สายพนมสารคาม","s":[["ศาลาผู้โดยสาร (รพ.ส่งเสริมสุขภาพตำบลบ้านซ่อง)","05:10","17:00"],["ตรงข้าม ทางเข้าวัดเกาะแก้ว","05:12","17:02"],["แหลมไผ่ศรี ซอย 2","05:13","17:03"],["แหลมไผ่ศรี ซอย 4","05:14","17:04"],["แหลมไผ่ศรี ซอย 5","05:15","17:05"],["แหลมไผ่ศรี ซอย 11","05:18","17:06"],["ทางวัดหนองป่าตอง","05:19","17:08"],["ตรงข้าม วัดอ่าวสีเสียด","05:20","17:09"],["อ่าวสีเสียด ซอย 3","05:23","17:11"],["วัดนาเหล่าบก","05:25","17:15"],["ตรงข้าม ปากซอยชุมชนพนมวิลล่า","05:25","17:15"],["ศูนย์การค้าศิริพนม","05:30","17:20"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"รถต่อช่วงโคกปีบ (สองแถว) – สายพนมสารคาม","s":[["ธนาคารกสิกรไทย (สีแยกโคกปีบ)","05:10","16:45"],["ตรงข้าม เทศบาลโคกปีบ","05:14","16:49"],["ตรงข้าม ซุ้มวัดมุกขาว","05:14","16:54"],["ตรงข้าม ซุ้มวัดต้นโพธิ์ศรีมหาโพธิ์","05:14","16:54"],["วัดสระมรกต","05:16","16:56"],["ศาลาแถวธารรีสอทร์ท","05:19","16:59"],["วัดแถวธาร (ตรงข้ามเทศบาล บ้านซ่อง)","05:20","17:00"],["ศาลาผู้โดยสาร (ตรงข้ามวัดเกาะไม้แดง)","05:21","17:01"],["ตรงข้าม ซุ้มวัดหัวกระสังข์","05:22","17:02"],["ร้านพี มินิมาทร์","05:22","17:02"],["ศาลาครัวริมธาร หนองน้ำพุ","05:22","17:02"],["ศาลาผู้โดยสาร วัดหนองสองห้อง","05:25","17:03"],["วัดโคกหัวข้าว","05:27","17:05"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"บางปะกง - ชลบุรี","s":[["เซ็นทรัล ชลบุรี (ป้ายรถเมล์)","5:53","17:38"],["ตึกน้ำ (สะพานลอย)","5:54","17:38"],["เพชรสยาม (หน้าธนาคารกรุงศรีอยุธยา)","5:54","17:48"],["ธนาคารทหารไทย (แยกบ้านสวน)","05:55","17:48"],["ห้างเฉลิมไทย (หน้าโชว์รุม)","06:00","17:48"],["ตรงข้าม ร้านยาง สินาภรพาณิชย์","06:00","17:48"],["ศาลาผู้โดยสารตรงข้ามค่ายนวมินทราชินี","06:00","17:48"],["สถานีดับเพลิง บางทราย","06:05","17:58"],["หนองไม้แดง (ตู้โทรศัพท์)","06:05","17:58"],["ชุนหลี (ปากซอย)","06:05","18:06"],["มหาวิทยาลัยศรีปทุม (ศาลาผู้โดยสาร)","06:10","18:06"],["ตรงข้าม นิคมอมตะนคร (สะพานลอย)","06:10","18:06"],["ศาลาผู้โดยสารใต้ลิ้มค้าไม้","06:05","18:06"],["วัดบุญญราศรี (สะพานลอย)","06:05","18:08"],["ตรงข้าม แยกบ้านเก่า (สะพานลอย)","06:10","18:08"],["ตรงข้าม โรงไฟฟ้า บางปะกง (สะพานลอย)","06:10","18:13"],["สะพานลอย (ท่าข้าม)","06:10","18:16"],["โลตัสอพาร์ทเม้น","06:20","18:16"],["โค้งท่าไข่","06:20","18:20"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"ดงน้อย-บางคล้า-ตลาดบางคล้า","s":[["ดงน้อย (ลานกีฬาดงน้อย)","05:30","17:15"],["ศาลาต้นนา 1","05:30","17:15"],["ศาลาต้นนา 2","05:30","17:15"],["ตรงข้าม บ้านเอื้ออาทรพนมสารคาม","05:30","17:15"],["อนามัยเมืองใหม่ (ตรงข้ามวัดกกสับนอก)","05:40","17:27"],["เทศบาลบางคล้า","05:53","17:37"],["ตลาดบางคล้า (ธนาคารกรุงเทพ)","06:00","17:50"],["ปั้มน้ำมันเชลล์ (บางคล้า)","06:00","17:50"],["โรงเรียนบางคล้า (ตรงข้าม องค์การโทรศัพท์)","06:00","17:50"],["การไฟฟ้าใหม่บางคล้า (เฉพาะรับเข้าวันทำงานปกติ)","06:00","17:50"],["หมู่บ้านอาจารย์เริงชัย (เฉพาะรับเข้าวันทำงานปกติ)","06:00","17:50"],["บ้านแพน้อย (ร้านมะม่วง)","06:05","17:50"],["หมู่บ้านปัญญา","06:05","17:50"],["ซอยสวนเพื่อน (หมู่บ้าน สุพรรษา)","06:05","17:50"],["ร้านทำเบาะท่าทองหลาง","06:05","18:00"],["ตรงข้าม ปากซอยวัดบางกะพ้อ (ศาลาผู้โดยสาร)","06:05","18:00"],["ตรงข้าม หมู่บ้านไม้ฟ้าโฮม","06:05","18:00"],["เยื้องศูนย์ฮอนด้า (ตรงข้ามโรงงาน)","06:05","18:00"],["ทรายหาย","06:05","18:00"],["ร้านขายต้นไม้ (ตรงข้ามบ้านจารุ)","06:05","18:00"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"รถต่อช่วงบางกะเจ็ด (สองแถว) – สายบางคล้า-ตลาดบางคล้า","s":[["ร้านช่างจ้อย (อบต.บางกะเจ็ด)","05:30","17:10"],["วัดใหม่คูมอญ","05:40","17:20"],["วัดบางกะเจ็ด","05:42","17:22"],["วัดหัวไทร","05:43","17:23"],["หอพักสุรพล","05:43","17:23"],["เซเว่นปากน้ำ (แยกบางตลาด)","05:48","17:28"],["วัดปากน้ำ","05:49","17:29"],["ทางเข้าโรงพยาบาลบางคล้า","05:49","17:29"],["โรงเรียนดาราจรัส","05:50","17:30"],["แยกตลาดน้ำ","05:50","17:31"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"วิทยาลัยเทคนิค","s":[["เทคโนโลยี ปัญจะฯ (หน้าร้านกิจไพศาล)","06:00","17:50"],["หน้าปั้มเชลล์","06:04","17:53"],["วิทยาลัยเทคนิคฉะเชิงเทรา (ป้ายรถเมล์)","06:05","17:53"],["ตรงข้าม ปากซอยจู","06:07","17:55"],["หน้า 7-11 ตลาดดอนทอง","06:10","17:58"],["ตรงข้าม อู่ดอนทองเฮดเอดร์ (ป้ายเขียว)","06:10","17:58"],["ตรงข้าม โรงแรมแกรนด์","06:10","17:58"],["หน้าห้างตะวันออกคอมเพล็กซ์ (ป้ายรถเมล์)","06:10","18:03"],["หมู่บ้านวงศกร","06:10","18:03"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"รถต่อช่วงบ้านใหม่ (สองแถว) – สายวิทยาลัยเทคนิค","s":[["ศาลาผู้โดยสารหมู่บ้านเบญจเพ็ชร","05:50","17:30"],["ศาลาผู้โดยสารหมู่บ้านอัจฉรา บางขวัญ","05:50","17:30"],["ศาลาผู้โดยสารตรงข้าม รร.เบญจ 5","05:51","17:31"],["ศาลาผู้โดยสารหมู่บ้านกรุงไทย","05:52","17:31"],["ตรงข้าม ไก่ย่าง 5 ดาว","05:53","17:32"],["บรรลือชัยอพารท์เม้นต์","05:54","17:32"],["แยกเข้าวัดสัมปทวน","05:55","17:33"],["ตรงข้าม ปั๊มบางจากบ้านใหม่","05:55","17:33"],["โลตัสตลาดบ้านใหม่","05:56","17:34"],["ท่ารถตลาดบ้านใหม่","05:56","17:35"],["ตรงข้าม ปากซอยมะยมคู่","05:57","17:36"],["ปากซอยตรอกข้าวหลาม","05:59","17:37"],["ปากซอยร้านอีสานลงบก","05:59","17:38"],["ปากทางเข้าวัดประตูน้ำ","06:00","17:39"],["สถานีรถไปแปดริ้ว","06:00","17:40"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"เลี่ยงเมืองชลบุรี (วัดอู่ตะเภา)","s":[["ศาลาผู้โดยสารหน้าเซเว่น วัดอู่ตะเภา","05:59","17:49"],["ปากทางวัดราษฎรสโมสร","06:04","17:54"],["สะพานลอย ตำบลเทศบาลตำบลนาป่า","06:05","17:55"],["อิสเทิร์นแลนด์ซิตี้","06:06","17:56"],["สะพานลอยซอยสุขประยูร 20 (ตรงข้ามวัดท้องคุ้ง)","06:09","17:59"],["หน้าหมู่บ้านปริณดา","06:10","18:00"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"เข้าซอยหนองครก","s":[["หน้าร้านหมูกระทะใบตอง2 (ม.กาสะลอง)","05:45","17:25"],["ปากซอยโรงแรมเหมือนฝัน","05:46","17:26"],["บ้านเอื้ออาทรเคหะแปลงยาว","05:46","17:26"],["แยกหนองตะแบก","05:46","17:26"],["หมู่บ้านอารยา","05:47","17:28"],["หมู่บ้านโรงอิฐ","05:47","17:28"],["หนองครก ซอย14 ทางเข้าวัดแปลงยาว","05:47","17:28"],["หนองครก ซอย12 หน้า 7-11","05:47","17:28"],["หนองครก ซอย10 หน้าร้านหมูกระทะ","05:48","17:28"],["หนองครก ซอย8 วัดด่านเงิน","05:48","17:28"],["หนองครก ซอย6","05:48","17:29"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"เกาะไร่ + บ้านเอื้ออาทร (โครงการ 1)","s":[["ตรงข้าม องค์การบริหารส่วนตำบลเกาะไร่","06:00","18:00"],["ตรงข้าม วัดแพรกนกเอี้ยง","06:03","18:03"],["วังมรกต","06:06","18:06"],["ตรงข้าม โรงเรียนเบญจมราชรังสฤษฎิ์ 4","06:06","18:06"],["วัดนาคู","06:13","18:13"],["วัดบางปรง","06:14","18:14"],["ตรงข้าม ศาลาคลองลัดยายหรั่ง","06:15","18:15"],["หน้าหมู่บ้านไลโอ","06:16","18:16"],["ตึกแถวก่อนสี่แยกบางพระ","06:17","18:17"],["โครงการ 1 ซอย 14","06:40","18:40"],["โครงการ 1 ซอย 11","06:40","18:40"],["โครงการ 1 ซอย 12","06:40","18:41"],["โครงการ 1 ซอย 8","06:40","18:41"],["โครงการ 1 ซอย 7","06:40","18:42"],["ป้ายเคหะซอย 1","06:40","18:43"],["ป้ายเคหะซอย 2","06:41","18:43"],["ป้ายจุดรวมพล 2","06:42","18:43"],["ป้ายจุดรวมพล 1","06:42","18:43"],["ศาลาผู้โดยสาร ลาดขวางซอย 3","06:42","18:43"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"โครงการบ้านเอื้ออาทร (โครงการ 2)","s":[["บ้านเอื้ออาทร ซอย 15","06:40","18:40"],["บ้านเอื้ออาทร ซอย 13","06:41","18:41"],["บ้านเอื้ออาทร ซอย 11","06:41","18:41"],["บ้านเอื้ออาทร ซอย 9","06:42","18:42"],["บ้านเอื้ออาทร ซอย 7","06:43","18:43"],["บ้านเอื้ออาทร ซอย 5","06:43","18:43"],["บ้านเอื้ออาทร ซอย 3","06:44","18:44"],["บ้านเอื้ออาทร ซอย 1","06:44","18:44"],["ป้ายเคหะ ซอย 5","06:45","18:45"],["ป้ายเคหะ ซอย 4","06:45","18:45"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"โครงการเคหะบ้านโพธิ์ (แฟลตเคหะ)","s":[["ป้ายจุดรวมพล 2","6:30","18:30"],["ป้ายจุดรวมพล 1","6:31","18:31"],["RK Battery บ้านโพธิ์","6:32","18:32"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"บางวัว - ท่าสะอ้าน","s":[["ปากทางเข้าวัดบางเกลือ (ม.ศรีเทพไท)","6:00","17:45"],["ตรงข้าม ห้าง TOP (บางวัว)","6:03","17:48"],["ตรงข้าม ซอยร่วมใจ (สะพานลอย โรงงานเริงวา)","6:05","17:48"],["ตรงข้าม วัดบางวัว (สะพานลอย)","6:05","17:50"],["วัดบางวัว (ศาลาผู้โดยสาร)","6:20","18:00"],["ห้าง TOP (บางวัว)","6:20","18:10"],["ตลาดบางวัว (ก่อนทางเข้าตลาดบางวัว) เปลี่ยนมาขึ้นหน้า 7-11","6:25","18:10"],["หมู่บ้านบูรพา (ศาลาผู้โดยสาร)","6:25","18:10"],["ร้านอาหารเรือนไม้","6:30","18:15"],["หมู่บ้านบริทาเนีย","6:30","18:15"],["แยกท่าสะอ้าน","6:30","18:15"],["ศาลาผู้โดยสาร (สิรารมย์พลัส มอเตอร์เวย์)","6:30","18:15"],["ฟาร์มรัศมี","6:30","18:15"],["ตรงข้าม การเคหะเอี้ออาทรแสนภูดาษ (หน้าปั้มเชลล์)","6:30","18:15"],["ตรงข้าม วัดแสนภูดาษ (ศาลาผู้โดยสาร)","6:30","18:20"],["หอพักติ๋ม","6:30","18:20"],["หน้าโรงเรียนพุทธิรังษี","6:30","18:20"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"หัวสำโรง - แปลงยาว","s":[["ศาลาตรงข้ามป้อมตำรวจหัวสำโรง","5:38","17:10"],["ปั้มน้ำมัน PT หัวสำโรง","5:38","17:10"],["ปั้ม ปตท. หัวสำโรง (ศาลาต้นโพธิ์)","5:38","17:10"],["วัดนพเกตุ (ตรงข้าม) - ครัวนาตยา","5:38","17:10"],["ศาลาแยกนิคมเกตเวย์ (หน้าศาลาผู้โดยสาร)","5:38","17:15"],["ปั้มน้ำมัน ปตท. ใหม่ (เกตเวย์)","5:40","17:17"],["วัดเนินไร่","5:40","17:20"],["ตรงข้าม ศาลาแยกหนองครก (ศาลาผู้โดยสาร)","5:48","17:25"],["ศาลาปากซอยบ้านลาดปลาเค้า ตรงข้ามตลาดพันล้าน5:48","","17:25"],["หมู่บ้านทองกิตติ","5:50","17:25"],["ค่ายพระยาสุรสีห์ (ตรงข้าม)","5:50","17:25"],["สี่แยกแปลงยาว (ศูนย์ฮอนด้า)","5:50","17:25"],["ตรงข้าม การไฟฟ้าแปลงยาว","5:50","17:25"],["หน้าหมู่บ้านเอื้ออาทร (บางคล้า)","5:50","17:25"],["ร้านฟองเบียร์ (เพิ่มใหม่)","5:50","17:25"],["หมู่บ้านไชยจินดา","5:50","17:25"],["หนองหินซอย 6","5:50","17:25"],["หนองหินซอย 8","5:50","17:25"],["หมู่บ้านเพลินไพลิน","5:50","17:30"],["โค้งวังเย็น (ศาลาตู้โทรศัพท์)","5:50","17:32"],["หมู่บ้านเจริญสุข (ตรงข้าม)","5:55","17:35"],["แยกวัดด่านเงิน (คลองส่งน้ำ)","5:55","17:35"],["ร้านสันติ ออโต้ เซอรวิส","5:55","17:35"],["ตลาดบางบ่อ (หน้าปั้มเก่า)","5:55","17:35"],["ร้านยายตุ่ม (บ้านต้นตะกู) แท้งประปา","5:55","17:38"],["วัดเสม็ดใต้","6:00","17:38"],["สี่แยกบางคล้า (ป้อมตำรวจ)","6:05","17:40"],["ตรงข้าม หมู่บ้านเมืองหลวง (ศาลาผู้โดยสาร)","6:00","17:45"],["วัดเสม็ดเหนือ (ปากซอย)","6:05","17:45"],["วัดสนามช้าง (ศาลาผู้โดยสาร 2)","6:08","17:45"],["วัดราษฎร์ศรัทธาธรรม","6:10","17:45"],["ตรงข้าม ปากทางเข้าวัดจุกเฌอ (ศาลาผู้โดยสาร)","6:10","17:45"],["หมู่บ้านศิรารมย์ (ตรงข้าม)","6:15","17:50"],["วัดทด (สะพานรถไฟ) (ศาลาผู้โดยสาร)","6:15","17:50"],["หน้า โรงพยาบาลรวมแพทย์ (หมู่บ้านประชาสุข 3)","6:15","17:50"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"Big C แปดริ้ว","s":[["ป้ายรถเมล์หน้าโรบินสัน (วินมอเตอร์ไซด์)","6:00","18:00"],["ศาลาผู้โดยสาร (ตรงข้ามตรีชฏา ปลาเผา)","6:00","18:00"],["ตรงข้าม Big C1","6:00","18:00"],["ร้านป้ายศิริศิลป์ ตรงข้ามศูนย์ YAMAHA","6:05","18:05"],["ปากซอยศรีโสธร 3","6:05","18:05"],["หอพักวรรณมล รีสอร์ท","6:05","18:05"],["หน้าองค์การโทรศัพท์","6:10","18:10"],["สัมมนาคาร","6:15","18:15"],["วัดหลวงพ่อโสธร (ตรงข้าม 7-11)","6:15","18:15"],["เทพคุณากร ซอย1","6:15","18:15"],["เทพคุณากรซอย5 ตรงข้ามปากซอย6","6:15","18:15"],["เทพคุณากร ซอย7","6:15","18:15"],["ตรงข้าม เทพคุณากร ซอย10","6:15","18:15"],["เทพคุณากร ซ.13 (ตรงข้ามเทพคุณากร ซ.12)","6:15","18:15"],["เทพคุณากร ซ.15","6:20","18:20"],["ตรงข้าม หมู่บ้านมารวย (สะพานลอย)","6:20","18:20"],["วัดโพธิ์,(ศาลาผู้โดยสาร)แยกนาคู","6:20","18:20"],["หน้าหมู่บ้าน บ้านโพธิ์วิลล์","6:20","18:10"]]},{"z":"ฉะเชิงเทรา-ชลบุรี","r":"บางแสน - ชลบุรี","s":[["มหาวิทยาลัยบูรพา / ห้างแหลมทอง","05:44","17:38"],["วังมุขแลนด์ (ป้ายรถเมล์)","05:45","17:38"],["ตรงข้าม แกแลคซี่ บางแสน (ป้ายรถเมล์)","05:48","17:38"],["ร้านหน้าจาน 2 บาท","05:48","17:38"],["ส.วรกิจ (หน้าร้านวัสดุก่อสร้าง)","05:49","17:38"],["ว.สารพัดช่าง (สะพานลอย)","05:50","17:43"],["สี่แยกไฟแดงอ่างศิลา","05:54","17:48"],["ตรงข้าม Big C โฮมโปร","05:56","17:48"],["สี่แยกคีรี (หน้าโชว์รูม)","05:58","17:48"]]}];
+const BUS_STOPS = []; BUS_ROUTES.forEach(R=>R.s.forEach((x,i)=>BUS_STOPS.push({z:R.z,r:R.r,n:x[0],d:x[1],nt:x[2],i:i+1})));
+const normTH = t => String(t||'').toLowerCase().replace(/[\s\-–_().,/]+/g,'');
+function hl(t,q){ if(!q) return esc(t); const i=t.toLowerCase().indexOf(q.toLowerCase()); return i<0?esc(t):esc(t.slice(0,i))+'<mark>'+esc(t.slice(i,i+q.length))+'</mark>'+esc(t.slice(i+q.length)); }
+function busSearch(q){
+  let nq=normTH(q); if(!nq) return [];
+  // คำพ้อง: พิมพ์ไทย/อังกฤษได้ทั้งคู่
+  const AL={'บิ๊กซี':'bigc','บิกซี':'bigc','โลตัส':'lotus','เซเว่น':'เซเว่น','711':'7-11','ปตท':'ปตท','เชลล์':'เชลล์','ท็อป':'top','เซ็นทรัล':'เซ็นทรัล'};
+  const qs=[nq]; Object.entries(AL).forEach(([k,v])=>{ if(nq.includes(k)) qs.push(nq.replace(k,normTH(v))); });
+  const hit=[];
+  BUS_STOPS.forEach(x=>{ const a=normTH(x.n), b=normTH(x.r); let sc=0; qs.forEach(q2=>{ sc=Math.max(sc, a.includes(q2)?(a.startsWith(q2)?3:2):b.includes(q2)?1:0); }); if(sc) hit.push([sc,x]); });
+  return hit.sort((a,b)=>b[0]-a[0]).map(h=>h[1]);
+}
+function busFromAddress(){
+  const addr=$('address').value; if(!addr) return [];
+  const toks=addr.split(/[\s,()]+/).map(t=>t.replace(/^(หมู่บ้าน|ม\.|ต\.|อ\.|จ\.|ตำบล|อำเภอ|จังหวัด|ซอย|ซ\.|ถนน|ถ\.)/,'')).filter(t=>t.length>=3 && !/^\d+$/.test(t));
+  const sc=new Map();
+  toks.forEach(t=>{ const r=busSearch(t); r.forEach(x=>sc.set(x,(sc.get(x)||0)+1/r.length)); }); // คำที่เจาะจงกว่าได้คะแนนสูงกว่า
+  return [...sc.entries()].sort((a,b)=>b[1]-a[1]).map(e=>e[0]).slice(0,5);
+}
+function busTime(x){ return `☀️ ${esc(x.d||'-')}<br>🌙 ${esc(x.nt||'-')}`; }
+function busItem(x,q){ return `<button type="button" class="bus-item" data-r="${esc(x.r)}" data-n="${esc(x.n)}"><span><b>${hl(x.n,q)}</b><small>สาย ${hl(x.r,q)} · จุดที่ ${x.i} · โซน${esc(x.z)}</small></span><span class="tm">${busTime(x)}</span></button>`; }
+function renderBusList(){
+  const q=$('busQuery').value.trim();
+  if($('busLine').value && !q){ $('busList').innerHTML=''; return; }
+  let html='';
+  if(q){
+    const r=busSearch(q).slice(0,12);
+    html = r.length ? r.map(x=>busItem(x,q)).join('') : '<div class="hint">ไม่พบจุดรับนี้ — ลองพิมพ์คำสั้นลง เช่น ชื่อหมู่บ้าน/วัด/ห้าง</div>';
+  } else {
+    const sug=busFromAddress();
+    if(sug.length) html='<div class="bus-sec">✨ แนะนำจากที่อยู่ของคุณ</div>'+sug.map(x=>busItem(x,'')).join('');
+  }
+  $('busList').innerHTML=html;
+}
+function setBus(route, stop, silent){
+  $('busLine').value=route||''; $('busStop').value=stop||'';
+  $('busQuery').value='';
+  const x=BUS_STOPS.find(s=>s.r===route && s.n===stop);
+  if(route){
+    $('busSel').style.display='block';
+    $('busSel').innerHTML=`<div class="row"><div>✅ <b>${esc(stop||'-')}</b><br><small>สาย <b>${esc(route)}</b>${x?` · จุดที่ ${x.i} · โซน${esc(x.z)}`:''}</small>${x?`<br><small>เวลารับ: ☀️ กลางวัน ${esc(x.d)} · 🌙 กลางคืน ${esc(x.nt)} (มารอก่อน 15-20 นาที)</small>`:''}</div><a href="#" onclick="window.clearBus();return false;" style="font-size:13px">เปลี่ยนจุดรับ</a></div>`;
+  } else { $('busSel').style.display='none'; }
+  renderBusList(); if(!silent) sv.touched=true; paintAll();
+}
+window.clearBus = ()=>{ setBus('',''); $('busQuery').focus(); };
 let isOnline = true;
 const $ = id => document.getElementById(id);
 function thaiToday(){ return new Date(Date.now()+7*3600e3).toISOString().slice(0,10); }
@@ -893,7 +915,7 @@ function missing(){
   if(!sv.shift) m.push('กะการทำงาน');
   if(!sv.opt) m.push('สถานะปัจจุบัน');
   if(!sv.transport) m.push('การเดินทาง');
-  if(sv.transport==='รถบัสรับ-ส่ง' && !$('busLine').value.trim()) m.push('สายรถบัส');
+  if(sv.transport==='รถบัสรับ-ส่ง' && !$('busLine').value.trim()) m.push('จุดขึ้นรถบัส');
   if(!$('address').value.trim()) m.push('ที่อยู่');
   if(!$('lat').value || !$('lng').value) m.push('พิกัดที่พัก');
   return m;
@@ -942,7 +964,7 @@ function prefill(){
   const src = todayRec || last;
   if(src){
     $('address').value = src.address||'';
-    sv.transport = src.transport||''; $('busLine').value = src.busLine||'';
+    sv.transport = src.transport||''; setBus(src.busLine||'', src.busStop||'', true);
     sv.shift = src.shift||sv.shift;
     if(src.lat && src.lng) setPin(src.lat, src.lng);
     $('travelHint').textContent='ระบบจำข้อมูลเดิมไว้แล้ว แก้ไขได้หากย้ายที่พัก';
@@ -954,23 +976,26 @@ function prefill(){
 }
 function resetFields(){
   Object.assign(sv,{shift:'',opt:'',water:0,transport:''});
-  ['address','busLine','note','mapSearchText','lat','lng'].forEach(i=>$(i).value='');
+  ['address','busLine','busStop','busQuery','note','mapSearchText','lat','lng'].forEach(i=>$(i).value=''); $('busSel').style.display='none'; $('busList').innerHTML='';
   if(pickerMarker){ pickerMap.removeLayer(pickerMarker); pickerMarker=null; }
   $('travelHint').textContent='ครั้งแรกต้องกรอก ครั้งต่อไประบบจะจำให้';
   paintAll();
 }
 function resetSurvey(){ sv.emp=''; $('empQuery').disabled=false; $('empQuery').value=''; $('empCard').style.display='none'; resetFields(); }
 function onRowsLoaded(){
-  $('busLines').innerHTML=[...new Set(rows.map(r=>r.busLine).filter(Boolean))].map(b=>`<option value="${esc(b)}">`).join('');
   if(!sv.emp){ const s=localStorage.getItem('qr_lastEmp'); if(s && activeEmployees[s]) selectEmp(s,true); }
   else if(!sv.touched) prefill();
 }
 // ---------- buttons ----------
 $('statusCards').addEventListener('click',e=>{const b=e.target.closest('.opt'); if(!b) return; sv.opt=b.dataset.id; sv.touched=true; if(sv.opt==='ok') sv.water=0; paintAll();});
 $('shiftSeg').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){sv.shift=b.dataset.v; sv.touched=true; paintAll();}});
-$('transSeg').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){sv.transport=b.dataset.v; sv.touched=true; paintAll(); if(sv.transport==='รถบัสรับ-ส่ง' && !$('busLine').value) $('busLine').focus();}});
+$('transSeg').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){sv.transport=b.dataset.v; sv.touched=true; paintAll(); if(sv.transport==='รถบัสรับ-ส่ง' && !$('busLine').value){ renderBusList(); $('busQuery').focus(); }}});
+$('busQuery').addEventListener('input',renderBusList);
+$('busQuery').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); const b=$('busList').querySelector('.bus-item'); if(b) setBus(b.dataset.r,b.dataset.n); }});
+$('busList').addEventListener('click',e=>{ const b=e.target.closest('.bus-item'); if(b) setBus(b.dataset.r,b.dataset.n); });
+$('address').addEventListener('change',()=>{ if(sv.transport==='รถบัสรับ-ส่ง' && !$('busLine').value) renderBusList(); });
 $('waterSeg').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){sv.water=+b.dataset.v; paintAll();}});
-['address','busLine','lat','lng'].forEach(i=>$(i).addEventListener('input',()=>{sv.touched=true; paintAll();}));
+['address','lat','lng'].forEach(i=>$(i).addEventListener('input',()=>{sv.touched=true; paintAll();}));
 $('homeDetails').addEventListener('toggle',()=>setTimeout(()=>pickerMap.invalidateSize(),100));
 $('svDate').value = thaiToday();
 $('svDate').addEventListener('change',()=>{ sv.touched=false; prefill(); });
@@ -980,7 +1005,7 @@ $('shareBtn').onclick=()=>{
   (navigator.share ? navigator.share({title:'สำรวจสถานการณ์น้ำท่วม Quality Team',url}) : navigator.clipboard.writeText(url).then(()=>toast('คัดลอกลิงก์แล้ว นำไปวางใน LINE ได้เลย')))
     .catch(()=>prompt('คัดลอกลิงก์นี้', url));
 };
-$('toManager').onclick=e=>{ e.preventDefault(); document.body.classList.remove('survey-only'); location.hash=''; document.querySelector('.tab[data-panel="dashboardPanel"]').click(); };
+$('toManager').onclick=e=>{ e.preventDefault(); document.body.classList.remove('survey-only'); history.replaceState(null,'',location.pathname+'#dashboard'); document.querySelector('.tab[data-panel="dashboardPanel"]').click(); };
 // ---------- online indicator ----------
 onValue(ref(db,'.info/connected'), s=>{
   isOnline = s.val()===true;
@@ -994,7 +1019,7 @@ $('submitBtn').onclick = ()=>{
     date: dateVal, name: sv.emp, group: activeEmployees[sv.emp].group, shift: sv.shift,
     address: $('address').value.trim(), homeImpact: o.impact, waterLevel: o.water ? sv.water : 0,
     status: o.status, statusCode: o.id, reason: o.reason,
-    transport: sv.transport, busLine: sv.transport==='รถบัสรับ-ส่ง' ? $('busLine').value.trim() : '',
+    transport: sv.transport, busLine: sv.transport==='รถบัสรับ-ส่ง' ? $('busLine').value.trim() : '', busStop: sv.transport==='รถบัสรับ-ส่ง' ? $('busStop').value.trim() : '',
     note: $('note').value.trim(), lat: +$('lat').value, lng: +$('lng').value,
     updatedAt: new Date().toLocaleString('th-TH',{hour12:false})
   };
@@ -1018,12 +1043,21 @@ $('submitBtn').onclick = ()=>{
 window.svAgain = ()=>{ $('svDone').style.display='none'; $('svForm').style.display='block'; $('svSticky').style.display='block'; sv.touched=false; prefill(); };
 // ---------- survey mode / deep link ----------
 function syncMode(){ document.body.classList.toggle('survey-mode', $('surveyPanel').classList.contains('active')); }
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>setTimeout(syncMode,0)));
-if(/survey/.test(location.hash) || new URLSearchParams(location.search).has('survey')){
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  setTimeout(syncMode,0);
+  if(!document.body.classList.contains('survey-only')){
+    const h={dashboardPanel:'#dashboard',skillPanel:'#skill',surveyPanel:''}[b.dataset.panel];
+    history.replaceState(null,'',location.pathname+location.search+h);
+  }
+}));
+if(/dashboard/.test(location.hash)){ document.querySelector('.tab[data-panel="dashboardPanel"]').click(); }
+else if(/skill/.test(location.hash)){ document.querySelector('.tab[data-panel="skillPanel"]').click(); }
+else if(/survey/.test(location.hash) || new URLSearchParams(location.search).has('survey')){
   document.body.classList.add('survey-only');
   document.querySelector('.tab[data-panel="surveyPanel"]').click();
 }
 syncMode(); paintAll();
+setTimeout(()=>{ if($('surveyPanel').classList.contains('active') && !$('empQuery').disabled) $('empQuery').focus(); },400);
 // ---------- PWA ----------
 // (ไม่บังคับ) ถ้าวางไฟล์ sw.js ไว้โฟลเดอร์เดียวกัน ระบบจะใช้ให้อัตโนมัติ ถ้าไม่มีก็ทำงานได้ปกติ
 if('serviceWorker' in navigator && location.protocol==='https:') fetch('sw.js',{method:'HEAD'}).then(r=>{if(r.ok) navigator.serviceWorker.register('sw.js');}).catch(()=>{});
